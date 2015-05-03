@@ -72,7 +72,7 @@ class BaseEngine(object):
         LOGGER.debug("Intialize %s with kwargs: %s", self.name(),
                      ", ".join("%s=%s" % (k, v) for k, v in kwargs.items()))
 
-    def renders_impl(self, template_content, context=None, at_safe=False,
+    def renders_impl(self, template_content, context=None, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         Render from given template content and context.
@@ -80,9 +80,7 @@ class BaseEngine(object):
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_safe: Try to render template[s] safely, that is,
-            it will not raise any exceptions and returns the content of
-            template file itself if any error occurs
+        :param at_paths: Template search paths
         :param at_encoding: Template encoding
         :param kwargs: Keyword arguments passed to the template engine to
             render templates with specific features enabled.
@@ -91,15 +89,13 @@ class BaseEngine(object):
         """
         raise NotImplementedError("Inherited class must implement this!")
 
-    def render_impl(self, template, context=None, at_safe=False,
+    def render_impl(self, template, context=None, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         :param template: Template file path
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_safe: Try to render template[s] safely, that is,
-            it will not raise any exceptions and returns the content of
-            template file itself if any error occurs
+        :param at_paths: Template search paths
         :param at_encoding: Template encoding
         :param kwargs: Keyword arguments passed to the template engine to
             render templates with specific features enabled.
@@ -108,43 +104,41 @@ class BaseEngine(object):
         """
         raise NotImplementedError("Inherited class must implement this!")
 
-    def renders(self, template_content, context=None, at_safe=False,
+    def renders(self, template_content, context=None, at_paths=None,
                 at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_safe: Try to render template[s] safely, that is,
-            it will not raise any exceptions and returns the content of
-            template file itself if any error occurs
+        :param at_paths: Template search paths
+        :param at_encoding: Template encoding
         :param kwargs: Keyword arguments passed to the template engine to
             render templates with specific features enabled.
 
-        :return: To be rendered string in inherited classes
+        :return: Rendered string
         """
         LOGGER.debug("Render template %s... %s context" %
                      template_content[:10],
                      "without" if context is None else "with a")
-        return self.renders_impl(template_content, context, at_safe=at_safe,
+        return self.renders_impl(template_content, context, at_paths=at_paths,
                                  at_encoding=at_encoding, **kwargs)
 
-    def render(self, template, context=None, at_safe=False,
+    def render(self, template, context=None, at_paths=None,
                at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         :param template: Template file path
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_safe: Try to render template[s] safely, that is,
-            it will not raise any exceptions and returns the content of
-            template file itself if any error occurs
+        :param at_paths: Template search paths
+        :param at_encoding: Template encoding
         :param kwargs: Keyword arguments passed to the template engine to
             render templates with specific features enabled.
 
-        :return: To be rendered string in inherited classes
+        :return: Rendered string
         """
         LOGGER.debug("Render template %s %s context" %
                      template, "without" if context is None else "with a")
-        return self.render_impl(template, context, at_safe=at_safe,
+        return self.render_impl(template, context, at_paths=at_paths,
                                 at_encoding=at_encoding, **kwargs)
 
 # vim:sw=4:ts=4:et:
