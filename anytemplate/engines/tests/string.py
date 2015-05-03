@@ -27,7 +27,7 @@ class Test_10(unittest.TestCase):
         if os.path.exists(self.workdir):
             anytemplate.tests.common.cleanup_workdir(self.workdir)
 
-    def test_20_renders_impl(self):
+    def test_20_render_impl(self):
         engine = TT.StringTemplateEngine()
 
         trs = (("aaa", None, "aaa"), ("$a", {'a': "aaa"}, "aaa"))
