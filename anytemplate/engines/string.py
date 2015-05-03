@@ -40,7 +40,10 @@ class StringTemplateEngine(anytemplate.engines.base.BaseEngine):
         if at_safe:
             return string.Template(template_content).safe_substitute(context)
         else:
-            return string.Template(template_content).substitute(context)
+            try:
+                return string.Template(template_content).substitute(context)
+            except KeyError as exc:
+                raise anytemplate.engines.base.CompileErrorException(str(exc))
 
     def render_impl(self, template, context=None, at_safe=False,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
