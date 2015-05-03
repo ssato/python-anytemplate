@@ -18,7 +18,7 @@ LOGGER = logging.getLogger(__name__)
 
 class MissingTemplateException(Exception):
     """
-    Excepction during rendering template[s] and any of templates are missing.
+    Exception during rendering template[s] and any of templates are missing.
     """
     pass
 
