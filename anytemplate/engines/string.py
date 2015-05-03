@@ -21,48 +21,53 @@ class StringTemplateEngine(anytemplate.engines.base.BaseEngine):
     _name = "string"
     _supported = True
 
-    def renders_impl(self, template_content, context=None, at_safe=False,
-                     **kwargs):
+    def renders_impl(self, template_content, context=None, at_paths=False,
+                     at_encoding=anytemplate.compat.ENCODING,
+                     safe=False, **kwargs):
         """
         Inherited class must implement this!
 
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_safe: Try to render template[s] safely, that is,
-            it will not raise any exceptions and returns the content of
-            template file itself if any error occurs
+        :param at_paths: Template search paths
+        :param at_encoding: Template encoding
+        :param safe: Safely substitute parameters in templates, that is,
+            original template content will be returned if some of template
+            parameters are not found in given context
         :param kwargs: Keyword arguments passed to the template engine to
             render templates with specific features enabled.
 
         :return: To be rendered string in inherited classes
         """
-        if at_safe:
+        if safe:
             return string.Template(template_content).safe_substitute(context)
         else:
             try:
                 return string.Template(template_content).substitute(context)
             except KeyError as exc:
-                raise anytemplate.engines.base.CompileErrorException(str(exc))
+                raise anytemplate.engines.base.CompileError(str(exc))
 
-    def render_impl(self, template, context=None, at_safe=False,
-                    at_encoding=anytemplate.compat.ENCODING, **kwargs):
+    def render_impl(self, template, context=None, at_paths=None,
+                    at_encoding=anytemplate.compat.ENCODING,
+                    safe=False, **kwargs):
         """
         Inherited class must implement this!
 
         :param template: Template file path
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_safe: Try to render template[s] safely, that is,
-            it will not raise any exceptions and returns the content of
-            template file itself if any error occurs
+        :param at_paths: Template search paths
         :param at_encoding: Template encoding
+        :param safe: Safely substitute parameters in templates, that is,
+            original template content will be returned if some of template
+            parameters are not found in given context
         :param kwargs: Keyword arguments passed to the template engine to
             render templates with specific features enabled.
 
         :return: To be rendered string in inherited classes
         """
         with anytemplate.compat.copen(template, encoding=at_encoding) as tmpl:
-            return self.renders_impl(tmpl.read(), context, at_safe)
+            return self.renders_impl(tmpl.read(), context, safe=safe)
 
 # vim:sw=4:ts=4:et:

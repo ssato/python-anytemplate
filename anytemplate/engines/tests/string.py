@@ -20,14 +20,14 @@ class Test_00(unittest.TestCase):
 
     def test_22_renders_impl__safe(self):
         engine = TT.StringTemplateEngine()
-        self.assertEquals(engine.renders_impl("$a", {}, at_safe=True), "$a")
+        self.assertEquals(engine.renders_impl("$a", {}, safe=True), "$a")
 
     def test_24_renders_impl__error(self):
         engine = TT.StringTemplateEngine()
         try:
             engine.renders_impl("$a", {})
             assert False, "Expected exception was not raised!"
-        except anytemplate.engines.base.CompileErrorException:
+        except anytemplate.engines.base.CompileError:
             pass
 
 
