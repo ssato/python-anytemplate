@@ -1,0 +1,32 @@
+# Ref. http://about.travis-ci.org/docs/user/languages/python/
+language: python
+python:
+    - 2.6
+    - 2.7
+    - 3.3
+    - 3.4
+#matrix:
+#    include:
+#        - python: 2.4
+#          env: FULL="true"
+#        - python: 2.5
+#          env: FULL="true"
+#        - python: 2.6
+#          env: FULL="true"
+#        - python: 2.7
+#          env: FULL="true"
+##        - python: 3.2
+##          env: LANG="en_US.utf-8"
+install:
+    - if [[ $TRAVIS_PYTHON_VERSION < '2.7' ]]; then pip install -r pkg/test_requirements-py-2.6.txt; else pip install -r pkg/test_requirements.txt; fi
+env:
+  - WITH_COVERAGE=1
+script:
+    - "./pkg/runtest.sh"
+after_success:
+  - coveralls
+notifications:
+    email:
+        recipients:
+            - satoru.satoh+github@gmail.com
+        on_failure: always
