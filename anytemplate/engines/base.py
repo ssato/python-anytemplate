@@ -16,14 +16,14 @@ import anytemplate.utils
 LOGGER = logging.getLogger(__name__)
 
 
-class MissingTemplateException(Exception):
+class TemplateNotFound(Exception):
     """
     Exception during rendering template[s] and any of templates are missing.
     """
     pass
 
 
-class CompileErrorException(Exception):
+class CompileError(Exception):
     """
     Excepction indicates any errors during template compilation.
     """
