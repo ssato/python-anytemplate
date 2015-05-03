@@ -23,6 +23,13 @@ class MissingTemplateException(Exception):
     pass
 
 
+class CompileErrorException(Exception):
+    """
+    Excepction indicates any errors during template compilation.
+    """
+    pass
+
+
 class BaseEngine(object):
 
     _name = "base"
