@@ -5,6 +5,7 @@
 import os.path
 import unittest
 import anytemplate.engines.string as TT
+import anytemplate.engines.base
 import anytemplate.tests.common
 
 
@@ -16,6 +17,18 @@ class Test_00(unittest.TestCase):
         trs = (("aaa", None, "aaa"), ("$a", {'a': "aaa"}, "aaa"))
         for (tmpl_s, ctx, exp) in trs:
             self.assertEquals(engine.renders_impl(tmpl_s, ctx), exp)
+
+    def test_22_renders_impl__safe(self):
+        engine = TT.StringTemplateEngine()
+        self.assertEquals(engine.renders_impl("$a", {}, at_safe=True), "$a")
+
+    def test_24_renders_impl__error(self):
+        engine = TT.StringTemplateEngine()
+        try:
+            engine.renders_impl("$a", {})
+            assert False, "Expected exception was not raised!"
+        except anytemplate.engines.base.CompileErrorException:
+            pass
 
 
 class Test_10(unittest.TestCase):
