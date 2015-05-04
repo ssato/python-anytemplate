@@ -215,7 +215,7 @@ def write_to_output(content, output=None,
         print(content, get_locale_sensitive_stdout())
 
 
-def mk_template_paths(filepath, template_paths=None):
+def mk_template_paths(filepath=None, template_paths=None):
     """
     Make template paths from given filepath and paths list.
 
@@ -226,7 +226,11 @@ def mk_template_paths(filepath, template_paths=None):
     >>> fdir = os.path.abspath(os.path.dirname(fn))
     >>> assert mk_template_paths(fn, []) == ['.', fdir]
     >>> assert mk_template_paths(fn, ["/etc", ]) == ["/etc", fdir]
+    >>> assert mk_template_paths(None, ["/etc", ]) == [os.curdir]
     """
+    if filepath is None or not filepath:
+        return [os.curdir]
+
     tmpldir = os.path.abspath(os.path.dirname(filepath))
     if template_paths is None or not template_paths:
         return [os.curdir, tmpldir]  # default:
