@@ -86,7 +86,10 @@ if SUPPORTED:
         >>> s = renders('a = {{ a }}, b = "{{ b }}"', {'a': 1, 'b': 'bbb'})
         >>> assert s == 'a = 1, b = "bbb"'
         """
-        return get_env(paths).from_string(tmpl_s).render(**ctx)
+        try:
+            return get_env(paths).from_string(tmpl_s).render(**ctx)
+        except jinja2.exceptions.TemplateNotFound as e:
+            raise anytemplate.engines.base.TemplateNotFound(str(e))
 
     def render(filepath, ctx, paths=None):
         """
