@@ -125,7 +125,7 @@ class BaseEngine(object):
 
         :return: Rendered string
         """
-        LOGGER.debug("Render template %s... %s context" %
+        LOGGER.debug("Render template %s... %s context",
                      template_content[:10],
                      "without" if context is None else "with a")
         return self.renders_impl(template_content, context, at_paths=at_paths,
