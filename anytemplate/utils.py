@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 """
 :copyright: (c) 2012 - 2015 by Satoru SATOH <ssato@redhat.com>
 :license: BSD-3
 """
-from __future__ import absolute_import
-from __future__ import print_function
+# TODO: unicode_literals
+from __future__ import absolute_import, print_function
 
 import codecs
 import glob
@@ -54,22 +55,26 @@ except ImportError:
 LOGGER = logging.getLogger(__name__)
 
 
-def get_locale_sensitive_stdout(encoding=anytemplate.compat.ENCODING):
+def get_output_stream(encoding=anytemplate.compat.ENCODING,
+                      ostream=sys.stdout):
+    """
+    Get output stream take care of characters encoding correctly.
+
+    :param ostream: Output stream (file-like object); sys.stdout by default
+    :param encoding: Characters set encoding, e.g. UTF-8
+    :return: sys.stdout can output encoded strings
+
+    >>> _out = get_output_stream("UTF-8")
+    """
+    return codecs.getwriter(encoding)(ostream)
+
+
+def get_input_stream(encoding=anytemplate.compat.ENCODING):
     """
     :param encoding: Chart sets encoding
     :return: sys.stdout can output encoded strings
 
-    >>> _t = get_locale_sensitive_stdout("UTF-8")
-    """
-    return codecs.getwriter(encoding)(sys.stdout)
-
-
-def get_locale_sensitive_stdin(encoding=anytemplate.compat.ENCODING):
-    """
-    :param encoding: Chart sets encoding
-    :return: sys.stdout can output encoded strings
-
-    >>> _t = get_locale_sensitive_stdin("UTF-8")
+    >>> _t = get_input_stream("UTF-8")
     """
     return codecs.getreader(encoding)(sys.stdin)
 
@@ -212,7 +217,7 @@ def write_to_output(content, output=None,
 
         anytemplate.compat.copen(output, 'w').write(content)
     else:
-        print(content, get_locale_sensitive_stdout())
+        print(content, get_output_stream())
 
 
 def mk_template_paths(filepath=None, template_paths=None):
