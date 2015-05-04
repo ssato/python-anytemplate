@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2015 Satoru SATOH <ssato @ redhat.com>
-# License: MIT
+# License: BSD3
 #
 """anytemplate.api - API of anytemplate module
 
