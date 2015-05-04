@@ -15,9 +15,15 @@ class Test_00(unittest.TestCase):
             cls = TT.find_engine_class("foo.j2")
             self.assertEquals(cls, anytemplate.engines.jinja2.Jjnja2Engine)
 
-    def test_20_renders(self):
+    def test_20_renders__stringTemplate(self):
         self.assertEquals(TT.renders("$a", dict(a="aaa", ),
                                      at_engine="string.Template"),
                           "aaa")
+
+    def test_22_renders__jinja2(self):
+        if anytemplate.engines.jinja2.SUPPORTED:
+            self.assertEquals(TT.renders("{{ a }}", dict(a="aaa", ),
+                                         at_engine="jinja2"),
+                              "aaa")
 
 # vim:sw=4:ts=4:et:
