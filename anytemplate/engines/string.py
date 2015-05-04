@@ -18,7 +18,7 @@ LOGGER = logging.getLogger(__name__)
 
 class StringTemplateEngine(anytemplate.engines.base.BaseEngine):
 
-    _name = "string"
+    _name = "string.Template"
     _supported = True
     _priority = 50
 
