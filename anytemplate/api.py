@@ -73,6 +73,7 @@ def renders(template_content, context=None, at_paths=None,
     ecls = find_engine_class(None, at_engine)
     LOGGER.info("Use the template engine: %s", ecls.name())
     engine = ecls() if at_cls_args is None else ecls(**at_cls_args)
+    at_paths = anytemplate.utils.mk_template_paths(None, at_paths)
 
     try:
         return engine.renders(template_content, context=context,
@@ -96,7 +97,8 @@ def renders(template_content, context=None, at_paths=None,
 
 def render(filepath, context=None, at_paths=None,
            at_encoding=anytemplate.compat.ENCODING,
-           at_engine=None, at_ask_missing=False, **kwargs):
+           at_engine=None, at_ask_missing=False,
+           at_cls_args=None, **kwargs):
     """
     Compile and render given template file and return the result string.
 
@@ -107,14 +109,18 @@ def render(filepath, context=None, at_paths=None,
     :param at_encoding: Template encoding
     :param at_engine: Specify the name of template engine to use explicitly or
         None to find it automatically anyhow.
+    :param at_cls_args: Arguments passed to instantiate template engine class
     :param kwargs: Keyword arguments passed to the template engine to
         render templates with specific features enabled.
 
     :return: Rendered string
     """
-    engine = find_engine_class(filepath, at_engine)
-    LOGGER.info("Use the template engine: %s", engine.name())
+    ecls = find_engine_class(filepath, at_engine)
+    LOGGER.info("Use the template engine: %s", ecls.name())
+    engine = ecls() if at_cls_args is None else ecls(**at_cls_args)
 
+    if at_paths is None:
+        at_paths = anytemplate.utils.mk_template_paths(filepath, at_paths)
     try:
         return engine.render(filepath, context=context, at_paths=at_paths,
                              at_encoding=at_encoding, **kwargs)

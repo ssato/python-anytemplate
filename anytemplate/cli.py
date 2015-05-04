@@ -70,9 +70,8 @@ def main(argv):
     set_loglevel(options.verbose)
 
     tmpl = args[0]
-    ctx = anytemplate.utils.parse_and_load_contexts(options.contexts,
-                                                    options.werror)
-    res = anytemplate.api.render(tmpl, ctx, at_paths=options.paths,
+    ctx = anytemplate.utils.parse_and_load_contexts(options.contexts)
+    res = anytemplate.api.render(tmpl, ctx, at_paths=options.template_paths,
                                  at_engine=options.engine_name,
                                  at_ask_missing=True)
     anytemplate.utils.write_to_output(res, options.output)
