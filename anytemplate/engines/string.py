@@ -20,6 +20,7 @@ class StringTemplateEngine(anytemplate.engines.base.BaseEngine):
 
     _name = "string"
     _supported = True
+    _priority = 50
 
     def renders_impl(self, template_content, context=None, at_paths=False,
                      at_encoding=anytemplate.compat.ENCODING,

@@ -115,6 +115,7 @@ class Jjnja2Engine(anytemplate.engines.base.BaseEngine):
     _name = "jinja2"
     _file_extensions = ["j2", "jinja2"]
     _supported = SUPPORTED
+    _priority = 10
 
     def renders_impl(self, template_content, context=None, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,

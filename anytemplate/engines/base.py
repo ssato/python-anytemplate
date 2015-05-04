@@ -35,6 +35,7 @@ class BaseEngine(object):
     _name = "base"
     _file_extensions = []
     _supported = False
+    _priority = 99
 
     @classmethod
     def name(cls):
@@ -61,6 +62,13 @@ class BaseEngine(object):
             return cls._supported and \
                 (anytemplate.utils.get_file_extension(template_file) in
                  cls.file_extensions())
+
+    @classmethod
+    def priority(cls):
+        """
+        :return: priority from 0 to 99, smaller gets highter priority.
+        """
+        return cls._priority
 
     def __init__(self, **kwargs):
         """
