@@ -33,14 +33,16 @@ class Test_10_effectful_functions(unittest.TestCase):
         tmpl = "a.j2"
         open(os.path.join(self.workdir, tmpl), 'w').write("a = {{ a }}")
 
-        r = TT.render(tmpl, {'a': "aaa", }, [self.workdir])
-        self.assertEquals(r, "a = aaa")
+        if TT.SUPPORTED:
+            r = TT.render(tmpl, {'a': "aaa", }, [self.workdir])
+            self.assertEquals(r, "a = aaa")
 
     def test_20_render(self):
         tmpl = "a.j2"
         open(os.path.join(self.workdir, tmpl), 'w').write("a = {{ a }}")
 
-        r = TT.render(tmpl, {'a': "aaa", }, [self.workdir])
-        self.assertEquals(r, "a = aaa")
+        if TT.SUPPORTED:
+            r = TT.render(tmpl, {'a': "aaa", }, [self.workdir])
+            self.assertEquals(r, "a = aaa")
 
 # vim:sw=4:ts=4:et:
