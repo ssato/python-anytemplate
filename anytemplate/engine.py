@@ -6,10 +6,12 @@ from __future__ import absolute_import
 
 import operator
 
+import anytemplate.engines.base
 import anytemplate.engines.jinja2
 import anytemplate.engines.string
 
 
+TemplateNotFound = anytemplate.engines.base.TemplateNotFound
 ENGINES = [e for e in
            [anytemplate.engines.string.StringTemplateEngine,
             anytemplate.engines.jinja2.Jjnja2Engine] if e.supports()]
