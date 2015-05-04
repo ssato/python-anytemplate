@@ -15,6 +15,13 @@ ENGINES = [e for e in
             anytemplate.engines.jinja2.Jjnja2Engine] if e.supports()]
 
 
+def list_engines_by_priority(engines=ENGINES):
+    """
+    Return a list of engines supported sorted by each priority.
+    """
+    return sorted(engines, key=operator.methodcaller("priority"))
+
+
 def find_by_filename(filename, engines=ENGINES):
     """
     Find a list of template engine classes to render template `filename`.
