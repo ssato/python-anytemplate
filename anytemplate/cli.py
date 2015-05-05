@@ -13,32 +13,35 @@ import optparse  # argparse is not available in python 2.6 dist.
 import sys
 
 import anytemplate.api
+import anytemplate.globals
 import anytemplate.utils
 
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = anytemplate.globals.LOGGER
 
 
 def option_parser(argv=sys.argv):
     defaults = dict(template_paths=[], contexts=[], output='-',
-                    engine_name=None, verbose=1)
+                    engine=None, verbose=1)
 
     p = optparse.OptionParser("%prog [OPTION ...] TEMPLATE_FILE", prog=argv[0])
     p.set_defaults(**defaults)
 
-    p.add_option("-T", "--template-paths", action="append",
+    p.add_option("-T", "--template-path", action="append",
+                 dest="template_paths",
                  help="Template search path can be specified multiple times. "
                       "Note: Dir in which given template exists is always "
                       "included in the search paths (at the end of "
                       "the path list) regardless of this option. ")
-    p.add_option("-C", "--contexts", action="append",
+    p.add_option("-C", "--context", action="append", dest="contexts",
                  help="Specify file path and optionally its filetype, to "
                       "provides context data to instantiate templates. "
                       " The option argument's format is "
                       " [type:]<file_name_or_path_or_glob_pattern>"
                       " ex. -C json:common.json -C ./specific.yaml -C "
                       "yaml:test.dat, -C yaml:/etc/foo.d/*.conf")
-    p.add_option("-E", "--engine_name", help="Specify engine name")
+    p.add_option("-E", "--engine",
+                 help="Specify template engine name such as 'jinja2'")
     p.add_option("-o", "--output", help="Output filename [stdout]")
     p.add_option("-v", "--verbose", action="store_const", const=0,
                  help="Verbose")
@@ -72,8 +75,7 @@ def main(argv):
     tmpl = args[0]
     ctx = anytemplate.utils.parse_and_load_contexts(options.contexts)
     res = anytemplate.api.render(tmpl, ctx, at_paths=options.template_paths,
-                                 at_engine=options.engine_name,
-                                 at_ask_missing=True)
+                                 at_engine=options.engine, at_ask_missing=True)
     anytemplate.utils.write_to_output(res, options.output)
 
 
