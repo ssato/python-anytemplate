@@ -27,9 +27,9 @@ tool.
 
 Anytemplate supports the following template libraries currently:
 
-- standard string template
+- standard string template (string.Template)
 - jinja2
-- tenjin
+.. - tenjin
 
 .. [#] https://github.com/ssato/python-jinja2-cli
 
