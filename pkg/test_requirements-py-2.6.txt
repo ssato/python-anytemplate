@@ -6,3 +6,5 @@ pep8
 # http://docs.pylint.org/faq.html#installation
 pylint<1.4
 anyconfig
+PyYAML
+simplejson
