@@ -87,6 +87,8 @@ class BaseEngine(object):
     _file_extensions = []
     _supported = False
     _priority = 99  # Lowest priority
+    _engine_valid_opts = []
+    _render_valid_opts = []
 
     @classmethod
     def name(cls):
@@ -120,6 +122,40 @@ class BaseEngine(object):
         :return: priority from 0 to 99, smaller gets highter priority.
         """
         return cls._priority
+
+    @classmethod
+    def engine_valid_options(cls):
+        """
+        :return: A list of template engine specific initialization options
+        """
+        return cls._engine_valid_opts
+
+    @classmethod
+    def render_valid_options(cls):
+        """
+        :return: A list of template engine specific rendering options
+        """
+        return cls._render_valid_opts
+
+    @classmethod
+    def filter_options(cls, kwargs, keys):
+        """
+        Make optional kwargs valid and optimized for each template engines.
+
+        :param kwargs: keyword arguements to process
+        :param keys: optional argument names
+
+        >>> Engine.filter_options(dict(aaa=1, bbb=2), ("aaa", ))
+        {'aaa': 1}
+        >>> Engine.filter_options(dict(bbb=2), ("aaa", ))
+        {}
+        """
+        def filter_kwargs(kwargs):
+            for k in keys:
+                if k in kwargs:
+                    yield (k, kwargs[k])
+
+        return dict((k, v) for k, v in filter_kwargs(kwargs))
 
     def __init__(self, **kwargs):
         """
@@ -181,9 +217,11 @@ class BaseEngine(object):
 
         :return: Rendered string
         """
-        LOGGER.debug("Render template %s... %s context",
+        kwargs = self.filter_options(kwargs, self.render_valid_options())
+        LOGGER.debug("Render template %s... %s context, options=%s",
                      template_content[:10],
-                     "without" if context is None else "with a")
+                     "without" if context is None else "with a",
+                     str(kwargs))
         return self.renders_impl(template_content, context, at_paths=at_paths,
                                  at_encoding=at_encoding, **kwargs)
 
@@ -200,9 +238,12 @@ class BaseEngine(object):
 
         :return: Rendered string
         """
-        LOGGER.debug("Render template %s %s context",
-                     template, "without" if context is None else "with a")
-        return self.render_impl(template, context, at_paths=at_paths,
+        kwargs = self.filter_options(kwargs, self.render_valid_options())
+        paths = anytemplate.utils.mk_template_paths(template, at_paths)
+        LOGGER.debug("Render template %s %s context, options=%s",
+                     template, "without" if context is None else "with a",
+                     str(kwargs))
+        return self.render_impl(template, context, at_paths=paths,
                                 at_encoding=at_encoding, **kwargs)
 
 # vim:sw=4:ts=4:et:
