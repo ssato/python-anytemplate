@@ -9,8 +9,6 @@ import logging
 try:
     from logging import NullHandler
 except ImportError:  # python < 2.7 don't have it.
-    import logging
-
     class NullHandler(logging.Handler):
         def emit(self, record):
             pass
