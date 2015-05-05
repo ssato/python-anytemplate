@@ -3,7 +3,7 @@
 # License: BSD3
 #
 """
-Standard string module based template engine in python dist.
+Base class for template engine implementations.
 """
 from __future__ import absolute_import
 
@@ -30,12 +30,63 @@ class CompileError(Exception):
     pass
 
 
+def fallback_renders(template_content, context=None, at_paths=None,
+                     at_encoding=anytemplate.compat.ENCODING,
+                     **kwargs):
+    """
+    Render from given template content and context.
+
+    This is a basic implementation actually does nothing and just returns
+    original template content `template_content`.
+
+    :param template_content: Template content
+    :param context: A dict or dict-like object to instantiate given
+        template file
+    :param at_paths: Template search paths
+    :param at_encoding: Template encoding
+    :param kwargs: Keyword arguments passed to the template engine to
+        render templates with specific features enabled.
+
+    :return: Rendered result string
+    """
+    return template_content
+
+
+def fallback_render(template, context=None, at_paths=None,
+                    at_encoding=anytemplate.compat.ENCODING,
+                    **kwargs):
+    """
+    Render from given template and context.
+
+    This is a basic implementation actually does nothing and just returns
+    the content of given template file `template`.
+
+    :param template: Template file path
+    :param context: A dict or dict-like object to instantiate given
+        template file
+    :param at_paths: Template search paths
+    :param at_encoding: Template encoding
+    :param kwargs: Keyword arguments passed to the template engine to
+        render templates with specific features enabled.
+
+    :return: Rendered result string
+    """
+    tmpl = anytemplate.utils.find_template_from_path(template, at_paths)
+    if tmpl is None:
+        raise TemplateNotFound("template: %s" % template)
+
+    try:
+        return anytemplate.compat.copen(tmpl).read()
+    except UnicodeDecodeError:
+        return open(tmpl).read()
+
+
 class BaseEngine(object):
 
     _name = "base"
     _file_extensions = []
     _supported = False
-    _priority = 99
+    _priority = 99  # Lowest priority
 
     @classmethod
     def name(cls):
@@ -93,9 +144,12 @@ class BaseEngine(object):
         :param kwargs: Keyword arguments passed to the template engine to
             render templates with specific features enabled.
 
-        :return: To be rendered string in inherited classes
+        :return: Rendered string
         """
-        raise NotImplementedError("Inherited class must implement this!")
+        # LOGGER.warn("Inherited class must implement this!")
+        return fallback_renders(template_content, context=context,
+                                at_paths=at_paths, at_encoding=at_encoding,
+                                **kwargs)
 
     def render_impl(self, template, context=None, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
@@ -108,9 +162,11 @@ class BaseEngine(object):
         :param kwargs: Keyword arguments passed to the template engine to
             render templates with specific features enabled.
 
-        :return: To be rendered string in inherited classes
+        :return: Rendered string
         """
-        raise NotImplementedError("Inherited class must implement this!")
+        # LOGGER.warn("Inherited class must implement this!")
+        return fallback_render(template, context=context, at_paths=at_paths,
+                               at_encoding=at_encoding, **kwargs)
 
     def renders(self, template_content, context=None, at_paths=None,
                 at_encoding=anytemplate.compat.ENCODING, **kwargs):
