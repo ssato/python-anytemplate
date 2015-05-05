@@ -236,7 +236,7 @@ def mk_template_paths(filepath=None, template_paths=None):
     if filepath is None or not filepath:
         return [os.curdir]
 
-    tmpldir = os.path.abspath(os.path.dirname(filepath))
+    tmpldir = os.path.dirname(os.path.abspath(filepath))
     if template_paths is None or not template_paths:
         return [os.curdir, tmpldir]  # default:
     else:
