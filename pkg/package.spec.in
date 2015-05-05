@@ -13,7 +13,8 @@ Summary:        A python template abstraction layer module
 Group:          Development/Tools
 License:        BSD
 URL:            https://github.com/ssato/%{name}
-Source0:        https://github.com/ssato/%{name}/tarball/master/%{name}-%{version}.tar.gz
+#Source0:        https://github.com/ssato/%{name}/tarball/master/%{name}-%{version}.tar.gz
+Source0:        %{pkgname}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-setuptools
@@ -43,7 +44,7 @@ This is a version for python-3.x.
 %endif
 
 %prep
-%setup -q
+%setup -q -n %{pkgname}-%{version}
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -65,7 +66,7 @@ rm -rf $RPM_BUILD_ROOT
 %if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-mv $RPM_BUILD_ROOT%{_bindir}/anytemplate-cli $RPM_BUILD_ROOT%{_bindir}/py3anytemplate-cli
+mv $RPM_BUILD_ROOT%{_bindir}/anytemplate_cli $RPM_BUILD_ROOT%{_bindir}/py3anytemplate_cli
 popd
 %endif
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
@@ -76,14 +77,14 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc README.rst
-%{_bindir}/anytemplate-cli
+%{_bindir}/anytemplate_cli
 %{python_sitelib}/*
 
 %if 0%{?with_python3}
 %files -n python3-%{pkgname}
 %defattr(644,root,root,755)
 %doc README.rst
-%attr(755,root,root) %{_bindir}/py3anytemplate-cli
+%attr(755,root,root) %{_bindir}/py3anytemplate_cli
 %{python3_sitelib}/*
 %endif
 
