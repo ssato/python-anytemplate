@@ -68,13 +68,18 @@ class Test_10_with_workdir(unittest.TestCase):
         else:
             self.assertTrue(run_and_check_exit_code(args, code))
 
-    def test_10_main_dumpvars(self):
-        if anytemplate.engines.jinja2.SUPPORTED:
-            tmpl = os.path.join(self.workdir, "test.j2")
-            output = os.path.join(self.workdir, "output.txt")
-            open(tmpl, 'w').write("{{ hello }}\n")
+    def test_10_main__stringTemplate(self):
+        tmpl = os.path.join(self.workdir, "test.tmpl")
+        ctx = os.path.join(self.workdir, "ctx.yml")
+        output = os.path.join(self.workdir, "output.txt")
+        open(tmpl, 'w').write("$a\n")
+        open(ctx, 'w').write("a: aaa\n")
 
-    def test_20_main_render(self):
+        self.run_and_check_exit_code(["-E", "string.Template", "-C", ctx,
+                                      "-o", output, tmpl])
+        self.assertEquals(open(output).read(), "aaa\n")
+
+    def test_20_main__jinja2(self):
         if anytemplate.engines.jinja2.SUPPORTED:
             tmpl = os.path.join(self.workdir, "test.j2")
             output = os.path.join(self.workdir, "output.txt")
