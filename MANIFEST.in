@@ -3,6 +3,5 @@ include MANIFEST.in
 include README.*
 include *.spec.in
 include setup.py
-include tools/*
 include pkg/*
 recursive-include anytemplate *.py
