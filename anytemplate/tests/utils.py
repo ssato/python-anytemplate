@@ -68,6 +68,18 @@ class Test_10_with_workdir(unittest.TestCase):
     def tearDown(self):
         anytemplate.tests.common.cleanup_workdir(self.workdir)
 
+    def test_40_parse_and_load_contexts(self):
+        jsns = [os.path.join(self.workdir, "a.json"),
+                os.path.join(self.workdir, "b.json"),
+                os.path.join(self.workdir, "c.json")]
+        open(jsns[0], 'w').write('{"a": "aaa"}\n')
+        open(jsns[1], 'w').write('{"b": "bbb"}\n')
+        open(jsns[2], 'w').write('{"c": "ccc"}\n')
+        jsns[2] = "json:%s" % jsns[2]
+
+        self.assertEquals(TT.parse_and_load_contexts(jsns),
+                          dict(a="aaa", b="bbb", c="ccc"))
+
     def test_50_write_to_output__create_dir(self):
         output = os.path.join(self.workdir, "a", "out.txt")
         TT.write_to_output("hello", output)
