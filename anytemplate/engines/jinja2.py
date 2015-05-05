@@ -29,41 +29,9 @@ try:
 except ImportError:
     SUPPORTED = False
 
+    from anytemplate.engines.base import fallback_renders, fallback_render
+
 LOGGER = logging.getLogger(__name__)
-
-
-# Fallbacks:
-def fallback_renders(template_content, ctx=None, paths=None):
-    """
-    Just returns tmpl_s as jinja2 is not available.
-
-    :param tmpl_s: Template string
-    :param ctx: Context dict needed to instantiate templates
-    :param paths: Template search paths
-
-    >>> fallback_renders("{{ a }}")
-    '{{ a }}'
-    """
-    LOGGER.warn("Jinja2 is missing and not supported in your system")
-    return template_content
-
-
-def fallback_render(filepath, ctx, paths=None):
-    """
-    Just returns the content of filepath as jinja2 is not available.
-
-    :param filepath: (Base) filepath of template file
-    :param ctx: Context dict needed to instantiate templates
-    :param paths: Template search paths
-
-    # TODO:
-    # >>>> assert fallback_render(__file__) == open(__file__).read()
-    """
-    tmpl = anytemplate.utils.find_template_from_path(filepath, paths)
-    if tmpl is None:
-        raise anytemplate.engines.base.TemplateNotFound(filepath)
-
-    return anytemplate.compat.copen(filepath).read()
 
 
 if SUPPORTED:
