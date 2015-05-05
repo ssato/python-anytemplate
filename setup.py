@@ -9,10 +9,11 @@ import sys
 curdir = os.getcwd()
 sys.path.append(curdir)
 
-from .anytemplate import globals
+import anytemplate.globals
 
-PACKAGE = globals.PACKAGE
-VERSION = globals.VERSION
+
+PACKAGE = anytemplate.globals.PACKAGE
+VERSION = anytemplate.globals.VERSION
 
 # For daily snapshot versioning mode:
 if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
@@ -69,6 +70,7 @@ setup(name=PACKAGE,
       packages=find_packages(),
       scripts=glob.glob("tools/*"),
       data_files=data_files,
+      entry_points=open(os.path.join(curdir, "pkg/entry_points.txt")).read(),
       cmdclass={
           "srpm": SrpmCommand,
           "rpm":  RpmCommand,
