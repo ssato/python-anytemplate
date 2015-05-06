@@ -3,7 +3,7 @@
 # License: BSD3
 #
 """
-Standard string module based template engine in python dist.
+Template engine based on string.Template which in standard library.
 """
 from __future__ import absolute_import
 
