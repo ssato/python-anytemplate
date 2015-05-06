@@ -81,7 +81,7 @@ def fallback_render(template, context=None, at_paths=None,
         return open(tmpl).read()
 
 
-class BaseEngine(object):
+class Engine(object):
 
     _name = "base"
     _file_extensions = []
