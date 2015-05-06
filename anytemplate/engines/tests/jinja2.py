@@ -13,13 +13,19 @@ except ImportError:
 
 class Test_00_pure_functions(unittest.TestCase):
 
-    def test_20_render_s(self):
+    def test_20_renders(self):
         tmpl_s = 'a = {{ a }}, b = "{{ b }}"'
 
         if TT is not None:
             egn = TT.Engine()
             self.assertEquals(egn.renders(tmpl_s, {'a': 1, 'b': 'bbb'}),
                               'a = 1, b = "bbb"')
+
+    def test_22_renders__no_context(self):
+        if TT is not None:
+            egn = TT.Engine()
+            self.assertEquals(egn.renders("{{ a|default('aaa') }}"),
+                              "aaa")
 
 
 class Test_10_effectful_functions(unittest.TestCase):
