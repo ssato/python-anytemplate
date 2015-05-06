@@ -68,28 +68,29 @@ Help
 
 .. code-block:: console
 
-  ssato@localhost% PYTHONPATH=. python tools/anytemplate-cli -h
-  Usage: tools/anytemplate-cli [OPTION ...] TEMPLATE_FILE
+  ssato@localhost% PYTHONPATH=. python anytemplate/cli.py -h
+  Usage: anytemplate/cli.py [OPTION ...] TEMPLATE_FILE
 
   Options:
     -h, --help            show this help message and exit
-    -T TEMPLATE_PATHS, --template-paths=TEMPLATE_PATHS
-                          Colon ':' separated template search paths. Please note
-                          that dir in which given template exists is always
+    -T TEMPLATE_PATHS, --template-path=TEMPLATE_PATHS
+                          Template search path can be specified multiple times.
+                          Note: Dir in which given template exists is always
                           included in the search paths (at the end of the path
-                          list) regardless of this option. [., dir in which
-                          given template file exists]
-    -C CONTEXTS, --contexts=CONTEXTS
+                          list) regardless of this option.
+    -C CONTEXTS, --context=CONTEXTS
                           Specify file path and optionally its filetype, to
                           provides context data to instantiate templates.  The
                           option argument's format is
                           [type:]<file_name_or_path_or_glob_pattern> ex. -C
                           json:common.json -C ./specific.yaml -C yaml:test.dat,
                           -C yaml:/etc/foo.d/*.conf
+    -E ENGINE, --engine=ENGINE
+                          Specify template engine name such as 'jinja2'
     -o OUTPUT, --output=OUTPUT
                           Output filename [stdout]
-    -D, --debug           Debug mode
-    -W, --werror          Exit on warnings if True such as -Werror optoin in gcc
+    -v, --verbose         Verbose
+    -q, --quiet           Quiet mode
   ssato@localhost%
 
 Examples
