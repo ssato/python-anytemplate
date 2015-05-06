@@ -33,10 +33,10 @@ class Engine(anytemplate.engines.base.Engine):
     _file_extensions = ["pythml"]
 
     # see `help(tenjin.Engine.__init__)` and `help(tenjin.Engine.render)`.
-    _engine_opts = ("prefix", "postfix", "layout", "path", "cache",
-                    "preprocess", "templateclass", "preprocessorclass",
-                    "lang", "loader", "pp")
-    _render_opts = ("globals", "layout")
+    _engine_valid_opts = ("prefix", "postfix", "layout", "path", "cache",
+                          "preprocess", "templateclass", "preprocessorclass",
+                          "lang", "loader", "pp")
+    _render_valid_opts = ("globals", "layout")
 
     def __init__(self, **kwargs):
         """
