@@ -16,7 +16,7 @@ import anytemplate.compat
 LOGGER = logging.getLogger(__name__)
 
 
-class StringTemplateEngine(anytemplate.engines.base.BaseEngine):
+class StringTemplateEngine(anytemplate.engines.base.Engine):
 
     _name = "string.Template"
     _supported = True
