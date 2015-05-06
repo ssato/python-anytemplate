@@ -13,80 +13,39 @@ References: http://jinja.pocoo.org,
 """
 from __future__ import absolute_import
 
+import jinja2.exceptions   # :throw: ImportError if missing
+import jinja2
 import logging
 import os.path
 import os
 
 import anytemplate.compat
 import anytemplate.engines.base
-import anytemplate.utils
 
-try:
-    import jinja2.exceptions
-    import jinja2
-
-    SUPPORTED = True
-except ImportError:
-    SUPPORTED = False
-
-    from anytemplate.engines.base import fallback_renders, fallback_render
 
 LOGGER = logging.getLogger(__name__)
+ENCODING = anytemplate.compat.ENCODING
 
 
-if SUPPORTED:
-    def get_env(paths):
-        """
-        :param paths: Template search paths
-        """
-        return jinja2.Environment(loader=jinja2.FileSystemLoader(paths))
-
-    # pylint: disable=no-value-for-parameter
-    def renders(tmpl_s, ctx, paths=[os.curdir]):
-        """
-        Compile and render given template string `tmpl_s` with context
-        `context`.
-
-        :param tmpl_s: Template string
-        :param ctx: Context dict needed to instantiate templates
-        :param paths: Template search paths
-
-        >>> s = renders('a = {{ a }}, b = "{{ b }}"', {'a': 1, 'b': 'bbb'})
-        >>> assert s == 'a = 1, b = "bbb"'
-        """
-        try:
-            return get_env(paths).from_string(tmpl_s).render(**ctx)
-        except jinja2.exceptions.TemplateNotFound as e:
-            raise anytemplate.engines.base.TemplateNotFound(str(e))
-
-    def render(filepath, ctx, paths=None):
-        """
-        Compile and render template, and return the result.
-
-        :param filepath: (Base) filepath of template file
-        :param ctx: Context dict needed to instantiate templates
-        :param paths: Template search paths
-        """
-        try:
-            paths = anytemplate.utils.mk_template_paths(filepath, paths)
-            tmpl = get_env(paths).get_template(os.path.basename(filepath))
-
-            return tmpl.render(**ctx)
-        except jinja2.exceptions.TemplateNotFound as e:
-            raise anytemplate.engines.base.TemplateNotFound(str(e))
-
-    # pylint: enable=no-value-for-parameter
-else:
-    renders = fallback_renders
-    render = fallback_render
-
-
-class Jjnja2Engine(anytemplate.engines.base.BaseEngine):
+class Engine(anytemplate.engines.base.Engine):
 
     _name = "jinja2"
     _file_extensions = ["j2", "jinja2"]
-    _supported = SUPPORTED
     _priority = 10
+
+    def get_env(self, paths=None, encoding=None):
+        """
+        :param paths: Template search paths
+        :param encoding: Template charset encoding, e.g. utf-8
+        """
+        if paths is None:
+            paths = ['.']
+
+        if encoding is None:
+            encoding = ENCODING.lower()
+
+        return jinja2.Environment(loader=jinja2.FileSystemLoader(paths,
+                                                                 encoding))
 
     def renders_impl(self, template_content, context=None, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,
@@ -103,8 +62,20 @@ class Jjnja2Engine(anytemplate.engines.base.BaseEngine):
             render templates with specific features enabled.
 
         :return: Rendered string
+
+        >>> engine = Engine()
+        >>> s = engine.renders_impl('a = {{ a }}, b = "{{ b }}"',
+        ...                         {'a': 1, 'b': 'bbb'})
+        >>> assert s == 'a = 1, b = "bbb"'
         """
-        return renders(template_content, context, paths=at_paths)
+        try:
+            env = self.get_env(at_paths, at_encoding.lower())
+            tmpl = env.from_string(template_content)
+
+            return tmpl.render(**context)
+
+        except jinja2.exceptions.TemplateNotFound as e:
+            raise anytemplate.engines.base.TemplateNotFound(str(e))
 
     def render_impl(self, template, context=None, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
@@ -121,6 +92,13 @@ class Jjnja2Engine(anytemplate.engines.base.BaseEngine):
 
         :return: Rendered string
         """
-        return render(template, context, paths=at_paths)
+        try:
+            env = self.get_env(at_paths, at_encoding.lower())
+            tmpl = env.get_template(os.path.basename(template))
+
+            return tmpl.render(**context)
+
+        except jinja2.exceptions.TemplateNotFound as e:
+            raise anytemplate.engines.base.TemplateNotFound(str(e))
 
 # vim:sw=4:ts=4:et:
