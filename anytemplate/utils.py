@@ -248,7 +248,7 @@ def find_template_from_path(filepath, paths=None):
     Return resolved path of given template file
 
     :param filepath: (Base) filepath of template file
-    :param paths: Template search paths
+    :param paths: A list of template search paths
     """
     if paths is None or not paths:
         paths = [os.path.dirname(filepath), os.curdir]
