@@ -5,6 +5,7 @@ import os
 import unittest
 
 import anytemplate.tests.common
+
 try:
     import anytemplate.engines.mako as TT
 except ImportError:
@@ -15,11 +16,11 @@ class Test_00_pure_functions(unittest.TestCase):
 
     def test_20_renders(self):
         tmpl_s = "hello, ${name}!"
+        exp = "hello, John!"
 
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s, {"name": "John", }),
-                              "hello, John!")
+            self.assertEquals(egn.renders(tmpl_s, {"name": "John", }), exp)
 
     def test_22_renders__no_context(self):
         tmpl_s = "hello world!"

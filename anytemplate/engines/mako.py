@@ -48,6 +48,19 @@ class Engine(anytemplate.engines.base.Engine):
         self.lookup_options = self.filter_options(kwargs,
                                                   self.engine_valid_options())
 
+    def __render(self, tmpl, context=None):
+        """
+        :param tmpl: mako.template.Template object
+        :param context: A dict or dict-like object to instantiate given
+        """
+        if context is None:
+            context = {}
+
+        if anytemplate.compat.IS_PYTHON_3:
+            return tmpl.render_unicode(**context)
+        else:
+            return tmpl.render(**context)
+
     def renders_impl(self, template_content, context=None, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,
                      **kwargs):
@@ -64,9 +77,6 @@ class Engine(anytemplate.engines.base.Engine):
 
         :return: Rendered string
         """
-        if context is None:
-            context = {}
-
         if "filename" in kwargs:
             kwargs["filename"] = None
 
@@ -86,7 +96,7 @@ class Engine(anytemplate.engines.base.Engine):
             kwargs["lookup"] = lookup
 
         tmpl = mako.template.Template(**kwargs)
-        return tmpl.render(**context)
+        return self.__render(tmpl, context)
 
     def render_impl(self, template, context=None, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
@@ -130,6 +140,6 @@ class Engine(anytemplate.engines.base.Engine):
         kwargs["filename"] = template
 
         tmpl = mako.template.Template(**kwargs)
-        return tmpl.render(**context)
+        return self.__render(tmpl, context)
 
 # vim:sw=4:ts=4:et:
