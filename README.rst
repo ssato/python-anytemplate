@@ -91,7 +91,8 @@ Help
                           Output filename [stdout]
     -v, --verbose         Verbose
     -q, --quiet           Quiet mode
-  ssato@localhost% cat examples/ctx.yml                                               xs:
+  ssato@localhost% cat examples/ctx.yml
+  xs:
     - name: Alice
     - name: Bob
     - name: John
