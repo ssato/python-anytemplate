@@ -76,14 +76,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc README.rst
+%doc README.rst examples
 %{_bindir}/anytemplate_cli
 %{python_sitelib}/*
 
 %if 0%{?with_python3}
 %files -n python3-%{pkgname}
 %defattr(644,root,root,755)
-%doc README.rst
+%doc README.rst examples
 %attr(755,root,root) %{_bindir}/py3anytemplate_cli
 %{python3_sitelib}/*
 %endif
