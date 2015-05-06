@@ -16,10 +16,9 @@ import anytemplate.compat
 LOGGER = logging.getLogger(__name__)
 
 
-class StringTemplateEngine(anytemplate.engines.base.Engine):
+class Engine(anytemplate.engines.base.Engine):
 
     _name = "string.Template"
-    _supported = True
     _priority = 50
 
     def renders_impl(self, template_content, context=None, at_paths=False,
