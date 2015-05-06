@@ -6,4 +6,5 @@ pylint
 anyconfig
 PyYAML
 jinja2
+mako
 tenjin

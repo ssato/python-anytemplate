@@ -9,4 +9,5 @@ anyconfig
 PyYAML
 simplejson
 jinja2
+mako
 tenjin
