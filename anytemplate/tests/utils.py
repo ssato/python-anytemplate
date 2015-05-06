@@ -52,6 +52,19 @@ class Test_00_functions(unittest.TestCase):
     def test_41_parse_filespec__wo_type(self):
         self.assertEquals(TT.parse_filespec("a.json"), [("a.json", None)])
 
+    def test_60_find_template_from_path__wo_paths(self):
+        self.assertEquals(TT.find_template_from_path(__file__), __file__)
+
+    def test_62_find_template_from_path__w_paths(self):
+        fn = os.path.basename(__file__)
+        fdir = os.path.dirname(__file__)
+
+        self.assertEquals(TT.find_template_from_path(fn, [fdir]),
+                          __file__)
+
+    def test_64_find_template_from_path__none(self):
+        self.assertTrue(TT.find_template_from_path("not_existing") is None)
+
 
 class Test_10_with_workdir(unittest.TestCase):
 
