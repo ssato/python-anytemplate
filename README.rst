@@ -91,6 +91,25 @@ Help
                           Output filename [stdout]
     -v, --verbose         Verbose
     -q, --quiet           Quiet mode
+  ssato@localhost% cat examples/ctx.yml                                               xs:
+    - name: Alice
+    - name: Bob
+    - name: John
+
+  ssato@localhost% cat examples/jinja2.j2
+  {% include "jinja2-incl.j2" %}
+  ssato@localhost% cat examples/jinja2-incl.j2
+  {# jinja2 example: #}
+  {% for x in xs if x.name -%}
+  {{ x.name }}
+  {% endfor %}
+  ssato@localhost% PYTHONPATH=. python anytemplate/cli.py -E jinja2 \
+  > -C examples/ctx.yml examples/jinja2.j2
+
+  Alice
+  Bob
+  John
+
   ssato@localhost%
 
 Examples
