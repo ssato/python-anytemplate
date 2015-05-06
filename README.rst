@@ -29,6 +29,7 @@ Anytemplate supports the following template engines currently:
 
 - standard string template (string.Template)
 - jinja2: http://jinja.pocoo.org
+- mako: http://www.makotemplates.org
 - tenjin: http://www.kuwata-lab.com/tenjin/
 
 .. [#] https://github.com/ssato/python-jinja2-cli
