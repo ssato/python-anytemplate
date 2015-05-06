@@ -4,8 +4,11 @@
 import os
 import unittest
 
-import anytemplate.engines.jinja2 as TT
 import anytemplate.tests.common
+try:
+    import anytemplate.engines.jinja2 as TT
+except ImportError:
+    TT = None
 
 
 class Test_00_pure_functions(unittest.TestCase):
@@ -13,12 +16,10 @@ class Test_00_pure_functions(unittest.TestCase):
     def test_20_render_s(self):
         tmpl_s = 'a = {{ a }}, b = "{{ b }}"'
 
-        if TT.SUPPORTED:
-            self.assertEquals(TT.renders(tmpl_s, {'a': 1, 'b': 'bbb'}),
+        if TT is not None:
+            egn = TT.Engine()
+            self.assertEquals(egn.renders(tmpl_s, {'a': 1, 'b': 'bbb'}),
                               'a = 1, b = "bbb"')
-        else:
-            self.assertEquals(TT.renders(tmpl_s, {'a': 1, 'b': 'bbb'}),
-                              tmpl_s)
 
 
 class Test_10_effectful_functions(unittest.TestCase):
@@ -33,16 +34,18 @@ class Test_10_effectful_functions(unittest.TestCase):
         tmpl = "a.j2"
         open(os.path.join(self.workdir, tmpl), 'w').write("a = {{ a }}")
 
-        if TT.SUPPORTED:
-            r = TT.render(tmpl, {'a': "aaa", }, [self.workdir])
+        if TT is not None:
+            egn = TT.Engine()
+            r = egn.render(tmpl, {'a': "aaa", }, [self.workdir])
             self.assertEquals(r, "a = aaa")
 
     def test_20_render(self):
         tmpl = "a.j2"
         open(os.path.join(self.workdir, tmpl), 'w').write("a = {{ a }}")
 
-        if TT.SUPPORTED:
-            r = TT.render(tmpl, {'a': "aaa", }, [self.workdir])
+        if TT is not None:
+            egn = TT.Engine()
+            r = egn.render(tmpl, {'a': "aaa", }, [self.workdir])
             self.assertEquals(r, "a = aaa")
 
 # vim:sw=4:ts=4:et:
