@@ -6,15 +6,27 @@ from __future__ import absolute_import
 
 import operator
 
+from anytemplate.globals import LOGGER
+
 import anytemplate.engines.base
-import anytemplate.engines.jinja2
-import anytemplate.engines.string
+import anytemplate.engines.stringTemplate
+
+ENGINES = [anytemplate.engines.stringTemplate.Engine, ]
+
+try:
+    import anytemplate.engines.jinja2
+    ENGINES.append(anytemplate.engines.jinja2.Engine)
+except ImportError:
+    LOGGER.info("jinja2 support was disable as necessary module looks missing")
+
+try:
+    import anytemplate.engines.tenjin
+    ENGINES.append(anytemplate.engines.tenjin.Engine)
+except ImportError:
+    LOGGER.info("tenjin support was disable as necessary module looks missing")
 
 
 TemplateNotFound = anytemplate.engines.base.TemplateNotFound
-ENGINES = [e for e in
-           [anytemplate.engines.string.StringTemplateEngine,
-            anytemplate.engines.jinja2.Jjnja2Engine] if e.supports()]
 
 
 def list_engines_by_priority(engines=ENGINES):

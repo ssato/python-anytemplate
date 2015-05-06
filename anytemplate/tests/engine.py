@@ -4,24 +4,19 @@
 import unittest
 
 import anytemplate.engine as TT
-import anytemplate.engines.jinja2
-import anytemplate.engines.string
+import anytemplate.engines.stringTemplate as stringTemplate
 
 
 class Test_00(unittest.TestCase):
 
     def test_10_find_by_filename(self):
-        if anytemplate.engines.jinja2.SUPPORTED:
-            clss = TT.find_by_filename("foo.j2")
-            self.assertTrue(anytemplate.engines.jinja2.Jjnja2Engine in clss)
+        stringTemplate.Engine._file_extensions.append("t")
+        clss = TT.find_by_filename("foo.t")
+        self.assertTrue(stringTemplate.Engine in clss)
 
     def test_20_find_by_name__found(self):
         self.assertEquals(TT.find_by_name("string.Template"),
-                          anytemplate.engines.string.StringTemplateEngine)
-
-        if anytemplate.engines.jinja2.SUPPORTED:
-            self.assertEquals(TT.find_by_name("jinja2"),
-                              anytemplate.engines.jinja2.Jjnja2Engine)
+                          stringTemplate.Engine)
 
     def test_20_find_by_name__not_found(self):
         self.assertTrue(TT.find_by_name("not_existing_engine") is None)

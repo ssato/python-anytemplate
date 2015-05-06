@@ -8,7 +8,8 @@ import unittest
 
 import anytemplate.cli as TT
 import anytemplate.tests.common
-import anytemplate.engines.jinja2
+
+from anytemplate.engine import find_by_name
 
 
 CLI_SCRIPT = os.path.join(anytemplate.tests.common.selfdir(), "..", "cli.py")
@@ -80,7 +81,7 @@ class Test_10_with_workdir(unittest.TestCase):
         self.assertEquals(open(output).read(), "aaa\n")
 
     def test_20_main__jinja2(self):
-        if anytemplate.engines.jinja2.SUPPORTED:
+        if find_by_name("jinja2"):
             tmpl = os.path.join(self.workdir, "test.j2")
             output = os.path.join(self.workdir, "output.txt")
             open(tmpl, 'w').write("{{ hello|default('hello') }}")
