@@ -4,7 +4,7 @@
 #
 import os.path
 import unittest
-import anytemplate.engines.string as TT
+import anytemplate.engines.stringTemplate as TT
 import anytemplate.engines.base
 import anytemplate.tests.common
 
