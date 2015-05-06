@@ -72,6 +72,9 @@ class Engine(anytemplate.engines.base.Engine):
             env = self.get_env(at_paths, at_encoding.lower())
             tmpl = env.from_string(template_content)
 
+            if context is None:
+                context = {}
+
             return tmpl.render(**context)
 
         except jinja2.exceptions.TemplateNotFound as e:
