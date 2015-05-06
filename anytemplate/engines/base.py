@@ -85,7 +85,6 @@ class BaseEngine(object):
 
     _name = "base"
     _file_extensions = []
-    _supported = False
     _priority = 99  # Lowest priority
     _engine_valid_opts = []
     _render_valid_opts = []
@@ -107,14 +106,10 @@ class BaseEngine(object):
     @classmethod
     def supports(cls, template_file=None):
         """
-        :return: Whether the engine is supported (able to work)?
+        :return: Whether the engine can process given template file or not.
         """
-        if template_file is None:
-            return cls._supported
-        else:
-            return cls._supported and \
-                (anytemplate.utils.get_file_extension(template_file) in
-                 cls.file_extensions())
+        return (anytemplate.utils.get_file_extension(template_file) in
+                cls.file_extensions())
 
     @classmethod
     def priority(cls):
