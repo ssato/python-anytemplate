@@ -25,11 +25,11 @@ tool.
 - Author: Satoru SATOH <ssato@redhat.com>
 - License: Same as python-jinja2, that is, BSD3.
 
-Anytemplate supports the following template libraries currently:
+Anytemplate supports the following template engines currently:
 
 - standard string template (string.Template)
-- jinja2
-.. - tenjin
+- jinja2: http://jinja.pocoo.org
+- tenjin: http://www.kuwata-lab.com/tenjin/
 
 .. [#] https://github.com/ssato/python-jinja2-cli
 
