@@ -217,7 +217,7 @@ def write_to_output(content, output=None,
 
         anytemplate.compat.copen(output, 'w').write(content)
     else:
-        print(content, get_output_stream())
+        print(content, file=get_output_stream())
 
 
 def mk_template_paths(filepath=None, template_paths=None):
