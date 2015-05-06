@@ -8,3 +8,5 @@ pylint<1.4
 anyconfig
 PyYAML
 simplejson
+jinja2
+tenjin

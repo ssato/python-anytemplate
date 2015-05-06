@@ -5,3 +5,5 @@ pep8
 pylint
 anyconfig
 PyYAML
+jinja2
+tenjin
