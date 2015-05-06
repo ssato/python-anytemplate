@@ -67,7 +67,9 @@ class Engine(anytemplate.engines.base.Engine):
 
         :return: To be rendered string in inherited classes
         """
-        with anytemplate.compat.copen(template, encoding=at_encoding) as tmpl:
-            return self.renders_impl(tmpl.read(), context, safe=safe)
+        read_content = anytemplate.engines.base.fallback_render
+        tmpl = read_content(template, at_paths=at_paths,
+                            at_encoding=at_encoding)
+        return self.renders_impl(tmpl, context, safe=safe)
 
 # vim:sw=4:ts=4:et:
