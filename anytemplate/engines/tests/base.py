@@ -9,12 +9,12 @@ import anytemplate.engines.base as TT  # stands for test target
 class Test_00(unittest.TestCase):
 
     def test_10__class_methods(self):
-        self.assertEquals(TT.BaseEngine.name(), "base")
-        self.assertEquals(TT.BaseEngine.file_extensions(), [])
-        self.assertFalse(TT.BaseEngine.supports())
+        self.assertEquals(TT.Engine.name(), "base")
+        self.assertEquals(TT.Engine.file_extensions(), [])
+        self.assertFalse(TT.Engine.supports("foo.tmpl"))
 
     def test_20__instance_methods(self):
-        engine = TT.BaseEngine()
+        engine = TT.Engine()
         try:
             engine.renders_impl("aaa")  # Template string must be given.
             engine.render_impl(__file__)
