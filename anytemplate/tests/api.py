@@ -1,27 +1,48 @@
 #
 # Copyright (C). 2015 Satoru SATOH <ssato at redhat.com>
 #
+import os.path
 import unittest
 
 import anytemplate.api as TT
 import anytemplate.compat
+import anytemplate.engine
 import anytemplate.engines.stringTemplate
+import anytemplate.tests.common
 
 from anytemplate.engine import find_by_name
 
 
 class Test_00(unittest.TestCase):
 
-    def test_10_find_engine_class__by_filepath(self):
+    def test_10_find_engine_class__wo_any_info(self):
+        cls = TT.find_engine_class()
+        self.assertFalse(cls is None)
+
+    def test_12_find_engine_class__by_filepath(self):
         if find_by_name("jinja2"):
             import anytemplate.engines.jinja2
 
             cls = TT.find_engine_class("foo.j2")
             self.assertEquals(cls, anytemplate.engines.jinja2.Engine)
 
-    def test_12_find_engine_class__by_name(self):
+    def test_14_find_engine_class__by_filepath__not_found(self):
+        try:
+            TT.find_engine_class("foo.not_existing_tmpl_ext")
+            assert False, "Not reached here"
+        except TT.TemplateEngineNotFound:
+            pass
+
+    def test_16_find_engine_class__by_name(self):
         cls = TT.find_engine_class("foo.t", "string.Template")
         self.assertEquals(cls, anytemplate.engines.stringTemplate.Engine)
+
+    def test_18_find_engine_class__by_name__not_found(self):
+        try:
+            TT.find_engine_class(None, "not_existing_tmpl_name")
+            assert False, "Not reached here"
+        except TT.TemplateEngineNotFound:
+            pass
 
     def test_20_renders__stringTemplate(self):
         self.assertEquals(TT.renders("$a", dict(a="aaa", ),
@@ -33,5 +54,38 @@ class Test_00(unittest.TestCase):
             self.assertEquals(TT.renders("{{ a }}", dict(a="aaa", ),
                                          at_engine="jinja2"),
                               "aaa")
+
+    def test_22_renders__jinja2__template_not_found(self):
+        if find_by_name("jinja2"):
+            try:
+                TT.renders("{% include 'not_existing.j2' %}",
+                           at_engine="jinja2", at_ask_missing=False)
+                assert False, "Not reached here"
+            except anytemplate.engine.TemplateNotFound:
+                pass
+
+
+class Test_10_with_workdir(unittest.TestCase):
+
+    def setUp(self):
+        self.workdir = anytemplate.tests.common.setup_workdir()
+
+    def tearDown(self):
+        anytemplate.tests.common.cleanup_workdir(self.workdir)
+
+    def test_20_render__no_at_paths(self):
+        tmpl = os.path.join(self.workdir, "a.t")
+        open(tmpl, 'w').write("$a")
+
+        self.assertEquals(TT.render(tmpl, dict(a="aaa", ),
+                                    at_engine="string.Template"),
+                          "aaa")
+
+    def test_20_render__template_not_found(self):
+        try:
+            TT.render("not_exisiting_tmpl", at_engine="string.Template")
+            assert False, "Not reached here"
+        except anytemplate.engine.TemplateNotFound:
+            pass
 
 # vim:sw=4:ts=4:et:
