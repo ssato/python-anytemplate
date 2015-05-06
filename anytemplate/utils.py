@@ -210,6 +210,15 @@ def parse_and_load_contexts(contexts, werr=False,
 
 def write_to_output(content, output=None,
                     encoding=anytemplate.compat.ENCODING):
+    """
+    :param content: Content string to write to
+    :param output: Output destination
+    :param encoding: Character set encoding of outputs
+    """
+    if anytemplate.compat.IS_PYTHON_3:
+        if isinstance(content, bytes):
+            content = str(content, encoding)
+
     if output and not output == '-':
         outdir = os.path.dirname(output)
         if outdir and not os.path.exists(outdir):
