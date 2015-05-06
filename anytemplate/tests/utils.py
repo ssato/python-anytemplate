@@ -13,16 +13,12 @@ class Test_00_functions(unittest.TestCase):
 
     def test_02_uniq(self):
         self.assertEquals(TT.uniq([]), [])
-        self.assertEquals(
-            TT.uniq([1, 4, 5, 1, 2, 3, 5, 10, 13, 2]),
-            [1, 4, 5, 2, 3, 10, 13]
-        )
+        self.assertEquals(TT.uniq([1, 4, 5, 1, 2, 3, 5, 10, 13, 2]),
+                          [1, 4, 5, 2, 3, 10, 13])
 
     def test_03_chaincalls(self):
-        self.assertEquals(
-            TT.chaincalls([lambda x: x + 1, lambda x: x - 1], 1),
-            1
-        )
+        self.assertEquals(TT.chaincalls([lambda x: x + 1, lambda x: x - 1], 1),
+                          1)
 
     def test_04_normpath(self):
         self.assertEquals(TT.normpath("/tmp/../etc/hosts"), "/etc/hosts")
@@ -42,15 +38,12 @@ class Test_00_functions(unittest.TestCase):
         self.assertEquals(TT.concat([]), [])
         self.assertEquals(TT.concat(()), [])
         self.assertEquals(TT.concat([[1, 2, 3], [4, 5]]), [1, 2, 3, 4, 5])
-        self.assertEquals(
-            TT.concat([[1, 2, 3], [4, 5, [6, 7]]]), [1, 2, 3, 4, 5, [6, 7]]
-        )
-        self.assertEquals(
-            TT.concat(((1, 2, 3), (4, 5, [6, 7]))), [1, 2, 3, 4, 5, [6, 7]]
-        )
-        self.assertEquals(
-            TT.concat((i, i * 2) for i in range(3)), [0, 0, 1, 2, 2, 4]
-        )
+        self.assertEquals(TT.concat([[1, 2, 3], [4, 5, [6, 7]]]),
+                          [1, 2, 3, 4, 5, [6, 7]])
+        self.assertEquals(TT.concat(((1, 2, 3), (4, 5, [6, 7]))),
+                          [1, 2, 3, 4, 5, [6, 7]])
+        self.assertEquals(TT.concat((i, i * 2) for i in range(3)),
+                          [0, 0, 1, 2, 2, 4])
 
     def test_40_parse_filespec__w_type(self):
         self.assertEquals(TT.parse_filespec("json:a.json"),
@@ -88,8 +81,5 @@ class Test_10_with_workdir(unittest.TestCase):
 
     def test_52_write_to_output__stdout(self):
         TT.write_to_output("hello")
-
-if __name__ == '__main__':
-    unittest.main()
 
 # vim:sw=4:ts=4:et:
