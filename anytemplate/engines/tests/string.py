@@ -12,18 +12,18 @@ import anytemplate.tests.common
 class Test_00(unittest.TestCase):
 
     def test_20_renders_impl(self):
-        engine = TT.StringTemplateEngine()
+        engine = TT.Engine()
 
         trs = (("aaa", None, "aaa"), ("$a", {'a': "aaa"}, "aaa"))
         for (tmpl_s, ctx, exp) in trs:
             self.assertEquals(engine.renders_impl(tmpl_s, ctx), exp)
 
     def test_22_renders_impl__safe(self):
-        engine = TT.StringTemplateEngine()
+        engine = TT.Engine()
         self.assertEquals(engine.renders_impl("$a", {}, safe=True), "$a")
 
     def test_24_renders_impl__error(self):
-        engine = TT.StringTemplateEngine()
+        engine = TT.Engine()
         try:
             engine.renders_impl("$a", {})
             assert False, "Expected exception was not raised!"
@@ -41,7 +41,7 @@ class Test_10(unittest.TestCase):
             anytemplate.tests.common.cleanup_workdir(self.workdir)
 
     def test_20_render_impl(self):
-        engine = TT.StringTemplateEngine()
+        engine = TT.Engine()
 
         trs = (("aaa", None, "aaa"), ("$a", {'a': "aaa"}, "aaa"))
         for (tmpl_s, ctx, exp) in trs:
