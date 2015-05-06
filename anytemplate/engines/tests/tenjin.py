@@ -11,6 +11,15 @@ except ImportError:
     TT = None
 
 
+class Test_00(unittest.TestCase):
+
+    def test_10_render(self):
+        if TT is not None:
+            tmpl_c = "${a} {=b=}"
+            egn = TT.Engine()
+            self.assertEquals(egn.renders(tmpl_c), tmpl_c)
+
+
 class Test_10(unittest.TestCase):
 
     def setUp(self):
