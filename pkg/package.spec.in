@@ -22,9 +22,11 @@ BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 Requires:       python-anyconfig
+Requires:       PyYAML
 %if 0%{?with_python3}
 Requires:       python3-jinja2
 Requires:       python3-anyconfig
+Requires:       python3-PyYAML
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 %endif
