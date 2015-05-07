@@ -3,9 +3,7 @@
 # License: BSD3
 #
 """anytemplate.api - API of anytemplate module
-
 """
-import logging
 import os.path
 
 import anytemplate.compat
@@ -14,7 +12,9 @@ import anytemplate.globals
 import anytemplate.utils
 
 
-LOGGER = logging.getLogger(__name__)
+# Aliases:
+LOGGER = anytemplate.globals.LOGGER
+TemplateNotFound = anytemplate.engine.TemplateNotFound
 
 
 class TemplateEngineNotFound(Exception):
