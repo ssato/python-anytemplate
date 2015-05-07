@@ -19,8 +19,8 @@ About
 
 Anytemplate, a successor of jinja2-cli [#]_ , is a python library to provide an
 abstraction layer for various python template engines and rendering libraries.
-It works as a thin layer for these templates and also provide a simple CLI
-tool.
+It works as a thin layer for these template engines and also provide a simple
+CLI tool to render templates in various template languages.
 
 - Author: Satoru SATOH <ssato@redhat.com>
 - License: Same as python-jinja2, that is, BSD3.
@@ -40,20 +40,26 @@ Features
 Multiple configuration files support
 -------------------------------------
 
-Anytemplate supports multiple configuration files in YAML or JSON or others to
-set parameters w/ -C|--contexts option, ex. -C a.yaml -C b.yaml -C c.json.
+The CLI Frontend of anytemplate (anytemplate_cli) supports multiple context
+files in YAML or JSON or others to set parameters with -C|--context option, ex.
+-C a.yaml -C b.yaml -C c.json.
 
-Loading and composition of config files are handled by another python library
+Loading and composition of context files are handled by another python library
 called anyconfig (python-anyconfig) if installed and available on your system.
 
 - anyconfig on PyPI: http://pypi.python.org/pypi/anyconfig/
 - python-anyconfig on github: https://github.com/ssato/python-anyconfig
 
+If anyconfig is not installed and available on your system, only JSON context
+files are supported format of context files, by help of python standard json
+or simplejson library.
+
 Template search paths
 -----------------------
 
-It supports setting template search paths w/ -T|--template-paths. This is
-useful when using 'include' directive in templates; ex. -T .:templates/.
+The CLI frontend of anytemplate supports to set template search paths with
+-T|--template-path option. This is useful when using 'include' directive in
+templates; ex. -T .:templates/.
 
 NOTE: The default search path will be [., templatedir] where templatedir is the
 directory in which the given template file exists if -T option is not given.
