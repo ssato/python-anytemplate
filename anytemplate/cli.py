@@ -20,17 +20,14 @@ import anytemplate.utils
 LOGGER = anytemplate.globals.LOGGER
 
 
-def option_parser(argv=None):
+def option_parser():
     """
-    :param argv: Arguments list to parse options and args
+    :return: Option parsing object :: optparse.OptionParser
     """
-    if argv is None:
-        argv = sys.argv
-
     defaults = dict(template_paths=[], contexts=[], output='-',
                     engine=None, verbose=1)
 
-    p = optparse.OptionParser("%prog [OPTION ...] TEMPLATE_FILE", prog=argv[0])
+    p = optparse.OptionParser("%prog [OPTION ...] TEMPLATE_FILE")
     p.set_defaults(**defaults)
 
     p.add_option("-T", "--template-path", action="append",
@@ -56,27 +53,28 @@ def option_parser(argv=None):
     return p
 
 
-def set_loglevel(level, logger=LOGGER):
+def get_loglevel(level):
     """
     Set log level.
+
+    >>> assert get_loglevel(2) == logging.WARN
+    >>> assert get_loglevel(10) == logging.INFO
     """
     try:
-        lvl = [logging.DEBUG, logging.INFO, logging.WARN][level]
+        return [logging.DEBUG, logging.INFO, logging.WARN][level]
     except IndexError:
-        lvl = logging.INFO
-
-    logger.setLevel(lvl)
+        return logging.INFO
 
 
 def main(argv):
-    p = option_parser(argv)
+    p = option_parser()
     (options, args) = p.parse_args(argv[1:])
 
     if not args:
         p.print_help()
         sys.exit(0)
 
-    set_loglevel(options.verbose)
+    LOGGER.setLevel(get_loglevel(options.verbose))
 
     tmpl = args[0]
     ctx = anytemplate.utils.parse_and_load_contexts(options.contexts)
