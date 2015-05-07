@@ -30,23 +30,14 @@ class CompileError(Exception):
     pass
 
 
-def fallback_renders(template_content, context=None, at_paths=None,
-                     at_encoding=anytemplate.compat.ENCODING,
-                     **kwargs):
+def fallback_renders(template_content, *args, **kwargs):
     """
-    Render from given template content and context.
+    Render given template string `template_content`.
 
     This is a basic implementation actually does nothing and just returns
     original template content `template_content`.
 
     :param template_content: Template content
-    :param context: A dict or dict-like object to instantiate given
-        template file
-    :param at_paths: Template search paths
-    :param at_encoding: Template encoding
-    :param kwargs: Keyword arguments passed to the template engine to
-        render templates with specific features enabled.
-
     :return: Rendered result string
     """
     return template_content
