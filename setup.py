@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from setuptools import setup, Command, find_packages
 
 import os
+import os.path
 import subprocess
 
 
@@ -15,7 +16,6 @@ if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
     VERSION = VERSION + datetime.datetime.now().strftime(".%Y%m%d")
 
 data_files = []
-
 CLASSIFIERS = ["Development Status :: 4 - Beta",
                "Intended Audience :: Developers",
                "Programming Language :: Python",
@@ -82,7 +82,7 @@ setup(name=PACKAGE,
       classifiers=CLASSIFIERS,
       packages=find_packages(),
       data_files=data_files,
-      entry_points=open(os.path.join(curdir, "pkg/entry_points.txt")).read(),
+      entry_points=open("pkg/entry_points.txt").read(),
       cmdclass={
           "srpm": SrpmCommand,
           "rpm":  RpmCommand,
