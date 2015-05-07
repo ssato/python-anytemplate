@@ -4,4 +4,5 @@ include README.*
 include *.spec.in
 include setup.py
 include pkg/*
+include examples/*
 recursive-include anytemplate *.py
