@@ -256,7 +256,9 @@ There are a few libraries works like this:
 
 These look more feature-rich and comprehensive, but I prefer a lot more
 lightweight and thin wrapper library along with CLI tool (template renderer) so
-that I made this.
+that I made anytemplate.
+
+And:
 
 - python-jinja2-cli: https://github.com/ssato/python-jinja2-cli
 
