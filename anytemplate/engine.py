@@ -2,6 +2,8 @@
 # Copyright (C) 2015 Satoru SATOH <ssato @ redhat.com>
 # License: BSD3
 #
+"""A module to consolidate access to template engine backends.
+"""
 from __future__ import absolute_import
 
 import operator
@@ -29,14 +31,17 @@ except ImportError:
 TemplateNotFound = anytemplate.engines.base.TemplateNotFound
 
 
-def list_engines_by_priority(engines=ENGINES):
+def list_engines_by_priority(engines=None):
     """
     Return a list of engines supported sorted by each priority.
     """
+    if engines is None:
+        engines = ENGINES
+
     return sorted(engines, key=operator.methodcaller("priority"))
 
 
-def find_by_filename(filename, engines=ENGINES):
+def find_by_filename(filename, engines=None):
     """
     Find a list of template engine classes to render template `filename`.
 
@@ -45,11 +50,14 @@ def find_by_filename(filename, engines=ENGINES):
 
     :return: A list of engines support given template file
     """
+    if engines is None:
+        engines = ENGINES
+
     return sorted((e for e in engines if e.supports(filename)),
                   key=operator.methodcaller("priority"))
 
 
-def find_by_name(name, engines=ENGINES):
+def find_by_name(name, engines=None):
     """
     Find a template engine class specified by its name `name`.
 
@@ -59,6 +67,9 @@ def find_by_name(name, engines=ENGINES):
     :return: A template engine or None if no any template engine of given name
         were found.
     """
+    if engines is None:
+        engines = ENGINES
+
     for egn in engines:
         if egn.name() == name:
             return egn
