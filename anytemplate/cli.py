@@ -20,7 +20,13 @@ import anytemplate.utils
 LOGGER = anytemplate.globals.LOGGER
 
 
-def option_parser(argv=sys.argv):
+def option_parser(argv=None):
+    """
+    :param argv: Arguments list to parse options and args
+    """
+    if argv is None:
+        argv = sys.argv
+
     defaults = dict(template_paths=[], contexts=[], output='-',
                     engine=None, verbose=1)
 
