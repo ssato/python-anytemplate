@@ -21,7 +21,7 @@ class Engine(anytemplate.engines.base.Engine):
     _name = "string.Template"
     _priority = 50
 
-    def renders_impl(self, template_content, context=None, at_paths=False,
+    def renders_impl(self, template_content, context, at_paths=False,
                      at_encoding=anytemplate.compat.ENCODING,
                      safe=False, **kwargs):
         """
@@ -48,7 +48,7 @@ class Engine(anytemplate.engines.base.Engine):
             except KeyError as exc:
                 raise anytemplate.engines.base.CompileError(str(exc))
 
-    def render_impl(self, template, context=None, at_paths=None,
+    def render_impl(self, template, context, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING,
                     safe=False, **kwargs):
         """
@@ -68,7 +68,7 @@ class Engine(anytemplate.engines.base.Engine):
         :return: To be rendered string in inherited classes
         """
         read_content = anytemplate.engines.base.fallback_render
-        tmpl = read_content(template, at_paths=at_paths,
+        tmpl = read_content(template, {}, at_paths=at_paths,
                             at_encoding=at_encoding)
         return self.renders_impl(tmpl, context, safe=safe)
 

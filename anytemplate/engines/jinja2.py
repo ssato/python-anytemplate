@@ -47,7 +47,7 @@ class Engine(anytemplate.engines.base.Engine):
         return jinja2.Environment(loader=jinja2.FileSystemLoader(paths,
                                                                  encoding))
 
-    def renders_impl(self, template_content, context=None, at_paths=None,
+    def renders_impl(self, template_content, context, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,
                      **kwargs):
         """
@@ -72,15 +72,12 @@ class Engine(anytemplate.engines.base.Engine):
             env = self.get_env(at_paths, at_encoding.lower())
             tmpl = env.from_string(template_content)
 
-            if context is None:
-                context = {}
-
             return tmpl.render(**context)
 
         except jinja2.exceptions.TemplateNotFound as e:
             raise anytemplate.engines.base.TemplateNotFound(str(e))
 
-    def render_impl(self, template, context=None, at_paths=None,
+    def render_impl(self, template, context, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         Render given template file and return the result.

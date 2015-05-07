@@ -43,7 +43,7 @@ def fallback_renders(template_content, *args, **kwargs):
     return template_content
 
 
-def fallback_render(template, context=None, at_paths=None,
+def fallback_render(template, context, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING,
                     **kwargs):
     """
@@ -153,7 +153,7 @@ class Engine(object):
         LOGGER.debug("Intialize %s with kwargs: %s", self.name(),
                      ", ".join("%s=%s" % (k, v) for k, v in kwargs.items()))
 
-    def renders_impl(self, template_content, context=None, at_paths=None,
+    def renders_impl(self, template_content, context, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         Render from given template content and context.
@@ -169,11 +169,10 @@ class Engine(object):
         :return: Rendered string
         """
         # LOGGER.warn("Inherited class must implement this!")
-        return fallback_renders(template_content, context=context,
-                                at_paths=at_paths, at_encoding=at_encoding,
-                                **kwargs)
+        return fallback_renders(template_content, context, at_paths=at_paths,
+                                at_encoding=at_encoding, **kwargs)
 
-    def render_impl(self, template, context=None, at_paths=None,
+    def render_impl(self, template, context, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         :param template: Template file path
@@ -187,7 +186,7 @@ class Engine(object):
         :return: Rendered string
         """
         # LOGGER.warn("Inherited class must implement this!")
-        return fallback_render(template, context=context, at_paths=at_paths,
+        return fallback_render(template, context, at_paths=at_paths,
                                at_encoding=at_encoding, **kwargs)
 
     def renders(self, template_content, context=None, at_paths=None,
@@ -195,7 +194,7 @@ class Engine(object):
         """
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
-            template file
+            template file or None
         :param at_paths: Template search paths
         :param at_encoding: Template encoding
         :param kwargs: Keyword arguments passed to the template engine to
@@ -204,6 +203,9 @@ class Engine(object):
         :return: Rendered string
         """
         kwargs = self.filter_options(kwargs, self.render_valid_options())
+        if context is None:
+            context = {}
+
         LOGGER.debug("Render template %s... %s context, options=%s",
                      template_content[:10],
                      "without" if context is None else "with a",
@@ -226,6 +228,9 @@ class Engine(object):
         """
         kwargs = self.filter_options(kwargs, self.render_valid_options())
         paths = anytemplate.utils.mk_template_paths(template, at_paths)
+        if context is None:
+            context = {}
+
         LOGGER.debug("Render template %s %s context, options=%s",
                      template, "without" if context is None else "with a",
                      str(kwargs))

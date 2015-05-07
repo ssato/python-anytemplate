@@ -45,7 +45,7 @@ class Engine(anytemplate.engines.base.Engine):
         self.engine_options = self.filter_options(kwargs,
                                                   self.engine_valid_options())
 
-    def renders_impl(self, template_content, context=None, at_paths=None,
+    def renders_impl(self, template_content, context, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,
                      **kwargs):
         """
@@ -65,7 +65,7 @@ class Engine(anytemplate.engines.base.Engine):
                     "support render template content directly !")
         return template_content
 
-    def render_impl(self, template, context=None, at_paths=None,
+    def render_impl(self, template, context, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         Render given template file and return the result.
@@ -80,9 +80,6 @@ class Engine(anytemplate.engines.base.Engine):
 
         :return: Rendered string
         """
-        if context is None:
-            context = {}
-
         # Override the path to pass it to tenjin.Engine.
         if at_paths is not None:
             paths = at_paths + self.engine_options.get("path", [])

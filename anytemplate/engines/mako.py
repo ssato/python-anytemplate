@@ -43,25 +43,22 @@ class Engine(anytemplate.engines.base.Engine):
 
     def __init__(self, **kwargs):
         """
-        see `help(tenjin.Engine.__init__)` for options.
+        see `help(mako.lookup.TemplateLookup)` for options.
         """
         self.lookup_options = self.filter_options(kwargs,
                                                   self.engine_valid_options())
 
-    def __render(self, tmpl, context=None):
+    def __render(self, tmpl, context):
         """
         :param tmpl: mako.template.Template object
         :param context: A dict or dict-like object to instantiate given
         """
-        if context is None:
-            context = {}
-
         if anytemplate.compat.IS_PYTHON_3:
             return tmpl.render_unicode(**context)
         else:
             return tmpl.render(**context)
 
-    def renders_impl(self, template_content, context=None, at_paths=None,
+    def renders_impl(self, template_content, context, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,
                      **kwargs):
         """
@@ -98,7 +95,7 @@ class Engine(anytemplate.engines.base.Engine):
         tmpl = mako.template.Template(**kwargs)
         return self.__render(tmpl, context)
 
-    def render_impl(self, template, context=None, at_paths=None,
+    def render_impl(self, template, context, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         Render given template file and return the result.
@@ -113,9 +110,6 @@ class Engine(anytemplate.engines.base.Engine):
 
         :return: Rendered string
         """
-        if context is None:
-            context = {}
-
         if "text" in kwargs:
             kwargs["text"] = None
 

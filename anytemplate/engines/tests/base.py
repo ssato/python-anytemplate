@@ -16,8 +16,8 @@ class Test_00(unittest.TestCase):
     def test_20__instance_methods(self):
         engine = TT.Engine()
         try:
-            engine.renders_impl("aaa")  # Template string must be given.
-            engine.render_impl(__file__)
+            engine.renders_impl("aaa", {})  # Template string must be given.
+            engine.render_impl(__file__, {})
 
             engine.renders("aaa")
             engine.render(__file__)
