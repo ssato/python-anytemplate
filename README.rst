@@ -19,13 +19,15 @@ About
 
 Anytemplate, a successor of jinja2-cli [#]_ , is a python library to provide an
 abstraction layer for various python template engines and rendering libraries.
-It works as a thin layer for these template engines and also provide a simple
-CLI tool to render templates in various template languages.
+It works as a thin layer for these template engines and intends to provide a
+few very simple and easily understandable APIs. It also provide a simple CLI
+tool named anytemplate_cli to render templates written in various template
+languages.
 
 - Author: Satoru SATOH <ssato@redhat.com>
 - License: Same as python-jinja2, that is, BSD3.
 
-Anytemplate supports the following template engines currently:
+Anytemplate currently supports the following template engines:
 
 - standard string template (string.Template)
 - jinja2: http://jinja.pocoo.org
@@ -37,14 +39,14 @@ Anytemplate supports the following template engines currently:
 Features
 =========
 
-Multiple configuration files support
--------------------------------------
+Multiple context files support to define template parameters
+----------------------------------------------------------------
 
-The CLI Frontend of anytemplate (anytemplate_cli) supports multiple context
-files in YAML or JSON or others to set parameters with -C|--context option, ex.
--C a.yaml -C b.yaml -C c.json.
+The CLI frontend utilizes anytemplate (anytemplate_cli) supports multiple
+context files in YAML or JSON or others to give template parameters with
+-C|--context option.
 
-Loading and composition of context files are handled by another python library
+Loading and composing of context files are handled by another python library
 called anyconfig (python-anyconfig) if installed and available on your system.
 
 - anyconfig on PyPI: http://pypi.python.org/pypi/anyconfig/
@@ -57,20 +59,54 @@ or simplejson library.
 Template search paths
 -----------------------
 
-The CLI frontend of anytemplate supports to set template search paths with
--T|--template-path option. This is useful when using 'include' directive in
-templates; ex. -T .:templates/.
+The CLI frontend of anytemplate (anytemplate_cli) supports to specify the
+template search paths with -T|--template-path option. This is useful when using
+'include' directive in templates; ex. -T .:templates/.
 
-NOTE: The default search path will be [., templatedir] where templatedir is the
-directory in which the given template file exists if -T option is not given.
-And even if -T option is used, templatedir will be appended to that search
-paths at the end.
+NOTE: The default search path will be [., dir_in_which_given_template_file_is]
+where templatedir is the directory in which the given template file exists if
+-T option is not given.  And even if -T option is used, templatedir will be
+appended to that search paths at the end.
 
 Usage
 =======
 
-Help
--------
+Examples of anytemplate library API
+-------------------------------------
+
+To render given template string, you can call 'anytemplate.renders'.
+Here is an example:
+
+.. code-block:: python
+
+    result = anytemplate.renders("{{ x|default('aaa') }}", {'x': 'bbb'},
+                                 at_engine="jinja2")
+
+For details such as option parameters list of 'anytemplate.renders',
+see its help; see the output of 'help(anytemplate.renders)', etc.
+
+And to render given template file, you can call 'anytemplate.render'.
+Here is an example:
+
+.. code-block:: python
+
+    result = anytemplate.render("/path/to/a_template.tmpl", {'x': 'bbb'},
+                                at_engine="mako")
+
+Some interface libraries of template engines in anytemplate supports automatic
+detection by file extensions. For example, Jinja2 template files of which
+expected file extensions are '.j2' or '.jinja2' are automatically detected and
+you don't need to specify the engine by 'at_engine' parameter like this:
+
+.. code-block:: python
+
+    result = anytemplate.render("/path/to/a_template.j2", {'x': 'bbb'})
+
+For details such as option parameters list of 'anytemplate.render',
+see its help; see the output of 'help(anytemplate.render)', etc.
+
+Help of the CLI frontend, anytemplate_cli
+--------------------------------------------
 
 .. code-block:: console
 
@@ -119,11 +155,6 @@ Help
 
   ssato@localhost%
 
-Examples
----------
-
-TBD
-
 Build & Install
 ================
 
@@ -144,18 +175,21 @@ Otherwise, try usual ways to build and/or install python modules such like 'pip
 install git+https://github.com/ssato/python-anytemplate' and 'python setup.py
 bdist', etc.
 
-Hacks
-=======
+Hacking
+===========
 
 How to test
 -------------
 
 Try to run '[WITH_COVERAGE=1] ./pkg/runtest.sh [path_to_python_code]'.
 
-Alternatives
-================
+Misc
+======
 
-There are few libraries works like this:
+Alternatives
+---------------
+
+There are a few libraries works like this:
 
 - TemplateAlchemy: https://pypi.python.org/pypi/TemplateAlchemy/
 - collective.templateengines: https://pypi.python.org/pypi/collective.templateengines
