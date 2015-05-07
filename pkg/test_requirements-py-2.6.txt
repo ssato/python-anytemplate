@@ -11,3 +11,4 @@ simplejson
 jinja2
 mako
 tenjin
+Cheetah
