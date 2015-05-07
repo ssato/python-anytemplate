@@ -29,12 +29,11 @@ except ImportError:
             raise ("Could not import any json module to load contexts!"
                    " Aborting...")
 
-    def load(filepath, _ftype):
+    def load(filepath, *args):
         return json.load(open(filepath))
 
 try:
-    from anyconfig.utils import get_file_extension
-    get_file_extension
+    from anyconfig.utils import get_file_extension  # flake8: noqa
 except ImportError:
     def _get_file_extension(filepath):
         """
