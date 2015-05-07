@@ -27,6 +27,14 @@ try:
 except ImportError:
     LOGGER.info("tenjin support was disable as necessary module looks missing")
 
+try:
+    import anytemplate.engines.Cheetah
+    import Cheetah.Template  # flake8: noqa
+
+    ENGINES.append(anytemplate.engines.Cheetah.Engine)
+except ImportError:
+    LOGGER.info("Cheetah support was disable as necessary module looks missing")
+
 
 TemplateNotFound = anytemplate.engines.base.TemplateNotFound
 
