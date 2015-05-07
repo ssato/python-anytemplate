@@ -2,6 +2,10 @@
 # Author: Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
+"""Module to keep backward compatibilities.
+"""
+from __future__ import absolute_import
+
 import codecs
 import itertools
 import locale
@@ -27,7 +31,9 @@ def _from_iterable(iterables):
 
 if IS_PYTHON_3:
     from_iterable = itertools.chain.from_iterable
+    # pylint: disable=redefined-builtin
     raw_input = input
+    # pylint: enable=redefined-builtin
 
     def copen(filepath, flag='r', encoding=ENCODING):
         return codecs.open(filepath, flag + 'b', encoding)
