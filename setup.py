@@ -1,19 +1,13 @@
 from __future__ import absolute_import
 from setuptools import setup, Command, find_packages
 
-import glob
 import os
 import subprocess
-import sys
-
-curdir = os.getcwd()
-sys.path.append(curdir)
-
-import anytemplate.globals
 
 
-PACKAGE = anytemplate.globals.PACKAGE
-VERSION = anytemplate.globals.VERSION
+# See anytemplate/globals.py
+PACKAGE = "anytemplate"
+VERSION = "0.0.1"
 
 # For daily snapshot versioning mode:
 if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
@@ -21,6 +15,23 @@ if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
     VERSION = VERSION + datetime.datetime.now().strftime(".%Y%m%d")
 
 data_files = []
+
+CLASSIFIERS = ["Development Status :: 4 - Beta",
+               "Intended Audience :: Developers",
+               "Programming Language :: Python",
+               "Programming Language :: Python :: 2",
+               "Programming Language :: Python :: 2.6",
+               "Programming Language :: Python :: 2.7",
+               "Programming Language :: Python :: 3",
+               "Programming Language :: Python :: 3.3",
+               "Programming Language :: Python :: 3.4",
+               "Environment :: Console",
+               "Operating System :: OS Independent",
+               "Topic :: Software Development :: Libraries :: Python Modules",
+               "Topic :: Text Processing :: Markup",
+               "Topic :: Utilities",
+               "License :: OSI Approved :: BSD License",
+               ]
 
 
 class SrpmCommand(Command):
@@ -63,12 +74,13 @@ class RpmCommand(SrpmCommand):
 setup(name=PACKAGE,
       version=VERSION,
       description="A python template abstraction layer module",
+      long_description=open("README.rst").read(),
       author="Satoru SATOH",
       author_email="ssato@redhat.com",
       license="BSD",
-      url="https://github.com/ssato/python-jinja2-cli",
+      url="https://github.com/ssato/python-anytemplate",
+      classifiers=CLASSIFIERS,
       packages=find_packages(),
-      scripts=glob.glob("tools/*"),
       data_files=data_files,
       entry_points=open(os.path.join(curdir, "pkg/entry_points.txt")).read(),
       cmdclass={
