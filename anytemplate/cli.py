@@ -47,7 +47,7 @@ def option_parser():
                  help="Specify template engine name such as 'jinja2'")
     p.add_option("-o", "--output", help="Output filename [stdout]")
     p.add_option("-v", "--verbose", action="store_const", const=0,
-                 help="Verbose")
+                 help="Verbose mode")
     p.add_option("-q", "--quiet", action="store_const", const=2,
                  dest="verbose", help="Quiet mode")
     return p

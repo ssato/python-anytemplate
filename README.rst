@@ -161,7 +161,7 @@ CLI help
                           Specify template engine name such as 'jinja2'
     -o OUTPUT, --output=OUTPUT
                           Output filename [stdout]
-    -v, --verbose         Verbose
+    -v, --verbose         Verbose mode
     -q, --quiet           Quiet mode
   ssato@localhost% cat examples/ctx.yml
   xs:
