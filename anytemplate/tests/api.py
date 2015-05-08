@@ -15,31 +15,31 @@ from anytemplate.engine import find_by_name
 
 class Test_00(unittest.TestCase):
 
-    def test_10_find_engine_class__wo_any_info(self):
-        cls = TT.find_engine_class()
+    def test_10_find_engine__wo_any_info(self):
+        cls = TT.find_engine()
         self.assertFalse(cls is None)
 
-    def test_12_find_engine_class__by_filepath(self):
+    def test_12_find_engine__by_filepath(self):
         if find_by_name("jinja2"):
             import anytemplate.engines.jinja2
 
-            cls = TT.find_engine_class("foo.j2")
+            cls = TT.find_engine("foo.j2")
             self.assertEquals(cls, anytemplate.engines.jinja2.Engine)
 
-    def test_14_find_engine_class__by_filepath__not_found(self):
+    def test_14_find_engine__by_filepath__not_found(self):
         try:
-            TT.find_engine_class("foo.not_existing_tmpl_ext")
+            TT.find_engine("foo.not_existing_tmpl_ext")
             assert False, "Not reached here"
         except TT.TemplateEngineNotFound:
             pass
 
-    def test_16_find_engine_class__by_name(self):
-        cls = TT.find_engine_class("foo.t", "string.Template")
+    def test_16_find_engine__by_name(self):
+        cls = TT.find_engine("foo.t", "string.Template")
         self.assertEquals(cls, anytemplate.engines.stringTemplate.Engine)
 
-    def test_18_find_engine_class__by_name__not_found(self):
+    def test_18_find_engine__by_name__not_found(self):
         try:
-            TT.find_engine_class(None, "not_existing_tmpl_name")
+            TT.find_engine(None, "not_existing_tmpl_name")
             assert False, "Not reached here"
         except TT.TemplateEngineNotFound:
             pass

@@ -26,7 +26,7 @@ class TemplateEngineNotFound(Exception):
     pass
 
 
-def find_engine_class(filepath=None, name=None):
+def find_engine(filepath=None, name=None):
     """
     :param filepath: Template file path
     :param name: Specify the name of template engine to use explicitly or
@@ -72,7 +72,7 @@ def renders(template_content, context=None, at_paths=None,
 
     :return: Rendered string
     """
-    ecls = find_engine_class(None, at_engine)
+    ecls = find_engine(None, at_engine)
     LOGGER.info("Use the template engine: %s", ecls.name())
     engine = ecls() if at_cls_args is None else ecls(**at_cls_args)
     at_paths = anytemplate.utils.mk_template_paths(None, at_paths)
@@ -117,7 +117,7 @@ def render(filepath, context=None, at_paths=None,
 
     :return: Rendered string
     """
-    ecls = find_engine_class(filepath, at_engine)
+    ecls = find_engine(filepath, at_engine)
     LOGGER.info("Use the template engine: %s", ecls.name())
     engine = ecls() if at_cls_args is None else ecls(**at_cls_args)
 
