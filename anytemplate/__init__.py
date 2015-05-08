@@ -81,14 +81,15 @@ see its help; see the output of 'help(anytemplate.render)', etc.
 """
 from __future__ import absolute_import
 from .globals import AUTHOR, VERSION, LOGGER
-from .api import renders, render, TemplateEngineNotFound, TemplateNotFound
+from .api import find_engine, renders, render, \
+    TemplateEngineNotFound, TemplateNotFound
 
 __author__ = AUTHOR
 __version__ = VERSION
 
 __all__ = [
     "LOGGER",
-    "renders", "render",
+    "find_engine", "renders", "render",
     "TemplateEngineNotFound", "TemplateNotFound",
 ]
 
