@@ -45,8 +45,12 @@ Features
   - Call anytemplate.renders() to render template string
   - Call anytemplate.render() to render template files
 
-- Can process (pass) template engine specific options
-- Provide a CLI frontend tool
+- Can process (pass) template engine specific options:
+
+  - anytemplate.render{s,} can process option parameters specific to each template rendering functions
+  - Call anytemplate.find_engine() to get a class represents each template engine and its constructor can process option parameters specific to each template engines
+
+- Provide a CLI frontend tool to process templates in command line
 
 API Usage
 ============
