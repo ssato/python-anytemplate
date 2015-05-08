@@ -2,8 +2,7 @@
 # Author: Satoru SATOH <ssato redhat.com>
 # License: BSD3
 #
-"""
-Template engine based on string.Template which in standard library.
+"""string.Template support.
 """
 from __future__ import absolute_import
 
