@@ -16,6 +16,21 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Engine(anytemplate.engines.base.Engine):
+    """
+    Template Engine class to support string.Template included in the standard
+    'string' library of python distributions.
+
+    - Limitations: None obvious
+    - Supported option parameters specific to string.Template:
+
+      - 'safe' to use string.Template.safe_substitute instead of
+        string.Template.substitute to render templates
+
+    - References:
+
+      - Standard library doc, ex.
+        https://docs.python.org/2/library/string.html#template-strings
+    """
 
     _name = "string.Template"
     _priority = 50

@@ -2,7 +2,7 @@
 # Copyright (c) 2015 by Satoru SATOH <ssato @ redhat.com>
 # License: BSD-3
 #
-"""Render Cheetah-based template files.
+"""Cheetah support.
 """
 from __future__ import absolute_import
 
@@ -43,16 +43,31 @@ else:
 
 
 class Engine(anytemplate.engines.base.Engine):
+    """
+    Template Engine class to support `Cheetah
+    <http://www.cheetahtemplate.org>`_ .
+
+    - Limitation: Cheetah does not support python 3 so it's not work in
+      python 3 environment at all.
+
+    - Supported option parameters specific to Cheetah:
+
+      - source, namespaces, searchList, file: Supported but 'source' passed to
+        render() and 'file' passed to renders() will be ignored.
+      - filter, filtersLib, errorCatcher, compilerSettings, etc.
+
+    - References:
+
+      - http://www.cheetahtemplate.org/docs/users_guide_html/
+      - help(Cheetah.Template.Template)
+      - help(Cheetah.Template.Template.compile)
+    """
 
     _name = "cheetah"
     _priority = 30
 
     # _engine_valid_opts: parameters for Cheetah.Template.Template
     # _render_valid_opts: same as the above currently
-    #
-    # :see: http://www.cheetahtemplate.org/docs/users_guide_html/
-    # :see: help(Cheetah.Template.Template)
-    # :see: help(Cheetah.Template.Template.compile)
     #
     # TODO: Process parameters for Cheetah.Template.Template.{compile,respond}
     _engine_valid_opts = ("source", "namespaces", "searchList",
@@ -90,7 +105,7 @@ class Engine(anytemplate.engines.base.Engine):
 
         :return: Rendered string
         """
-        # Not passing both searchList and namespaces.
+        # Not pass both searchList and namespaces.
         kwargs["namespaces"] = [context, ] + kwargs.get("namespaces", []) \
                                            + kwargs.get("searchList", [])
         kwargs["searchList"] = None

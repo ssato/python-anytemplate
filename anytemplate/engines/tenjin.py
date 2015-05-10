@@ -2,7 +2,7 @@
 # Copyright (c) 2015 by Satoru SATOH <ssato @ redhat.com>
 # License: BSD-3
 #
-"""Render Tenjin-based template files.
+"""Tenjin support.
 """
 from __future__ import absolute_import
 
@@ -25,6 +25,38 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Engine(anytemplate.engines.base.Engine):
+    """
+    Template Engine class to support
+    `Tenjin <http://www.kuwata-lab.com/tenjin/>`_ .
+
+    - Limitations:
+
+      - Rendering template content string is not supported. That is,
+        Engine.renders() does nothing but return given template content string
+        itself because Tenjin does not look supporting that.
+
+      - It seems that Tenjin can process templates written in various character
+        encoding sets other than UTF-8 but tenjin.set_template_encoding() is
+        called at the head of this module so that its capability is not
+        available, I think.
+
+    - Supported option parameters specific to Tenjin:
+
+      - Option parameters passed to tenjin.Engine.__init__:
+
+        - Supported: prefix, postfix, layout, path, cache, preprocess,
+          templateclass, preprocessorclass, lang, loader, pp
+        - The sum value of keyword parameters both at_paths and path will be
+          passed to tenjin.Template.__init__() as the keyword parameter "path"
+          which represents template search paths.
+
+      - Option parameters passed to tenjin.Engine.render{s,}: globals and
+        layout
+
+    - References:
+
+      - http://www.kuwata-lab.com/tenjin/pytenjin-users-guide.html
+    """
 
     _name = "tenjin"
     _priority = 30

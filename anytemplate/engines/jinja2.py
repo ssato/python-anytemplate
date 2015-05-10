@@ -28,15 +28,49 @@ ENCODING = anytemplate.compat.ENCODING
 
 
 class Engine(anytemplate.engines.base.Engine):
+    """
+    Template Engine class to support `Jinja2 <http://jinja.pocoo.org>`_ .
+
+    - Limitations: None obvious
+    - Supported option parameters specific to Jinja2:
+
+      - Option parameters are passed to jinja2.Environment.__init__().
+
+      - The parameter 'loader' is not supported because anytemplate only
+        support to load tempaltes by jinja2.loaders.FileSystemLoader.
+
+      - Supported: block_start_string, block_end_string, variable_start_string,
+        variable_end_string, comment_start_string, comment_end_string,
+        line_statement_prefix, line_comment_prefix, trim_blocks, lstrip_blocks,
+        newline_sequence, keep_trailing_newline, extensions, optimized,
+        undefined, finalize, autoescape, cache_size, auto_reload,
+        bytecode_cache
+
+    - References:
+
+      - http://jinja.pocoo.org/docs/dev/api/
+      - http://jinja.pocoo.org/docs/dev/templates/
+    """
 
     _name = "jinja2"
-    _file_extensions = ["j2", "jinja2"]
+    _file_extensions = ["j2", "jinja2", "jinja"]
     _priority = 10
+    _engine_valid_opts = ("block_start_string", "block_end_string",
+                          "variable_start_string", "variable_end_string",
+                          "comment_start_string", "comment_end_string",
+                          "line_statement_prefix", "line_comment_prefix",
+                          "trim_blocks", "lstrip_blocks", "newline_sequence",
+                          "keep_trailing_newline", "extensions", "optimized",
+                          "undefined", "finalize", "autoescape", "cache_size",
+                          "auto_reload", "bytecode_cache")
+    _render_valid_opts = _engine_valid_opts
 
-    def get_env(self, paths=None, encoding=None):
+    def get_env(self, paths=None, encoding=None, **kwargs):
         """
         :param paths: Template search paths
         :param encoding: Template charset encoding, e.g. utf-8
+        :param kwargs: Keyword arguments passed to the template engine to
+            render templates with specific features enabled.
         """
         if paths is None:
             paths = ['.']
@@ -58,8 +92,9 @@ class Engine(anytemplate.engines.base.Engine):
             template file
         :param at_paths: Template search paths
         :param at_encoding: Template encoding
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
+        :param kwargs: Keyword arguments passed to jinja2.Envrionment. Please
+            note that 'loader' option is not supported because anytemplate does
+            not support to load template except for files
 
         :return: Rendered string
 
@@ -69,7 +104,7 @@ class Engine(anytemplate.engines.base.Engine):
         >>> assert s == 'a = 1, b = "bbb"'
         """
         try:
-            env = self.get_env(at_paths, at_encoding.lower())
+            env = self.get_env(at_paths, at_encoding.lower(), **kwargs)
             tmpl = env.from_string(template_content)
 
             return tmpl.render(**context)
@@ -87,13 +122,15 @@ class Engine(anytemplate.engines.base.Engine):
             template file
         :param at_paths: Template search paths
         :param at_encoding: Template encoding
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
+        :param kwargs: Keyword arguments passed to jinja2.Envrionment. Please
+            note that 'loader' option is not supported because anytemplate does
+            not support to load template except for files
+
 
         :return: Rendered string
         """
         try:
-            env = self.get_env(at_paths, at_encoding.lower())
+            env = self.get_env(at_paths, at_encoding.lower(), **kwargs)
             tmpl = env.get_template(os.path.basename(template))
 
             return tmpl.render(**context)
