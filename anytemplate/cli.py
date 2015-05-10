@@ -85,7 +85,7 @@ def main(argv=None):
 
     if options.list_engines:
         ecs = sorted((e for e in anytemplate.engine.ENGINES),
-                      key=operator.methodcaller("priority"))
+                     key=operator.methodcaller("priority"))
         print(", ".join("%s (%s)" % (e.name(), e.priority()) for e in ecs))
         return
 
