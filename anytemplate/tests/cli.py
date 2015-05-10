@@ -45,14 +45,32 @@ class Test_00(unittest.TestCase):
         else:
             self.assertTrue(run_and_check_exit_code(args, code))
 
-    def test_50_main__wo_args(self):
+    def test_10_main__wo_args(self):
         self.run_and_check_exit_code()
 
-    def test_10__show_usage(self):
+    def test_12__show_usage(self):
         self.run_and_check_exit_code(["--help"])
 
-    def test_12__wrong_option(self):
+    def test_14__wrong_option(self):
         self.run_and_check_exit_code(["--wrong-option-xyz"], _not=True)
+
+    def test_20_main__wo_args(self):
+        try:
+            TT.main()
+        except SystemExit:
+            pass
+
+    def test_22_main__show_usage(self):
+        try:
+            TT.main(["dummy", "--help"])
+        except SystemExit:
+            pass
+
+    def test_24_main__show_usage(self):
+        try:
+            TT.main(["dummy", "--wrong-option-xyz"])
+        except SystemExit:
+            pass
 
 
 class Test_10_with_workdir(unittest.TestCase):
