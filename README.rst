@@ -145,7 +145,7 @@ The first parameter is not a template string but a path of template file, may
 be relative or absolute path, or basename with template search paths
 (at_paths=[PATH_0, PATH_1, ...]) given.
 
-Some module wraps acutal template engines in anytemplate supports automatic
+Some module wraps actual template engines in anytemplate supports automatic
 detection of the engine by file extensions of template files. For example,
 Jinja2 template files of which expected file extensions are '.j2' or '.jinja2'
 typically. So I made that such files are automatically detected as jinja2
