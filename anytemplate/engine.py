@@ -22,6 +22,12 @@ except ImportError:
     LOGGER.info("jinja2 support was disable as necessary module looks missing")
 
 try:
+    import anytemplate.engines.mako
+    ENGINES.append(anytemplate.engines.mako.Engine)
+except ImportError:
+    LOGGER.info("mako support was disable as necessary module looks missing")
+
+try:
     import anytemplate.engines.tenjin
     ENGINES.append(anytemplate.engines.tenjin.Engine)
 except ImportError:
