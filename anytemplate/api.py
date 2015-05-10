@@ -26,6 +26,16 @@ class TemplateEngineNotFound(Exception):
     pass
 
 
+def list_engines():
+    """
+    List available template engines sorted by each priority.
+
+    :return: A list of child classes of the class
+        :class:`anytemplate.engines.base.Engine`
+    """
+    return anytemplate.engine.list_engines_by_priority()
+
+
 def find_engine(filepath=None, name=None):
     """
     :param filepath: Template file path
@@ -36,7 +46,7 @@ def find_engine(filepath=None, name=None):
     """
     if name is None:
         if filepath is None:
-            engines = anytemplate.engine.list_engines_by_priority()
+            engines = list_engines()
         else:
             engines = anytemplate.engine.find_by_filename(filepath)
 

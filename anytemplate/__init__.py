@@ -89,7 +89,7 @@ __version__ = VERSION
 
 __all__ = [
     "LOGGER",
-    "find_engine", "renders", "render",
+    "list_engines", "find_engine", "renders", "render",
     "TemplateEngineNotFound", "TemplateNotFound",
 ]
 

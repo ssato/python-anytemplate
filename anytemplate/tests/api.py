@@ -16,6 +16,11 @@ from anytemplate.engine import find_by_name
 
 class Test_00(unittest.TestCase):
 
+    def test_00_list_engines(self):
+        clss = TT.list_engines()
+        self.assertTrue(clss)
+        self.assertTrue(anytemplate.engines.stringTemplate.Engine in clss)
+
     def test_10_find_engine__wo_any_info(self):
         cls = TT.find_engine()
         self.assertFalse(cls is None)
