@@ -81,7 +81,7 @@ see its help; see the output of 'help(anytemplate.render)', etc.
 """
 from __future__ import absolute_import
 from .globals import AUTHOR, VERSION, LOGGER
-from .api import find_engine, renders, render, \
+from .api import list_engines, find_engine, renders, render, \
     TemplateEngineNotFound, TemplateNotFound
 
 __author__ = AUTHOR
