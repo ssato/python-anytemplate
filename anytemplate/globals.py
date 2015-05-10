@@ -14,7 +14,7 @@ except ImportError:  # python < 2.7 don't have it.
             pass
 
 PACKAGE = "anytemplate"
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 AUTHOR = "Satoru SATOH <ssat@redhat.com>"
 
 # See: "Configuring Logging for a Library" in python standard logging howto,

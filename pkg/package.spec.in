@@ -91,5 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun May 10 2015 Satoru SATOH <ssato@redhat.com> - 0.0.2-1
+- Fix a bug that the CLI tool does not work
+
 * Fri May  1 2015 Satoru SATOH <ssato@redhat.com> - 0.0.1-1
 - Initial packaging
