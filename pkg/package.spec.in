@@ -91,10 +91,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
-* Sun May 10 2015 Satoru SATOH <ssato@redhat.com> - 0.0.2.999-1
+* Mon May 11 2015 Satoru SATOH <ssato@redhat.com> - 0.0.2.999-1
 - Changed the license from BSD to MIT as it's easier to understand
 - Added an API to list available template engines
 - Added mako support which was accidentally not in the supported engines list
+- Added pystache support
 
 * Sun May 10 2015 Satoru SATOH <ssato@redhat.com> - 0.0.2-1
 - Fix a bug that the CLI tool does not work
