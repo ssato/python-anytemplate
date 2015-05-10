@@ -25,7 +25,7 @@ It also provide a CLI tool called anytemplate_cli to render templates written
 in these various template languages.
 
 - Author: Satoru SATOH <ssato@redhat.com>
-- License: Same as python-jinja2, that is, BSD3.
+- License: MIT (changed from BSD-3, BSD w/o advertisement clause)
 
 It supports the following template engines currently:
 

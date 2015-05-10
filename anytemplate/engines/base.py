@@ -1,6 +1,6 @@
 #
 # Author: Satoru SATOH <ssato redhat.com>
-# License: BSD3
+# License: MIT
 #
 """
 Base class for template engine implementations.

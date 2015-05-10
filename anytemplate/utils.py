@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 :copyright: (c) 2012 - 2015 by Satoru SATOH <ssato@redhat.com>
-:license: BSD-3
+:license: MIT
 """
 # TODO: unicode_literals
 from __future__ import absolute_import, print_function

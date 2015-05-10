@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2015 by Satoru SATOH <ssato @ redhat.com>
-# License: BSD-3
+# License: MIT
 #
 """Mako support.
 """

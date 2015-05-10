@@ -1,5 +1,6 @@
 #
 # Copyright (C). 2015 Satoru SATOH <ssato at redhat.com>
+# License: MIT
 #
 import os.path
 import unittest

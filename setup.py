@@ -30,7 +30,7 @@ CLASSIFIERS = ["Development Status :: 4 - Beta",
                "Topic :: Software Development :: Libraries :: Python Modules",
                "Topic :: Text Processing :: Markup",
                "Topic :: Utilities",
-               "License :: OSI Approved :: BSD License",
+               "License :: OSI Approved :: MIT",
                ]
 
 
@@ -77,7 +77,7 @@ setup(name=PACKAGE,
       long_description=open("README.rst").read(),
       author="Satoru SATOH",
       author_email="ssato@redhat.com",
-      license="BSD",
+      license="MIT",
       url="https://github.com/ssato/python-anytemplate",
       classifiers=CLASSIFIERS,
       packages=find_packages(),

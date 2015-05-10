@@ -11,7 +11,7 @@ Version:        @VERSION@
 Release:        1%{?dist}
 Summary:        A python template abstraction layer module
 Group:          Development/Tools
-License:        BSD
+License:        MIT
 URL:            https://github.com/ssato/%{name}
 #Source0:        https://github.com/ssato/%{name}/tarball/master/%{name}-%{version}.tar.gz
 Source0:        %{pkgname}-%{version}.tar.gz
@@ -91,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun May 10 2015 Satoru SATOH <ssato@redhat.com> - 0.0.2.999-1
+- Changed the license from BSD to MIT as it's easier to understand
+
 * Sun May 10 2015 Satoru SATOH <ssato@redhat.com> - 0.0.2-1
 - Fix a bug that the CLI tool does not work
 

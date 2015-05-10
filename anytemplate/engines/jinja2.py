@@ -1,15 +1,8 @@
-"""
-    Jinja2 based template renderer.
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Compiles and render Jinja2-based template files.
-
-    :copyright: (c) 2012 - 2015 Red Hat, Inc.
-    :copyright: (c) 2012 by Satoru SATOH <ssato@redhat.com>
-    :license: BSD-3
-
-References: http://jinja.pocoo.org,
-    especially http://jinja.pocoo.org/docs/api/#basics
+#
+# Author: Satoru SATOH <ssto at redhat.com>
+# License: MIT
+#
+"""jinja2 support
 """
 from __future__ import absolute_import
 
