@@ -228,7 +228,7 @@ def write_to_output(content, output=None,
         if anytemplate.compat.IS_PYTHON_3:
             print(content)
         else:
-            print(content.encode("utf-8"), file=get_output_stream())
+            print(content.encode(encoding.lower()), file=get_output_stream())
 
 
 def mk_template_paths(filepath=None, template_paths=None):
