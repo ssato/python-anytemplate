@@ -9,12 +9,10 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import logging
-import operator
 import optparse  # argparse is not available in python 2.6 standard lib.
 import sys
 
 import anytemplate.api
-import anytemplate.engine
 import anytemplate.globals
 import anytemplate.utils
 
@@ -84,8 +82,7 @@ def main(argv=None):
     LOGGER.setLevel(get_loglevel(options.verbose))
 
     if options.list_engines:
-        ecs = sorted((e for e in anytemplate.engine.ENGINES),
-                     key=operator.methodcaller("priority"))
+        ecs = anytemplate.api.list_engines()
         print(", ".join("%s (%s)" % (e.name(), e.priority()) for e in ecs))
         return
 
