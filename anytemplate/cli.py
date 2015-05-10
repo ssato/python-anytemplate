@@ -9,10 +9,12 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import logging
-import optparse  # argparse is not available in python 2.6 dist.
+import operator
+import optparse  # argparse is not available in python 2.6 standard lib.
 import sys
 
 import anytemplate.api
+import anytemplate.engine
 import anytemplate.globals
 import anytemplate.utils
 
@@ -25,7 +27,7 @@ def option_parser():
     :return: Option parsing object :: optparse.OptionParser
     """
     defaults = dict(template_paths=[], contexts=[], output='-',
-                    engine=None, verbose=1)
+                    engine=None, list_engines=False, verbose=1)
 
     p = optparse.OptionParser("%prog [OPTION ...] TEMPLATE_FILE")
     p.set_defaults(**defaults)
@@ -45,6 +47,8 @@ def option_parser():
                       "yaml:test.dat, -C yaml:/etc/foo.d/*.conf")
     p.add_option("-E", "--engine",
                  help="Specify template engine name such as 'jinja2'")
+    p.add_option("-L", "--list-engines", action="store_true",
+                 help="List supported template engines in your environment")
     p.add_option("-o", "--output", help="Output filename [stdout]")
     p.add_option("-v", "--verbose", action="store_const", const=0,
                  help="Verbose mode")
@@ -70,11 +74,17 @@ def main(argv):
     p = option_parser()
     (options, args) = p.parse_args(argv[1:])
 
-    if not args:
+    if not args and not options.list_engines:
         p.print_help()
         sys.exit(0)
 
     LOGGER.setLevel(get_loglevel(options.verbose))
+
+    if options.list_engines:
+        ecs = sorted((e for e in anytemplate.engine.ENGINES),
+                      key=operator.methodcaller("priority"))
+        print(", ".join("%s (%s)" % (e.name(), e.priority()) for e in ecs))
+        return
 
     tmpl = args[0]
     ctx = anytemplate.utils.parse_and_load_contexts(options.contexts)
