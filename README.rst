@@ -38,7 +38,7 @@ It supports the following template engines currently:
    `mako <http://www.makotemplates.org>`_ ,
    `tenjin <http://www.kuwata-lab.com/tenjin/>`_ , renders() API is not supported
    `Cheetah <http://www.cheetahtemplate.org>`_ , Only available for python 2.x as it does not look supporting python 3.x
-   `Pystache <https://github.com/defunkt/pystache>`_ ,
+   `pystache <https://github.com/defunkt/pystache>`_ ,
 
 Features
 ==========
