@@ -17,56 +17,92 @@ About
    :target: https://landscape.io/github/ssato/python-anytemplate/master
    :alt: Code Health
 
-Anytemplate is a python library to provide an abstraction layer for various
-python template engines and rendering libraries.
+This is a python library works as an abstraction layer for various python
+template engines and rendering libraries, and provide a few very simple and
+easily understandable APIs to render templates.
 
-It works as a thin layer for these template engines and intends to provide a
-few very simple and easily understandable APIs.
-
-It also provide a simple CLI tool named anytemplate_cli to render templates
-written in various template languages.
+It also provide a CLI tool called anytemplate_cli to render templates written
+in these various template languages.
 
 - Author: Satoru SATOH <ssato@redhat.com>
 - License: Same as python-jinja2, that is, BSD3.
 
-Anytemplate supports the following template engines currently:
+It supports the following template engines currently:
 
-- standard string template (string.Template)
-- jinja2: http://jinja.pocoo.org
-- mako: http://www.makotemplates.org
-- tenjin: http://www.kuwata-lab.com/tenjin/
-- Cheetah: http://www.cheetahtemplate.org (python-2.x environment only)
+.. csv-table::
+   :header: "Name", "Notes"
+   :widths: 15, 65
+
+   `string.Template <https://www.python.org>`_ , Always available as it's included in python standard lib.
+   `jinja2 <http://jinja.pocoo.org>`_ , Highest priory will be given and becomes default if found
+   `mako <http://www.makotemplates.org>`_ ,
+   `tenjin <http://www.kuwata-lab.com/tenjin/>`_ ,
+   `Cheetah <http://www.cheetahtemplate.org>`_ , Only available for python 2.x as it does not look supporting python 3.x
 
 Features
-=========
+==========
 
-- Very simple and unified APIs for various template engines:
+- Provides very simple and unified APIs for various template engines:
 
-  - Call anytemplate.renders() to render template string
-  - Call anytemplate.render() to render template files
+  - anytemplate.renders() to render given template string
+  - anytemplate.render() to render given template file
 
-- Can process (pass) template engine specific options:
+- Can process template engine specific options:
 
-  - anytemplate.render{s,} can process option parameters specific to each template rendering functions
-  - Call anytemplate.find_engine() to get a class represents each template engine and its constructor can process option parameters specific to each template engines
+  - anytemplate.render{s,} allow passing option parameters specific to each template rendering functions behind this library
+  - anytemplate.find_engine() returns an 'engine' object to allow some more fine tunes of template engine specific customization by passing option parameters to them
 
-- Provide a CLI frontend tool to process templates in command line
+- Provide a CLI tool called anytemplate_cli to process templates in command line
 
 API Usage
 ============
 
-API examples
----------------
+API Examples
+--------------
 
-To render given template string, you can call 'anytemplate.renders'.
-Here is an example:
+Call 'anytemplate.renders' to render given template strings like this:
 
 .. code-block:: python
 
     result = anytemplate.renders("{{ x|default('aaa') }}", {'x': 'bbb'},
                                  at_engine="jinja2")
 
-For details such as option parameters list of 'anytemplate.renders',
+The first parameter is a template string itself. And the second one is a dict
+or dict-like object which is generally called as 'context' object to
+instantiate templates. The third one, keyword parameter 'at_engine' is needed
+to find the appropriate template engine to render given template string. This
+keyword parameter is necessary because it's very difficult and should be almost
+impossible for any template languages to detect correct template engine only by
+given template string itself.
+
+If 'at_engine' is omitted, a template engine of highest priority is choosen.
+Only available template engines and libraries are enabled automatically in
+anytemplate, so that that engine will be vary in accordance with your
+environment. For example, 'jinja2' is the engine of highest priority in my
+development envrionment with all supported template engines and libraries
+installed:
+
+.. code-block:: python
+
+   In [6]: import anytemplate
+
+   In [7]: anytemplate.find_engine()   # It will return the highest priority one.
+   Out[7]: anytemplate.engines.jinja2.Engine
+
+   In [8]: anytemplate.find_engine().name()
+   Out[8]: 'jinja2'
+
+It's also possible to some option parameters specific to the template engine
+choosen with keyword parameters like this:
+
+.. code-block:: python
+
+    # 'strict_undefined' is a parameter for mako.template.Template.__init__().
+    result = anytemplate.renders("${x}", {'x': 'bbb'},
+                                 at_engine="mako",
+                                 strict_undefined=False)
+
+For details such as generic option parameters list of 'anytemplate.renders',
 see its help:
 
 .. code-block:: python
@@ -92,22 +128,34 @@ see its help:
 
   In [21]:
 
-And to render given template file, you can call 'anytemplate.render'.
-Here is an example:
+Call 'anytemplate.render' to render given template file like this:
 
 .. code-block:: python
 
-    result = anytemplate.render("/path/to/a_template.tmpl", {'x': 'bbb'},
-                                at_engine="mako")
+    result1 = anytemplate.render("/path/to/a_template.tmpl", {'x': 'bbb'},
+                                 at_engine="mako")
 
-Some interface libraries of template engines in anytemplate supports automatic
-detection of the engine by file extensions. For example, Jinja2 template files
-of which expected file extensions are '.j2' or '.jinja2'. So such files are
-automatically detected as jinja2 template file and you don't need to specify
-the engine by 'at_engine' parameter like this:
+    result2 = anytemplate.render("another_template.t", {'y': 'ccc'},
+                                 at_engine="tenjin",
+                                 at_paths=['/path/to/templates/', '.'])
+
+The parameters are similar to the previous example except for the first one.
+
+The first parameter is not a template string but a path of template file, may
+be relative or absolute path, or basename with template search paths
+(at_paths=[PATH_0, PATH_1, ...]) given.
+
+Some module wraps acutal template engines in anytemplate supports automatic
+detection of the engine by file extensions of template files. For example,
+Jinja2 template files of which expected file extensions are '.j2' or '.jinja2'
+typically. So I made that such files are automatically detected as jinja2
+template file and you don't need to specify the engine by 'at_engine' parameter
+like this:
 
 .. code-block:: python
 
+    # 'jinaj2' template engine is automatically choosen because the extension
+    # of template file is '.j2'.
     result = anytemplate.render("/path/to/a_template.j2", {'x': 'bbb'})
 
 For details such as option parameters list of 'anytemplate.render',
@@ -163,6 +211,7 @@ CLI help
                           -C yaml:/etc/foo.d/*.conf
     -E ENGINE, --engine=ENGINE
                           Specify template engine name such as 'jinja2'
+    -L, --list-engines    List supported template engines in your environment
     -o OUTPUT, --output=OUTPUT
                           Output filename [stdout]
     -v, --verbose         Verbose mode
@@ -195,10 +244,10 @@ CLI Features
 Multiple context files support to define template parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The CLI frontend (anytemplate_cli) supports multiple context files in YAML or
-JSON or others to give template parameters with -C|--context option.
+The CLI tool (anytemplate_cli) supports to load multiple context files in YAML
+or JSON or others to give template parameters with -C|--context option.
 
-Loading and composing of context files are handled by another python library
+Loading and composing of context files are handled by my another python library
 called anyconfig (python-anyconfig) if installed and available on your system.
 
 - anyconfig on PyPI: http://pypi.python.org/pypi/anyconfig/
@@ -210,7 +259,7 @@ format of context files, by help of python standard json or simplejson library.
 Template search paths
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The CLI frontend (anytemplate_cli) supports to specify the template search
+The CLI tool (anytemplate_cli) supports to specify the template search
 paths with -T|--template-path option. This is useful when using 'include'
 directive in templates; ex. -T .:templates/.
 
@@ -246,6 +295,13 @@ How to test
 -------------
 
 Try to run '[WITH_COVERAGE=1] ./pkg/runtest.sh [path_to_python_code]'.
+
+TODO
+======
+
+- Add descriptions (doctext) of template engine and library specific options: WIP
+- Add descriptions (doctext) how anytemplate wraps each template engine and library: WIP
+- Complete unit tests of each template engine and library including template engine specific options, etc.
 
 Misc
 ======
