@@ -41,6 +41,13 @@ try:
 except ImportError:
     LOGGER.info("Cheetah support was disable as necessary module looks missing")
 
+try:
+    import anytemplate.engines.pystache
+    ENGINES.append(anytemplate.engines.pystache.Engine)
+except ImportError:
+    LOGGER.info("Pystache (mustache) support was disable as necessary "
+                "module looks missing")
+
 
 TemplateNotFound = anytemplate.engines.base.TemplateNotFound
 
