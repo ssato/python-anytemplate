@@ -70,7 +70,10 @@ def get_loglevel(level):
         return logging.INFO
 
 
-def main(argv):
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+
     p = option_parser()
     (options, args) = p.parse_args(argv[1:])
 
