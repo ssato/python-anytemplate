@@ -41,12 +41,12 @@ class Test_00(unittest.TestCase):
             egn = TT.Engine()
             self.assertEquals(egn.renders(tmpl_s, at_paths=['.']), tmpl_s)
 
-    def test_26_renders__no_context__w_filename(self):
+    def test_26_renders__no_context__w_file(self):
         tmpl_s = "hello world!"
 
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s, filename="x"), tmpl_s)
+            self.assertEquals(egn.renders(tmpl_s, file="x"), tmpl_s)
 
 
 class Test_10(unittest.TestCase):
