@@ -9,7 +9,13 @@ from __future__ import absolute_import
 import codecs
 import itertools
 import locale
+import os.path
 import sys
+
+try:
+    import json
+except ImportError:
+    import simplejson as json  # :throw: ImportError
 
 
 IS_PYTHON_3 = sys.version_info[0] == 3
@@ -27,6 +33,33 @@ def _from_iterable(iterables):
     for it in iterables:
         for element in it:
             yield element
+
+
+def json_load(filepath, *args):
+    """
+    Alternative if anyconfig is not available.
+
+    :param filepath: JSON file path
+    """
+    return json.load(open(filepath))
+
+
+def get_file_extension(filepath):
+    """
+    Copy if anyconfig.utils.get_file_extension is not available.
+
+    >>> get_file_extension("/a/b/c")
+    ''
+    >>> get_file_extension("/a/b.txt")
+    'txt'
+    >>> get_file_extension("/a/b/c.tar.xz")
+    'xz'
+    """
+    _ext = os.path.splitext(filepath)[-1]
+    if _ext:
+        return _ext[1:] if _ext.startswith('.') else _ext
+    else:
+        return ''
 
 
 if IS_PYTHON_3:
