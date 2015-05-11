@@ -19,6 +19,9 @@ except ImportError:
 
 class Test_00(unittest.TestCase):
 
+    def test_12__init__w_kwargs(self):
+        self.assertTrue(isinstance(TT.Engine(errorCatcher=None), TT.Engine))
+
     def test_20_renders(self):
         tmpl_s = "hello, $name!"
         exp = "hello, John!"
