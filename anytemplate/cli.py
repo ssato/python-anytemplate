@@ -91,9 +91,9 @@ def main(argv=None):
 
     tmpl = args[0]
     ctx = anytemplate.utils.parse_and_load_contexts(options.contexts)
-    res = anytemplate.api.render(tmpl, ctx, at_paths=options.template_paths,
-                                 at_engine=options.engine, at_ask_missing=True)
-    anytemplate.utils.write_to_output(res, options.output)
+    anytemplate.api.render_to(tmpl, ctx, options.output,
+                              at_paths=options.template_paths,
+                              at_engine=options.engine, at_ask_missing=True)
 
 
 if __name__ == '__main__':
