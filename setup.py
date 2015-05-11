@@ -30,7 +30,7 @@ CLASSIFIERS = ["Development Status :: 4 - Beta",
                "Topic :: Software Development :: Libraries :: Python Modules",
                "Topic :: Text Processing :: Markup",
                "Topic :: Utilities",
-               "License :: OSI Approved :: MIT",
+               "License :: OSI Approved :: MIT License",
                ]
 
 
