@@ -48,6 +48,14 @@ class Test_00(unittest.TestCase):
             egn = TT.Engine()
             self.assertEquals(egn.renders(tmpl_s, file="x"), tmpl_s)
 
+    def test_36_renders_impl__no_context__w_filename(self):
+        tmpl_s = "hello world!"
+
+        if TT is not None:
+            egn = TT.Engine()
+            self.assertEquals(egn.renders_impl(tmpl_s, {}, file="x"),
+                              tmpl_s)
+
 
 class Test_10(unittest.TestCase):
 
@@ -77,5 +85,17 @@ class Test_10(unittest.TestCase):
             egn = TT.Engine()
             r = egn.render(tmpl)
             self.assertEquals(r, "hello!")
+
+    def test_26_render_impl__w_source(self):
+        tmpl = os.path.join(self.workdir, "a.t")
+        tmpl_s = "$getVar('greeting', 'hello!')"
+        ctx = dict(greeting="hello, Cheetah!", )
+        open(tmpl, 'w').write(tmpl_s)
+
+        if TT is not None:
+            egn = TT.Engine()
+            r = egn.render_impl(tmpl, ctx, at_paths=[self.workdir],
+                                source="aaa")
+            self.assertEquals(r, ctx["greeting"])
 
 # vim:sw=4:ts=4:et:
