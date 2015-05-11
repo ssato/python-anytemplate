@@ -30,6 +30,7 @@ class CompileError(Exception):
     pass
 
 
+# pylint: disable=unused-argument
 def fallback_renders(template_content, *args, **kwargs):
     """
     Render given template string `template_content`.
@@ -72,7 +73,11 @@ def fallback_render(template, context, at_paths=None,
         return open(tmpl).read()
 
 
+# pylint: enable=unused-argument
 class Engine(object):
+    """
+    Abstract class implementation of Template Engines.
+    """
 
     _name = "base"
     _file_extensions = []
