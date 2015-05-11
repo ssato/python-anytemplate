@@ -58,12 +58,10 @@ class Engine(anytemplate.engines.base.Engine):
                           "auto_reload", "bytecode_cache")
     _render_valid_opts = _engine_valid_opts
 
-    def get_env(self, paths=None, encoding=None, **kwargs):
+    def get_env(self, paths=None, encoding=None):
         """
         :param paths: Template search paths
         :param encoding: Template charset encoding, e.g. utf-8
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
         """
         if paths is None:
             paths = ['.']
@@ -97,7 +95,7 @@ class Engine(anytemplate.engines.base.Engine):
         >>> assert s == 'a = 1, b = "bbb"'
         """
         try:
-            env = self.get_env(at_paths, at_encoding.lower(), **kwargs)
+            env = self.get_env(at_paths, at_encoding.lower())
             tmpl = env.from_string(template_content)
 
             return tmpl.render(**context)
@@ -123,7 +121,7 @@ class Engine(anytemplate.engines.base.Engine):
         :return: Rendered string
         """
         try:
-            env = self.get_env(at_paths, at_encoding.lower(), **kwargs)
+            env = self.get_env(at_paths, at_encoding.lower())
             tmpl = env.get_template(os.path.basename(template))
 
             return tmpl.render(**context)
