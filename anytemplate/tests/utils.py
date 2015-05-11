@@ -53,6 +53,18 @@ class Test_00_functions(unittest.TestCase):
     def test_41_parse_filespec__wo_type(self):
         self.assertEquals(TT.parse_filespec("a.json"), [("a.json", None)])
 
+    def test_50_parse_and_load_contexts__invalid_input(self):
+        TT.parse_and_load_contexts(["/a/b/c.json"])
+
+    def test_52_parse_and_load_contexts__werr(self):
+        try:
+            t = TT.parse_and_load_contexts(["/a/b/c.json"], werr=True)
+            if t is None:  # anyconfig.load may return None
+                return
+            raise AssertionError("ValueError is not raised even if werr=True")
+        except (ValueError, IOError):
+            pass
+
     def test_60_find_template_from_path__wo_paths(self):
         self.assertEquals(TT.find_template_from_path(__file__), __file__)
 

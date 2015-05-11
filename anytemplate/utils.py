@@ -172,6 +172,7 @@ def parse_and_load_contexts(contexts, werr=False):
         while loading context files
     """
     ctx = container()
+    diff = None
 
     if contexts:
         for fpath, ftype in concat(parse_filespec(f) for f in contexts):
@@ -181,7 +182,8 @@ def parse_and_load_contexts(contexts, werr=False):
                 if werr == True:
                     raise
 
-            ctx.update(diff)
+            if diff is not None:
+                ctx.update(diff)
 
     return ctx
 
