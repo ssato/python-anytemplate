@@ -78,6 +78,12 @@ class Test_00(unittest.TestCase):
         except SystemExit:
             pass
 
+    def test_26_main__list_engines(self):
+        try:
+            TT.main(["dummy", "--list-engines"])
+        except SystemExit:
+            pass
+
 
 class Test_10_with_workdir(unittest.TestCase):
 
