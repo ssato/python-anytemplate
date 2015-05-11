@@ -27,32 +27,32 @@ def option_parser():
     defaults = dict(template_paths=[], contexts=[], output='-',
                     engine=None, list_engines=False, verbose=1)
 
-    p = optparse.OptionParser("%prog [OPTION ...] TEMPLATE_FILE")
-    p.set_defaults(**defaults)
+    psr = optparse.OptionParser("%prog [OPTION ...] TEMPLATE_FILE")
+    psr.set_defaults(**defaults)
 
-    p.add_option("-T", "--template-path", action="append",
-                 dest="template_paths",
-                 help="Template search path can be specified multiple times. "
-                      "Note: Dir in which given template exists is always "
-                      "included in the search paths (at the end of "
-                      "the path list) regardless of this option. ")
-    p.add_option("-C", "--context", action="append", dest="contexts",
-                 help="Specify file path and optionally its filetype, to "
-                      "provides context data to instantiate templates. "
-                      " The option argument's format is "
-                      " [type:]<file_name_or_path_or_glob_pattern>"
-                      " ex. -C json:common.json -C ./specific.yaml -C "
-                      "yaml:test.dat, -C yaml:/etc/foo.d/*.conf")
-    p.add_option("-E", "--engine",
-                 help="Specify template engine name such as 'jinja2'")
-    p.add_option("-L", "--list-engines", action="store_true",
-                 help="List supported template engines in your environment")
-    p.add_option("-o", "--output", help="Output filename [stdout]")
-    p.add_option("-v", "--verbose", action="store_const", const=0,
-                 help="Verbose mode")
-    p.add_option("-q", "--quiet", action="store_const", const=2,
-                 dest="verbose", help="Quiet mode")
-    return p
+    psr.add_option("-T", "--template-path", action="append",
+                   dest="template_paths",
+                   help="Template search path can be specified multiple "
+                        "times. Note: Dir in which given template exists is "
+                        "always included in the search paths (at the end of "
+                        "the path list) regardless of this option. ")
+    psr.add_option("-C", "--context", action="append", dest="contexts",
+                   help="Specify file path and optionally its filetype, to "
+                        "provides context data to instantiate templates. "
+                        " The option argument's format is "
+                        " [type:]<file_name_or_path_or_glob_pattern>"
+                        " ex. -C json:common.json -C ./specific.yaml -C "
+                        "yaml:test.dat, -C yaml:/etc/foo.d/*.conf")
+    psr.add_option("-E", "--engine",
+                   help="Specify template engine name such as 'jinja2'")
+    psr.add_option("-L", "--list-engines", action="store_true",
+                   help="List supported template engines in your environment")
+    psr.add_option("-o", "--output", help="Output filename [stdout]")
+    psr.add_option("-v", "--verbose", action="store_const", const=0,
+                   help="Verbose mode")
+    psr.add_option("-q", "--quiet", action="store_const", const=2,
+                   dest="verbose", help="Quiet mode")
+    return psr
 
 
 def get_loglevel(level):
@@ -69,14 +69,17 @@ def get_loglevel(level):
 
 
 def main(argv=None):
+    """
+    Entrypoint.
+    """
     if argv is None:
         argv = sys.argv
 
-    p = option_parser()
-    (options, args) = p.parse_args(argv[1:])
+    psr = option_parser()
+    (options, args) = psr.parse_args(argv[1:])
 
     if not args and not options.list_engines:
-        p.print_help()
+        psr.print_help()
         sys.exit(0)
 
     LOGGER.setLevel(get_loglevel(options.verbose))
