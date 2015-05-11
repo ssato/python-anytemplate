@@ -303,7 +303,10 @@ TODO & Issues
 - Add descriptions (doctext) of template engine and library specific options: WIP
 - Add descriptions (doctext) how anytemplate wraps each template engine and library: WIP
 - Complete unit tests of each template engine and library including template engine specific options, etc.
-- Stablize public and private (internal) APIs: private APIs needs a lot of work especially as I'm not sure how it should be yet.
+- Stablize public and private (internal) APIs:
+
+  - Private APIs still needs a lot of work especially. It's very vague how it should be as each template engine have its own concept and design and I'm not sure how to abstract them.
+  - I don't think public APIs have large issues but these be affected by changes of private APIs more or less; I'm thinking to deprecate the keyword parameter 'at_cls_args' for example.
 
 Misc
 ======
