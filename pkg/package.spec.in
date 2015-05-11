@@ -96,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 - Added an API to list available template engines
 - Added mako support which was accidentally not in the supported engines list
 - Added pystache support
+- Various fixes and enhancements for warnings/errors/comments from flake8,
+  pylint and other code inspection tools
 
 * Sun May 10 2015 Satoru SATOH <ssato@redhat.com> - 0.0.2-1
 - Fix a bug that the CLI tool does not work
