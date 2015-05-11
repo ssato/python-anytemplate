@@ -67,9 +67,9 @@ def renders(template_content, context=None, at_paths=None,
             at_engine=None, at_ask_missing=False,
             at_cls_args=None, **kwargs):
     """
-    Compile and render given template content and return the result string.
+    Compile and render given template string and return the result string.
 
-    :param template_content: Template content
+    :param template_content: Template content string
     :param context: A dict or dict-like object to instantiate given
         template file
     :param at_paths: Template search paths
@@ -156,5 +156,33 @@ def render(filepath, context=None, at_paths=None,
         return engine.render(tmpl, context=context,
                              at_paths=(at_paths + [usr_tmpldir]),
                              at_encoding=at_encoding, **kwargs)
+
+
+def render_to(filepath, context=None, output=None, at_paths=None,
+              at_encoding=anytemplate.compat.ENCODING,
+              at_engine=None, at_ask_missing=False,
+              at_cls_args=None, **kwargs):
+    """
+    Render given template file and write the result string to given `output`.
+    The result string will be printed to sys.stdout if output is None or '-'.
+
+    :param template: Template file path
+    :param context: A dict or dict-like object to instantiate given
+        template file
+    :param output: File path to write the rendered result string to or None/'-'
+        to print it to stdout
+    :param at_paths: Template search paths
+    :param at_encoding: Template encoding
+    :param at_engine: Specify the name of template engine to use explicitly or
+        None to find it automatically anyhow.
+    :param at_cls_args: Arguments passed to instantiate template engine class
+    :param kwargs: Keyword arguments passed to the template engine to
+        render templates with specific features enabled.
+    """
+    res = render(filepath, context=context, at_paths=at_paths,
+                 at_encoding=at_encoding, at_engine=at_engine,
+                 at_ask_missing=at_ask_missing, at_cls_args=at_cls_args,
+                 **kwargs)
+    anytemplate.utils.write_to_output(res, output, at_encoding)
 
 # vim:sw=4:ts=4:et:
