@@ -30,11 +30,11 @@ def fallback(tmpl, at_paths=None, **kwargs):
 
 if anytemplate.compat.IS_PYTHON_3:
     LOGGER.info("Cheetah is not available in python 3")
-    _render = fallback
+    render_impl = fallback
 else:
     import Cheetah.Template  # :throw: ImportError
 
-    def _render(**kwargs):
+    def render_impl(**kwargs):
         """
         :param tmpl: Template content string or file
         :param at_paths: Template search paths
@@ -91,6 +91,7 @@ class Engine(anytemplate.engines.base.Engine):
         """
         see `help(Cheetah.Template.Template)` for options.
         """
+        super(Engine, self).__init__(**kwargs)
         self.engine_options = self.filter_options(kwargs,
                                                   self.engine_valid_options())
 
@@ -115,7 +116,7 @@ class Engine(anytemplate.engines.base.Engine):
         #    paths = at_paths + self._engine_valid_opts.get(..., [])
         #    ...
 
-        return _render(**kwargs)
+        return render_impl(**kwargs)
 
     def renders_impl(self, template_content, context, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,

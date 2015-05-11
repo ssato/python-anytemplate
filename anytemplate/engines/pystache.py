@@ -60,6 +60,7 @@ class Engine(anytemplate.engines.base.Engine):
         """
         see `help(pystache.render.Renderer)` for options.
         """
+        super(Engine, self).__init__(**kwargs)
         self._roptions = self.filter_options(kwargs,
                                              self.engine_valid_options())
 

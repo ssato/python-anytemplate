@@ -153,7 +153,7 @@ def parse_filespec(fspec, sep=':', gpat='*'):
     >>> parse_filespec("yaml:foo.dat")
     [('foo.dat', 'yaml')]
 
-    # FIXME: How to test this?
+    # TODO:
     # >>> parse_filespec("yaml:bar/*.conf")
     # [('bar/a.conf', 'yaml'), ('bar/b.conf', 'yaml')]
 
@@ -165,19 +165,22 @@ def parse_filespec(fspec, sep=':', gpat='*'):
         if gpat in fspec else [flip(tp)]
 
 
-def parse_and_load_contexts(contexts, werr=False,
-                            enc=anytemplate.compat.ENCODING):
+def parse_and_load_contexts(contexts, werr=False):
     """
     :param contexts: list of context file specs
     :param werr: Exit immediately if True and any errors occurrs
         while loading context files
-    :param enc: Input encoding of context files (dummy param)
     """
     ctx = container()
 
     if contexts:
         for fpath, ftype in concat(parse_filespec(f) for f in contexts):
-            diff = load(fpath, ftype)
+            try:
+                diff = load(fpath, ftype)
+            except:
+                if werr == True:
+                    raise
+
             ctx.update(diff)
 
     return ctx

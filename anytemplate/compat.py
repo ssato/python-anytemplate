@@ -30,11 +30,11 @@ def _from_iterable(iterables):
     >>> list(_from_iterable([[1, 2], [3, 4]]))
     [1, 2, 3, 4]
     """
-    for it in iterables:
-        for element in it:
+    for x in iterables:
+        for element in x:
             yield element
 
-
+# pylint disable=unused-argument
 def json_load(filepath, *args):
     """
     Alternative if anyconfig is not available.
@@ -44,6 +44,7 @@ def json_load(filepath, *args):
     return json.load(open(filepath))
 
 
+# pylint enable=unused-argument
 def get_file_extension(filepath):
     """
     Copy if anyconfig.utils.get_file_extension is not available.
@@ -63,10 +64,11 @@ def get_file_extension(filepath):
 
 
 if IS_PYTHON_3:
+    # pylint disable=invalid-name
     from_iterable = itertools.chain.from_iterable
     # pylint: disable=redefined-builtin
     raw_input = input
-    # pylint: enable=redefined-builtin
+    # pylint: enable=redefined-builtin, invalid-name
 
     def copen(filepath, flag='r', encoding=ENCODING):
         """
@@ -76,12 +78,14 @@ if IS_PYTHON_3:
         """
         return codecs.open(filepath, flag + 'b', encoding)
 else:
+    # pylint disable=invalid-name
     try:
         from_iterable = itertools.chain.from_iterable
     except AttributeError:
         from_iterable = _from_iterable
 
     raw_input = raw_input
+    # pylint enable=invalid-name
 
     def copen(filepath, flag='r', encoding=ENCODING):
         """

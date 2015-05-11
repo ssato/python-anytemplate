@@ -10,6 +10,8 @@ try:
     from logging import NullHandler
 except ImportError:  # python < 2.7 don't have it.
     class NullHandler(logging.Handler):
+        """Handler does nothing.
+        """
         def emit(self, record):
             pass
 

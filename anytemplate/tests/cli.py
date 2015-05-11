@@ -2,6 +2,8 @@
 # Copyright (C) 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
+"""Tests of anytempalte.cli
+"""
 import os.path
 import os
 import subprocess
@@ -16,11 +18,11 @@ from anytemplate.engine import find_by_name
 CLI_SCRIPT = os.path.join(anytemplate.tests.common.selfdir(), "..", "cli.py")
 
 
-def run(args=[]):
+def run(args=None):
     """
     :throw: subprocess.CalledProcessError if something goes wrong
     """
-    args = ["python", CLI_SCRIPT] + args
+    args = ["python", CLI_SCRIPT] + ([] if args is None else args)
     devnull = open("/dev/null", 'w')
 
     env = os.environ.copy()
@@ -29,11 +31,14 @@ def run(args=[]):
     subprocess.check_call(args, stdout=devnull, stderr=devnull, env=env)
 
 
-def run_and_check_exit_code(args=[], code=0):
+def run_and_check_exit_code(args=None, code=0):
+    """
+    Run main() and check its exit code.
+    """
     try:
-        TT.main(["dummy"] + args)
-    except SystemExit as e:
-        return e.code == code
+        TT.main(["dummy"] + ([] if args is None else args))
+    except SystemExit as exc:
+        return exc.code == code
 
     return True
 
