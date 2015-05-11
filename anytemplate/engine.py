@@ -34,10 +34,10 @@ except ImportError:
     LOGGER.info("tenjin support was disable as necessary module looks missing")
 
 try:
-    import anytemplate.engines.Cheetah
+    import anytemplate.engines.cheetah
     import Cheetah.Template  # flake8: noqa
 
-    ENGINES.append(anytemplate.engines.Cheetah.Engine)
+    ENGINES.append(anytemplate.engines.cheetah.Engine)
 except ImportError:
     LOGGER.info("Cheetah support was disable as necessary module looks missing")
 
