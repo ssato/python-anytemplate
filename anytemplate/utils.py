@@ -19,36 +19,12 @@ try:
     from anyconfig.api import container, load
 except ImportError:
     container = dict
-
-    try:
-        import json
-    except ImportError:
-        try:
-            import simplejson as json
-        except ImportError:
-            raise ("Could not import any json module to load contexts!"
-                   " Aborting...")
-
-    def load(filepath, *args):
-        return json.load(open(filepath))
+    load = anytemplate.compat.json_load
 
 try:
     from anyconfig.utils import get_file_extension  # flake8: noqa
 except ImportError:
-    def _get_file_extension(filepath):
-        """
-        >>> get_file_extension("/a/b/c")
-        ''
-        >>> get_file_extension("/a/b.txt")
-        'txt'
-        >>> get_file_extension("/a/b/c.tar.xz")
-        'xz'
-        """
-        _ext = os.path.splitext(filepath)[-1]
-        if _ext:
-            return _ext[1:] if _ext.startswith('.') else _ext
-        else:
-            return ''
+    from anytemplate.compat import get_file_extension
 
 
 LOGGER = logging.getLogger(__name__)
