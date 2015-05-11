@@ -297,12 +297,13 @@ How to test
 
 Try to run '[WITH_COVERAGE=1] ./pkg/runtest.sh [path_to_python_code]'.
 
-TODO
-======
+TODO & Issues
+===============
 
 - Add descriptions (doctext) of template engine and library specific options: WIP
 - Add descriptions (doctext) how anytemplate wraps each template engine and library: WIP
 - Complete unit tests of each template engine and library including template engine specific options, etc.
+- Stablize public and private (internal) APIs: private APIs needs a lot of work especially as I'm not sure how it should be yet.
 
 Misc
 ======
