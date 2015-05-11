@@ -34,6 +34,7 @@ def _from_iterable(iterables):
         for element in x:
             yield element
 
+
 # pylint disable=unused-argument
 def json_load(filepath, *args):
     """
