@@ -73,6 +73,19 @@ def fallback_render(template, context, at_paths=None,
         return open(tmpl).read()
 
 
+def filter_kwargs(keys, kwargs):
+    """
+    :param keys: A iterable key names to select items
+    :param kwargs: A dict or dict-like object reprensents keyword args
+
+    >>> list(filter_kwargs(("a", "b"), dict(a=1, b=2, c=3, d=4)))
+    [('a', 1), ('b', 2)]
+    """
+    for k in keys:
+        if k in kwargs:
+            yield (k, kwargs[k])
+
+
 # pylint: enable=unused-argument
 class Engine(object):
     """
@@ -141,12 +154,7 @@ class Engine(object):
         >>> Engine.filter_options(dict(bbb=2), ("aaa", ))
         {}
         """
-        def filter_kwargs(kwargs):
-            for k in keys:
-                if k in kwargs:
-                    yield (k, kwargs[k])
-
-        return dict((k, v) for k, v in filter_kwargs(kwargs))
+        return dict((k, v) for k, v in filter_kwargs(keys, kwargs))
 
     def __init__(self, **kwargs):
         """
