@@ -69,6 +69,11 @@ if IS_PYTHON_3:
     # pylint: enable=redefined-builtin
 
     def copen(filepath, flag='r', encoding=ENCODING):
+        """
+        >>> c = copen(__file__)
+        >>> c is not None
+        True
+        """
         return codecs.open(filepath, flag + 'b', encoding)
 else:
     try:
@@ -80,8 +85,6 @@ else:
 
     def copen(filepath, flag='r', encoding=ENCODING):
         """
-        FIXME: How to test this ?
-
         >>> c = copen(__file__)
         >>> c is not None
         True
