@@ -94,4 +94,14 @@ class Test_10_with_workdir(unittest.TestCase):
         except anytemplate.engine.TemplateNotFound:
             pass
 
+    def test_30_render_to(self):
+        tmpl = os.path.join(self.workdir, "a.t")
+        output = os.path.join(self.workdir, "a.txt")
+        open(tmpl, 'w').write("$a")
+
+        TT.render_to(tmpl, dict(a="aaa", ), output,
+                     at_engine="string.Template")
+        self.assertTrue(os.path.exists(output))
+        self.assertEquals(open(output).read(), "aaa")
+
 # vim:sw=4:ts=4:et:
