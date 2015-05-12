@@ -86,7 +86,7 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
     :return: Rendered string
     """
     ecls = find_engine(filepath, at_engine)
-    LOGGER.info("Use the template engine: %s", ecls.name())
+    LOGGER.debug("Use the template engine: %s", ecls.name())
     engine = ecls() if at_cls_args is None else ecls(**at_cls_args)
     at_paths = anytemplate.utils.mk_template_paths(filepath, at_paths)
 
@@ -115,7 +115,7 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
         usr_tmpldir = os.path.dirname(usr_tmpl)
 
         if template is None:
-            LOGGER.info("Render %s instead of %s", usr_tmpl, filepath)
+            LOGGER.debug("Render %s instead of %s", usr_tmpl, filepath)
             target = usr_tmpl
 
         return render_fn(target, context=context,
