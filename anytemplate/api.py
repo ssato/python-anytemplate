@@ -113,6 +113,10 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
         usr_tmpl = anytemplate.utils.normpath(_at_usr_tmpl)
         usr_tmpldir = os.path.dirname(usr_tmpl)
 
+        if template is None:
+            LOGGER.info("Render %s instead of %s", usr_tmpl, filepath)
+            target = usr_tmpl
+
         return render_fn(target, context=context,
                          at_paths=(at_paths + [usr_tmpldir]),
                          at_encoding=at_encoding, **kwargs)

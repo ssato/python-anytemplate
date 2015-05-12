@@ -90,7 +90,18 @@ class Test_10_with_workdir(unittest.TestCase):
                                      _at_usr_tmpl=tmpl),
                           "aaa")
 
-    def test_12__render__usr_tmpl_given(self):
+    def test_12__render__usr_tmpl_given_by_kwargs__altname(self):
+        tmpl = os.path.join(self.workdir, "a.t")
+        open(tmpl, 'w').write("$a")
+
+        self.assertEquals(TT._render(None, "b.t",
+                                     dict(a="aaa", ),
+                                     at_engine="string.Template",
+                                     at_ask_missing=True,
+                                     _at_usr_tmpl=tmpl),
+                          "aaa")
+
+    def test_14__render__usr_tmpl_given(self):
         """
         TODO: Test cases if given template file is missing but its path will be
         given by users on demand.
