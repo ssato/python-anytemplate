@@ -107,7 +107,8 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
         if _at_usr_tmpl is None:
             _at_usr_tmpl = anytemplate.compat.raw_input(
                 "\nPlease enter an absolute or relative path starting "
-                "from '.' of missing template files: "
+                "from '.' of missing template file"
+                "%s : " % (", " + filepath if template is None else '')
             ).strip()
 
         usr_tmpl = anytemplate.utils.normpath(_at_usr_tmpl)
