@@ -221,16 +221,18 @@ def mk_template_paths(filepath=None, template_paths=None):
 
     >>> fn = __file__
     >>> fdir = os.path.abspath(os.path.dirname(fn))
-    >>> assert mk_template_paths(fn, []) == ['.', fdir]
+    >>> assert mk_template_paths(fn, []) == [fdir, os.curdir]
     >>> assert mk_template_paths(fn, ["/etc", ]) == ["/etc", fdir]
-    >>> assert mk_template_paths(None, ["/etc", ]) == [os.curdir]
+    >>> assert mk_template_paths(None, ["/etc", ]) == ["/etc", os.curdir]
+    >>> assert mk_template_paths(None, None) == [os.curdir]
     """
     if filepath is None or not filepath:
-        return [os.curdir]
+        paths = [os.curdir]
+        return paths if template_paths is None else template_paths + paths
 
     tmpldir = os.path.dirname(os.path.abspath(filepath))
     if template_paths is None or not template_paths:
-        return [os.curdir, tmpldir]  # default:
+        return [tmpldir, os.curdir]  # default:
     else:
         return uniq(template_paths + [tmpldir])
 
