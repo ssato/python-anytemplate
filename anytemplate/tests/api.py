@@ -87,7 +87,7 @@ class Test_10_with_workdir(unittest.TestCase):
                                     at_engine="string.Template"),
                           "aaa")
 
-    def test_20_render__template_not_found(self):
+    def test_20_render__template_missing(self):
         try:
             TT.render("not_exisiting_tmpl", at_engine="string.Template")
             assert False, "Not reached here"
