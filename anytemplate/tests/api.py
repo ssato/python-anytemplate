@@ -79,6 +79,24 @@ class Test_10_with_workdir(unittest.TestCase):
     def tearDown(self):
         anytemplate.tests.common.cleanup_workdir(self.workdir)
 
+    def test_10__render__usr_tmpl_given_by_kwargs(self):
+        tmpl = os.path.join(self.workdir, "a.t")
+        open(tmpl, 'w').write("$a")
+
+        self.assertEquals(TT._render(None, os.path.basename(tmpl),
+                                     dict(a="aaa", ),
+                                     at_engine="string.Template",
+                                     at_ask_missing=True,
+                                     _at_usr_tmpl=tmpl),
+                          "aaa")
+
+    def test_12__render__usr_tmpl_given(self):
+        """
+        TODO: Test cases if given template file is missing but its path will be
+        given by users on demand.
+        """
+        pass
+
     def test_20_render__no_at_paths(self):
         tmpl = os.path.join(self.workdir, "a.t")
         open(tmpl, 'w').write("$a")
@@ -87,7 +105,7 @@ class Test_10_with_workdir(unittest.TestCase):
                                     at_engine="string.Template"),
                           "aaa")
 
-    def test_20_render__template_missing(self):
+    def test_22_render__template_missing(self):
         try:
             TT.render("not_exisiting_tmpl", at_engine="string.Template")
             assert False, "Not reached here"
