@@ -123,14 +123,13 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
                          at_encoding=at_encoding, **kwargs)
 
 
-def renders(template_content, context=None, at_paths=None,
-            at_encoding=anytemplate.compat.ENCODING,
-            at_engine=None, at_ask_missing=False,
-            at_cls_args=None, **kwargs):
+def renders(template, context=None, at_paths=None,
+            at_encoding=anytemplate.compat.ENCODING, at_engine=None,
+            at_ask_missing=False, at_cls_args=None, **kwargs):
     """
     Compile and render given template string and return the result string.
 
-    :param template_content: Template content string
+    :param template: Template content string
     :param context: A dict or dict-like object to instantiate given
         template file
     :param at_paths: Template search paths
@@ -143,7 +142,7 @@ def renders(template_content, context=None, at_paths=None,
 
     :return: Rendered string
     """
-    return _render(template_content, context=context, at_paths=at_paths,
+    return _render(template, context=context, at_paths=at_paths,
                    at_encoding=at_encoding, at_engine=at_engine,
                    at_ask_missing=at_ask_missing, at_cls_args=at_cls_args,
                    **kwargs)
@@ -156,7 +155,7 @@ def render(filepath, context=None, at_paths=None,
     """
     Compile and render given template file and return the result string.
 
-    :param template: Template file path
+    :param filepath: Template file path
     :param context: A dict or dict-like object to instantiate given
         template file
     :param at_paths: Template search paths
@@ -183,7 +182,7 @@ def render_to(filepath, context=None, output=None, at_paths=None,
     Render given template file and write the result string to given `output`.
     The result string will be printed to sys.stdout if output is None or '-'.
 
-    :param template: Template file path
+    :param filepath: Template file path
     :param context: A dict or dict-like object to instantiate given
         template file
     :param output: File path to write the rendered result string to or None/'-'
