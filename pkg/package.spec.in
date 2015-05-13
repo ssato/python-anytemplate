@@ -91,6 +91,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed May 13 2015 Satoru SATOH <ssato@redhat.com> - 0.0.3.999-1
+- fix a bug that _render cannot render alternate template passed by user
+- various small bug fixes and refactorings
+
 * Tue May 12 2015 Satoru SATOH <ssato@redhat.com> - 0.0.3-1
 - Changed the license from BSD to MIT as it's easier to understand
 - Added an API to list available template engines
