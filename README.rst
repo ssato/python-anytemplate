@@ -5,6 +5,18 @@ anytemplate
 About
 ======
 
+.. image:: https://pypip.in/version/anytemplate/badge.svg
+   :target: https://pypi.python.org/pypi/anytemplate/
+   :alt: Latest Version
+
+.. image:: https://pypip.in/py_versions/anytemplate/badge.svg
+   :target: https://pypi.python.org/pypi/anytemplate/
+   :alt: Supported Python versions
+
+.. image:: https://pypip.in/license/anytemplate/badge.png
+   :target: https://pypi.python.org/pypi/anytemplate/
+   :alt: MIT License
+
 .. image:: https://api.travis-ci.org/ssato/python-anytemplate.png?branch=master
    :target: https://travis-ci.org/ssato/python-anytemplate
    :alt: Test status
