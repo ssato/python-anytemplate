@@ -24,7 +24,7 @@ class Engine(anytemplate.engines.base.Engine):
     """
     Template Engine class to support `Jinja2 <http://jinja.pocoo.org>`_ .
 
-    - Limitations: None obvious
+    - Limitations: None obvious except for only FileSystemLoader is supported
     - Supported option parameters specific to Jinja2:
 
       - Option parameters are passed to jinja2.Environment.__init__().
@@ -58,19 +58,41 @@ class Engine(anytemplate.engines.base.Engine):
                           "auto_reload", "bytecode_cache")
     _render_valid_opts = _engine_valid_opts
 
-    def get_env(self, paths=None, encoding=None):
+    def __init__(self, **kwargs):
         """
-        :param paths: Template search paths
-        :param encoding: Template charset encoding, e.g. utf-8
+        see `help(jinja2.Environment)` for options.
         """
-        if paths is None:
-            paths = ['.']
+        super(Engine, self).__init__(**kwargs)
+        self._env_options = self.filter_options(kwargs,
+                                                self.engine_valid_options())
 
-        if encoding is None:
-            encoding = ENCODING.lower()
+    def __render(self, template, context, is_file=True, at_paths=None,
+                 at_encoding=anytemplate.compat.ENCODING, **kwargs):
+        """
+        Render given template string and return the result.
 
-        return jinja2.Environment(loader=jinja2.FileSystemLoader(paths,
-                                                                 encoding))
+        :param template: Template content
+        :param context: A dict or dict-like object to instantiate given
+            template file
+        :param is_file: True if given `template` is a filename
+        :param at_paths: Template search paths
+        :param at_encoding: Template encoding
+        :param kwargs: Keyword arguments passed to jinja2.Envrionment. Please
+            note that 'loader' option is not supported because anytemplate does
+            not support to load template except for files
+
+        :return: Rendered string
+
+        """
+        loader = jinja2.FileSystemLoader(at_paths, at_encoding.lower())
+        env = jinja2.Environment(loader=loader, **self._env_options)
+        tmpl = (env.get_template if is_file else env.from_string)(template)
+        if kwargs:
+            context.update(kwargs)
+        try:
+            return tmpl.render(**context)
+        except jinja2.exceptions.TemplateNotFound as e:
+            raise anytemplate.engines.base.TemplateNotFound(str(e))
 
     def renders_impl(self, template_content, context, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,
@@ -91,17 +113,12 @@ class Engine(anytemplate.engines.base.Engine):
 
         >>> engine = Engine()
         >>> s = engine.renders_impl('a = {{ a }}, b = "{{ b }}"',
-        ...                         {'a': 1, 'b': 'bbb'})
+        ...                         {'a': 1, 'b': 'bbb'}, ['.'])
         >>> assert s == 'a = 1, b = "bbb"'
         """
-        try:
-            env = self.get_env(at_paths, at_encoding.lower())
-            tmpl = env.from_string(template_content)
-
-            return tmpl.render(**context)
-
-        except jinja2.exceptions.TemplateNotFound as e:
-            raise anytemplate.engines.base.TemplateNotFound(str(e))
+        return self.__render(template_content, context, is_file=False,
+                             at_paths=at_paths, at_encoding=at_encoding,
+                             **kwargs)
 
     def render_impl(self, template, context, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
@@ -120,13 +137,8 @@ class Engine(anytemplate.engines.base.Engine):
 
         :return: Rendered string
         """
-        try:
-            env = self.get_env(at_paths, at_encoding.lower())
-            tmpl = env.get_template(os.path.basename(template))
-
-            return tmpl.render(**context)
-
-        except jinja2.exceptions.TemplateNotFound as e:
-            raise anytemplate.engines.base.TemplateNotFound(str(e))
+        return self.__render(os.path.basename(template), context, is_file=True,
+                             at_paths=at_paths, at_encoding=at_encoding,
+                             **kwargs)
 
 # vim:sw=4:ts=4:et:
