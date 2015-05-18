@@ -216,6 +216,7 @@ class Engine(object):
         :return: Rendered string
         """
         kwargs = self.filter_options(kwargs, self.render_valid_options())
+        paths = anytemplate.utils.mk_template_paths(None, at_paths)
         if context is None:
             context = {}
 
@@ -223,7 +224,7 @@ class Engine(object):
                      template_content[:10],
                      "without" if context is None else "with a",
                      str(kwargs))
-        return self.renders_impl(template_content, context, at_paths=at_paths,
+        return self.renders_impl(template_content, context, at_paths=paths,
                                  at_encoding=at_encoding, **kwargs)
 
     def render(self, template, context=None, at_paths=None,
