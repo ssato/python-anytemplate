@@ -212,29 +212,25 @@ def write_to_output(content, output=None,
             print(content.encode(encoding.lower()), file=get_output_stream())
 
 
-def mk_template_paths(filepath=None, template_paths=None):
+def mk_template_paths(filepath, paths=None):
     """
     Make template paths from given filepath and paths list.
 
-    :param filepath: (Base) filepath of template file
-    :param template_paths: Template search paths
+    :param filepath: (Base) filepath of template file or None
+    :param paths: A list of template search paths or None
 
     >>> fn = __file__
     >>> fdir = os.path.abspath(os.path.dirname(fn))
-    >>> assert mk_template_paths(fn, []) == [fdir, os.curdir]
-    >>> assert mk_template_paths(fn, ["/etc", ]) == ["/etc", fdir]
-    >>> assert mk_template_paths(None, ["/etc", ]) == ["/etc", os.curdir]
+    >>> assert mk_template_paths(fn, []) == [fdir]
+    >>> assert mk_template_paths(fn, ["/etc"]) == ["/etc", fdir]
+    >>> assert mk_template_paths(None, ["/etc"]) == ["/etc"]
     >>> assert mk_template_paths(None, None) == [os.curdir]
     """
-    if filepath is None or not filepath:
-        paths = [os.curdir]
-        return paths if template_paths is None else template_paths + paths
+    if filepath is None:
+        return [os.curdir] if paths is None else paths
 
     tmpldir = os.path.dirname(os.path.abspath(filepath))
-    if template_paths is None or not template_paths:
-        return [tmpldir, os.curdir]  # default:
-    else:
-        return uniq(template_paths + [tmpldir])
+    return [tmpldir] if paths is None else paths + [tmpldir]
 
 
 def find_template_from_path(filepath, paths=None):
