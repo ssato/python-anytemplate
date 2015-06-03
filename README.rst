@@ -7,27 +7,27 @@ About
 
 .. image:: https://pypip.in/version/anytemplate/badge.svg
    :target: https://pypi.python.org/pypi/anytemplate/
-   :alt: Latest Version
+   :alt: [Latest Version]
 
 .. image:: https://pypip.in/py_versions/anytemplate/badge.svg
    :target: https://pypi.python.org/pypi/anytemplate/
-   :alt: Supported Python versions
+   :alt: [Python versions]
 
 .. .. image:: https://pypip.in/license/anytemplate/badge.png
    :target: https://pypi.python.org/pypi/anytemplate/
-   :alt: MIT License
+   :alt: [MIT License]
 
 .. image:: https://api.travis-ci.org/ssato/python-anytemplate.png?branch=master
    :target: https://travis-ci.org/ssato/python-anytemplate
-   :alt: Test status
+   :alt: [Test status]
 
 .. image:: https://coveralls.io/repos/ssato/python-anytemplate/badge.png
    :target: https://coveralls.io/r/ssato/python-anytemplate
-   :alt: Coverage Status
+   :alt: [Coverage Status]
 
 .. image:: https://landscape.io/github/ssato/python-anytemplate/master/landscape.png
    :target: https://landscape.io/github/ssato/python-anytemplate/master
-   :alt: Code Health
+   :alt: [Code Health]
 
 This is a python library works as an abstraction layer for various python
 template engines and rendering libraries, and provide a few very simple and
