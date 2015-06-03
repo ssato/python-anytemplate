@@ -91,7 +91,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
-* Wed May 13 2015 Satoru SATOH <ssato@redhat.com> - 0.0.3.999-1
+* Wed Jun  3 2015 Satoru SATOH <ssato@redhat.com> - 0.0.4-1
+- fix a bug that _render cannot render alternate template passed by user
+- [engines.jinja2] fix a bug that jinja2's exception while fetching template
+  but failed is not caught
+- fix a few bugs around the code to compute template search paths
 - fix a bug that _render cannot render alternate template passed by user
 - various small bug fixes and refactorings
 
