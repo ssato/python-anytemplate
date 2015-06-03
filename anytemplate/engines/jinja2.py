@@ -88,10 +88,10 @@ class Engine(anytemplate.engines.base.Engine):
         """
         loader = jinja2.FileSystemLoader(at_paths, at_encoding.lower())
         env = jinja2.Environment(loader=loader, **self._env_options)
-        tmpl = (env.get_template if is_file else env.from_string)(template)
         if kwargs:
             context.update(kwargs)
         try:
+            tmpl = (env.get_template if is_file else env.from_string)(template)
             return tmpl.render(**context)
         except jinja2.exceptions.TemplateNotFound as e:
             raise TemplateNotFound(str(e))
