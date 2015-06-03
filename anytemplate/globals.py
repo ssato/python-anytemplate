@@ -24,4 +24,25 @@ AUTHOR = "Satoru SATOH <ssat@redhat.com>"
 LOGGER = logging.getLogger(PACKAGE)
 LOGGER.addHandler(NullHandler())
 
+
+class TemplateNotFound(Exception):
+    """
+    Exception during rendering template[s] and any of templates are missing.
+    """
+    pass
+
+
+class TemplateEngineNotFound(Exception):
+    """
+    Raised if no any appropriate template engines were found.
+    """
+    pass
+
+
+class CompileError(Exception):
+    """
+    Excepction indicates any errors during template compilation.
+    """
+    pass
+
 # vim:sw=4:ts=4:et:

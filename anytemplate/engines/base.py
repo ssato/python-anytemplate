@@ -12,22 +12,10 @@ import logging
 import anytemplate.compat
 import anytemplate.utils
 
+from anytemplate.globals import TemplateNotFound
+
 
 LOGGER = logging.getLogger(__name__)
-
-
-class TemplateNotFound(Exception):
-    """
-    Exception during rendering template[s] and any of templates are missing.
-    """
-    pass
-
-
-class CompileError(Exception):
-    """
-    Excepction indicates any errors during template compilation.
-    """
-    pass
 
 
 # pylint: disable=unused-argument

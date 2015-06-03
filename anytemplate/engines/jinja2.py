@@ -15,6 +15,8 @@ import os
 import anytemplate.compat
 import anytemplate.engines.base
 
+from anytemplate.globals import TemplateNotFound
+
 
 LOGGER = logging.getLogger(__name__)
 ENCODING = anytemplate.compat.ENCODING
@@ -92,7 +94,7 @@ class Engine(anytemplate.engines.base.Engine):
         try:
             return tmpl.render(**context)
         except jinja2.exceptions.TemplateNotFound as e:
-            raise anytemplate.engines.base.TemplateNotFound(str(e))
+            raise TemplateNotFound(str(e))
 
     def renders_impl(self, template_content, context, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,

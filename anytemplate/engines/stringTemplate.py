@@ -11,6 +11,8 @@ import string
 import anytemplate.engines.base
 import anytemplate.compat
 
+from anytemplate.globals import CompileError
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -60,7 +62,7 @@ class Engine(anytemplate.engines.base.Engine):
             try:
                 return string.Template(template_content).substitute(context)
             except KeyError as exc:
-                raise anytemplate.engines.base.CompileError(str(exc))
+                raise CompileError(str(exc))
 
     def render_impl(self, template, context, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING,

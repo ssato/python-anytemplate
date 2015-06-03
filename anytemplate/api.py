@@ -13,17 +13,8 @@ import anytemplate.engine
 import anytemplate.globals
 import anytemplate.utils
 
-
-# Aliases:
-LOGGER = anytemplate.globals.LOGGER
-TemplateNotFound = anytemplate.engine.TemplateNotFound
-
-
-class TemplateEngineNotFound(Exception):
-    """
-    Raised if no any appropriate template engines were found.
-    """
-    pass
+from anytemplate.globals import LOGGER, TemplateNotFound, \
+    TemplateEngineNotFound, CompileError  # flake8: noqa
 
 
 def list_engines():
@@ -98,11 +89,11 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
     try:
         return render_fn(target, context=context, at_paths=at_paths,
                          at_encoding=at_encoding, **kwargs)
-    except anytemplate.engine.TemplateNotFound:
+    except TemplateNotFound as exc:
         LOGGER.warn("** Missing template[s]: paths=%s",
                     ','.join(at_paths))
         if not at_ask_missing:
-            raise
+            raise TemplateNotFound(str(exc))
 
         if _at_usr_tmpl is None:
             _at_usr_tmpl = anytemplate.compat.raw_input(

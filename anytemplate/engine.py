@@ -49,9 +49,6 @@ except ImportError:
                 "module looks missing")
 
 
-TemplateNotFound = anytemplate.engines.base.TemplateNotFound
-
-
 def list_engines_by_priority(engines=None):
     """
     Return a list of engines supported sorted by each priority.

@@ -12,6 +12,7 @@ import anytemplate.engines.stringTemplate
 import anytemplate.tests.common
 
 from anytemplate.engine import find_by_name
+from anytemplate.globals import TemplateNotFound
 
 
 class Test_00(unittest.TestCase):
@@ -67,7 +68,7 @@ class Test_00(unittest.TestCase):
                 TT.renders("{% include 'not_existing.j2' %}",
                            at_engine="jinja2", at_ask_missing=False)
                 assert False, "Not reached here"
-            except anytemplate.engine.TemplateNotFound:
+            except TemplateNotFound:
                 pass
 
 
@@ -120,7 +121,7 @@ class Test_10_with_workdir(unittest.TestCase):
         try:
             TT.render("not_exisiting_tmpl", at_engine="string.Template")
             assert False, "Not reached here"
-        except anytemplate.engine.TemplateNotFound:
+        except TemplateNotFound:
             pass
 
     def test_30_render_to(self):

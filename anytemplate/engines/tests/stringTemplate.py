@@ -8,6 +8,8 @@ import anytemplate.engines.stringTemplate as TT
 import anytemplate.engines.base
 import anytemplate.tests.common
 
+from anytemplate.globals import CompileError
+
 
 class Test_00(unittest.TestCase):
 
@@ -27,7 +29,7 @@ class Test_00(unittest.TestCase):
         try:
             engine.renders_impl("$a", {})
             assert False, "Expected exception was not raised!"
-        except anytemplate.engines.base.CompileError:
+        except CompileError:
             pass
 
 
