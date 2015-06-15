@@ -115,8 +115,8 @@ class Engine(anytemplate.engines.base.Engine):
         # if at_paths is not None:
         #    paths = at_paths + self._engine_valid_opts.get(..., [])
         #    ...
-
-        return render_impl(**kwargs)
+        self.engine_options.update(kwargs)
+        return render_impl(**self.engine_options)
 
     def renders_impl(self, template_content, context, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,
