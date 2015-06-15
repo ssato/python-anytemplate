@@ -182,7 +182,7 @@ def parse_and_load_contexts(contexts, werr=False):
             try:
                 diff = load(fpath, ftype)
             except:
-                if werr == True:
+                if werr:
                     raise
 
             if diff is not None:
