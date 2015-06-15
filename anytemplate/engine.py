@@ -19,19 +19,19 @@ try:
     import anytemplate.engines.jinja2
     ENGINES.append(anytemplate.engines.jinja2.Engine)
 except ImportError:
-    LOGGER.info("jinja2 support was disable as necessary module looks missing")
+    LOGGER.info("jinja2 support was disable as needed module looks missing")
 
 try:
     import anytemplate.engines.mako
     ENGINES.append(anytemplate.engines.mako.Engine)
 except ImportError:
-    LOGGER.info("mako support was disable as necessary module looks missing")
+    LOGGER.info("mako support was disable as needed module looks missing")
 
 try:
     import anytemplate.engines.tenjin
     ENGINES.append(anytemplate.engines.tenjin.Engine)
 except ImportError:
-    LOGGER.info("tenjin support was disable as necessary module looks missing")
+    LOGGER.info("tenjin support was disable as needed module looks missing")
 
 try:
     import anytemplate.engines.cheetah
@@ -39,14 +39,14 @@ try:
 
     ENGINES.append(anytemplate.engines.cheetah.Engine)
 except ImportError:
-    LOGGER.info("Cheetah support was disable as necessary module looks missing")
+    LOGGER.info("Cheetah support was disable as needed module looks missing")
 
 try:
     import anytemplate.engines.pystache
     ENGINES.append(anytemplate.engines.pystache.Engine)
 except ImportError:
-    LOGGER.info("Pystache (mustache) support was disable as necessary "
-                "module looks missing")
+    LOGGER.info("Pystache (mustache) support was disable as needed module "
+                "looks missing")
 
 
 def list_engines_by_priority(engines=None):
