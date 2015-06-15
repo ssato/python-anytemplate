@@ -124,6 +124,18 @@ class Test_10_with_workdir(unittest.TestCase):
         except TemplateNotFound:
             pass
 
+    def test_24__render__with_engine_specific_options(self):
+        tmpl = os.path.join(self.workdir, "a.t")
+        open(tmpl, 'w').write("""\
+{% set xs = [1, 2, 3] -%}
+{% do xs.append(4) -%}
+{{ xs|join(',') }}
+""")
+        if find_by_name("jinja2"):
+            self.assertEquals(TT.render(tmpl, at_engine="jinja2",
+                                        extensions=["jinja2.ext.do"]),
+                              "1,2,3,4")
+
     def test_30_render_to(self):
         tmpl = os.path.join(self.workdir, "a.t")
         output = os.path.join(self.workdir, "a.txt")

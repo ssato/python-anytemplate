@@ -46,13 +46,19 @@ class Test_10_effectful_functions(unittest.TestCase):
             r = egn.render(tmpl, {'a': "aaa", }, [self.workdir])
             self.assertEquals(r, "a = aaa")
 
-    def test_20_render(self):
-        tmpl = "a.j2"
-        open(os.path.join(self.workdir, tmpl), 'w').write("a = {{ a }}")
+    def test_12_render__with_extension(self):
+        tmpl = "b.j2"
+        content = """\
+{% set xs = [1, 2, 3] -%}
+{% do xs.append(4) -%}
+{{ xs|join(',') }}
+"""
+        open(os.path.join(self.workdir, tmpl), 'w').write(content)
 
         if TT is not None:
             egn = TT.Engine()
-            r = egn.render(tmpl, {'a': "aaa", }, [self.workdir])
-            self.assertEquals(r, "a = aaa")
+            r = egn.render(tmpl, at_paths=[self.workdir],
+                           extensions=["jinja2.ext.do"])
+            self.assertEquals(r, "1,2,3,4")
 
 # vim:sw=4:ts=4:et:
