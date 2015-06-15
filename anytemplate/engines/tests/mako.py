@@ -44,6 +44,17 @@ class Test_00_pure_functions(unittest.TestCase):
             egn = TT.Engine()
             self.assertEquals(egn.renders(tmpl_s, filename="x"), tmpl_s)
 
+    def test_28_renders__with_special_option(self):
+        tmpl_s = "hello world!"
+
+        if TT is not None:
+            def null_preproc(*args, **kwargs):
+                return ''
+
+            egn = TT.Engine()
+            self.assertEquals(egn.renders(tmpl_s, preprocessor=null_preproc),
+                              '')
+
 
 class Test_10_effectful_functions(unittest.TestCase):
 

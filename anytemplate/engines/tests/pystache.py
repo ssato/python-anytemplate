@@ -45,6 +45,13 @@ class Test_00(unittest.TestCase):
             self.assertEquals(egn.renders(tmpl_s, missing_tags="strict"),
                               tmpl_s)
 
+    def test_28_renders__with_special_option(self):
+        tmpl_s = "{{ a }}"
+
+        if TT is not None:
+            egn = TT.Engine(missing_tags='ignore')
+            self.assertEquals(egn.renders(tmpl_s), '')
+
 
 class Test_10(unittest.TestCase):
 

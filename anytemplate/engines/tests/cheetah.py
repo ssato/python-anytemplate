@@ -53,6 +53,11 @@ class Test_00(unittest.TestCase):
             egn = TT.Engine()
             self.assertEquals(egn.renders(tmpl_s, file="x"), tmpl_s)
 
+    def test_28_renders__with_engine_special_option(self):
+        if TT is not None:
+            egn = TT.Engine(compilerSettings={'cheetahVarStartToken': '@'})
+            self.assertEquals(egn.renders("@a", {'a': ""}), '')
+
     def test_36_renders_impl__no_context__w_filename(self):
         tmpl_s = "hello world!"
 
