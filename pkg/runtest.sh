@@ -22,6 +22,8 @@ fi
 
 if `which pep8 2>&1 > /dev/null`; then
     #pep8_opts="--statistics --benchmark"
+    # Suppress 'module level import not at top of file' error
+    pep8_opts="--ignore=E402"
     if `which flake8 2>&1 > /dev/null`; then
         pep8_opts="$pep8_opts --doctests"
         function _pep8 () { flake8 $pep8_opts $@; }
