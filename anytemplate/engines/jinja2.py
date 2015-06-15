@@ -86,6 +86,9 @@ class Engine(anytemplate.engines.base.Engine):
         :return: Rendered string
 
         """
+        eopts = self.filter_options(kwargs, self.engine_valid_options())
+        self._env_options.update(eopts)
+
         loader = jinja2.FileSystemLoader(at_paths, at_encoding.lower())
         env = jinja2.Environment(loader=loader, **self._env_options)
         if kwargs:
