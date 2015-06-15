@@ -2,13 +2,14 @@
 # Copyright (C). 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
 import unittest
 
 import anytemplate.engine as TT
 import anytemplate.engines.stringTemplate as stringTemplate
 
 
-class Test_00(unittest.TestCase):
+class Test(unittest.TestCase):
 
     def test_10_find_by_filename(self):
         stringTemplate.Engine._file_extensions.append("t")

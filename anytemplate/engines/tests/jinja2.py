@@ -2,6 +2,7 @@
 # Copyright (C) 2011 - 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
 import os
 import unittest
 
@@ -12,7 +13,7 @@ except ImportError:
     TT = None
 
 
-class Test_00_pure_functions(unittest.TestCase):
+class Test00(unittest.TestCase):
 
     def test_20_renders(self):
         tmpl_s = 'a = {{ a }}, b = "{{ b }}"'
@@ -29,7 +30,7 @@ class Test_00_pure_functions(unittest.TestCase):
                               "aaa")
 
 
-class Test_10_effectful_functions(unittest.TestCase):
+class Test10(unittest.TestCase):
 
     def setUp(self):
         self.workdir = anytemplate.tests.common.setup_workdir()
@@ -43,8 +44,8 @@ class Test_10_effectful_functions(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            r = egn.render(tmpl, {'a': "aaa", }, [self.workdir])
-            self.assertEquals(r, "a = aaa")
+            res = egn.render(tmpl, {'a': "aaa", }, [self.workdir])
+            self.assertEquals(res, "a = aaa")
 
     def test_12_render__with_extension(self):
         tmpl = "b.j2"
@@ -57,8 +58,8 @@ class Test_10_effectful_functions(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            r = egn.render(tmpl, at_paths=[self.workdir],
-                           extensions=["jinja2.ext.do"])
-            self.assertEquals(r, "1,2,3,4")
+            res = egn.render(tmpl, at_paths=[self.workdir],
+                             extensions=["jinja2.ext.do"])
+            self.assertEquals(res, "1,2,3,4")
 
 # vim:sw=4:ts=4:et:

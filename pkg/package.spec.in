@@ -91,6 +91,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Jun 16 2015 Satoru SATOH <ssato@redhat.com> - 0.0.5-1
+- fix bugs that template engine specific keyword options are not correctly
+  processed in jinja2 and cheetah modules
+- various small bug fixes and refactorings
+
 * Wed Jun  3 2015 Satoru SATOH <ssato@redhat.com> - 0.0.4-1
 - fix a bug that _render cannot render alternate template passed by user
 - [engines.jinja2] fix a bug that jinja2's exception while fetching template

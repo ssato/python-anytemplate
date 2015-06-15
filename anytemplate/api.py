@@ -112,6 +112,8 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
         return render_fn(target, context=context,
                          at_paths=(at_paths + [usr_tmpldir]),
                          at_encoding=at_encoding, **kwargs)
+    except Exception as exc:
+        raise CompileError(str(exc))
 
 
 def renders(template, context=None, at_paths=None,

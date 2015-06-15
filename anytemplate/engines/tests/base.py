@@ -2,11 +2,12 @@
 # Copyright (C) 2015 Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
 import unittest
 import anytemplate.engines.base as TT  # stands for test target
 
 
-class Test_00(unittest.TestCase):
+class Test(unittest.TestCase):
 
     def test_10__class_methods(self):
         self.assertEquals(TT.Engine.name(), "base")

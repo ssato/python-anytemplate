@@ -2,6 +2,7 @@
 # Copyright (C). 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
 import os.path
 import os
 import unittest
@@ -10,7 +11,7 @@ import anytemplate.utils as TT
 import anytemplate.tests.common
 
 
-class Test_00_functions(unittest.TestCase):
+class Test00(unittest.TestCase):
 
     def test_02_uniq(self):
         self.assertEquals(TT.uniq([]), [])
@@ -58,8 +59,8 @@ class Test_00_functions(unittest.TestCase):
 
     def test_52_parse_and_load_contexts__werr(self):
         try:
-            t = TT.parse_and_load_contexts(["/a/b/c.json"], werr=True)
-            if t is None:  # anyconfig.load may return None
+            tmpl = TT.parse_and_load_contexts(["/a/b/c.json"], werr=True)
+            if tmpl is None:  # anyconfig.load may return None
                 return
             raise AssertionError("ValueError is not raised even if werr=True")
         except (ValueError, IOError):
@@ -69,17 +70,17 @@ class Test_00_functions(unittest.TestCase):
         self.assertEquals(TT.find_template_from_path(__file__), __file__)
 
     def test_62_find_template_from_path__w_paths(self):
-        fn = os.path.basename(__file__)
+        fname = os.path.basename(__file__)
         fdir = os.path.dirname(__file__)
 
-        self.assertEquals(TT.find_template_from_path(fn, [fdir]),
+        self.assertEquals(TT.find_template_from_path(fname, [fdir]),
                           __file__)
 
     def test_64_find_template_from_path__none(self):
         self.assertTrue(TT.find_template_from_path("not_existing") is None)
 
 
-class Test_10_with_workdir(unittest.TestCase):
+class Test10(unittest.TestCase):
 
     def setUp(self):
         self.workdir = anytemplate.tests.common.setup_workdir()

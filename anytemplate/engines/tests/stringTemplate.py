@@ -2,6 +2,7 @@
 # Copyright (C) 2015 Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
 import os.path
 import unittest
 import anytemplate.engines.stringTemplate as TT
@@ -11,7 +12,7 @@ import anytemplate.tests.common
 from anytemplate.globals import CompileError
 
 
-class Test_00(unittest.TestCase):
+class Test00(unittest.TestCase):
 
     def test_20_renders_impl(self):
         engine = TT.Engine()
@@ -28,12 +29,13 @@ class Test_00(unittest.TestCase):
         engine = TT.Engine()
         try:
             engine.renders_impl("$a", {})
-            assert False, "Expected exception was not raised!"
+            engine = None
         except CompileError:
             pass
+        self.assertFalse(engine is None)
 
 
-class Test_10(unittest.TestCase):
+class Test10(unittest.TestCase):
 
     def setUp(self):
         self.workdir = anytemplate.tests.common.setup_workdir()

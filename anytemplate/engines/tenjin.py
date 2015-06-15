@@ -2,6 +2,7 @@
 # Copyright (c) 2015 by Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
+# pylint: disable=unused-import
 """Tenjin support.
 """
 from __future__ import absolute_import
@@ -11,12 +12,10 @@ import tenjin  # :throw: ImportError
 tenjin.set_template_encoding('utf-8')  # FIXME
 
 # TODO: It seems that tenjin forces this to make it work factually.
-# pylint disable=unused-import
 from tenjin.helpers import CaptureContext, cache_as, capture_as, \
     captured_as, echo, echo_cached, escape, fragment_cache, \
     generate_tostrfunc, html, new_cycle, not_cached, start_capture, \
     stop_capture, to_str, unquote  # flake8: noqa
-# pylint enable=unused-import
 
 import anytemplate.compat
 import anytemplate.engines.base

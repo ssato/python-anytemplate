@@ -8,10 +8,16 @@ import tempfile
 
 
 def selfdir():
+    """
+    :return: module path itself
+    """
     return os.path.dirname(__file__)
 
 
 def setup_workdir():
+    """
+    :return: Path of the created working dir
+    """
     return tempfile.mkdtemp(dir="/tmp", prefix="python-anytemplate-tests-")
 
 

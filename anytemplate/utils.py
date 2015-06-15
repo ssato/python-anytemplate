@@ -54,7 +54,7 @@ def get_input_stream(encoding=anytemplate.compat.ENCODING):
     return codecs.getreader(encoding)(sys.stdin)
 
 
-def uniq(xs):
+def uniq(items):
     """Remove duplicates in given list with its order kept.
 
     >>> uniq([])
@@ -62,27 +62,27 @@ def uniq(xs):
     >>> uniq([1, 4, 5, 1, 2, 3, 5, 10])
     [1, 4, 5, 2, 3, 10]
     """
-    acc = xs[:1]
-    for x in xs[1:]:
-        if x not in acc:
-            acc += [x]
+    acc = items[:1]
+    for item in items[1:]:
+        if item not in acc:
+            acc += [item]
 
     return acc
 
 
-def chaincalls(callables, x):
+def chaincalls(callables, obj):
     """
-    :param callables: callable objects to apply to x in this order
-    :param x: Object to apply callables
+    :param callables: callable objects to apply to obj in this order
+    :param obj: Object to apply callables
 
     >>> chaincalls([lambda a: a + 1, lambda b: b + 2], 0)
     3
     """
-    for c in callables:
-        assert callable(c), "%s is not callable object!" % str(c)
-        x = c(x)
+    for fun in callables:
+        assert callable(fun), "%s is not callable object!" % str(fun)
+        obj = fun(obj)
 
-    return x
+    return obj
 
 
 def normpath(path):
@@ -94,22 +94,22 @@ def normpath(path):
     '/root/t'
     """
     if "~" in path:
-        fs = [os.path.expanduser, os.path.normpath, os.path.abspath]
+        funcs = [os.path.expanduser, os.path.normpath, os.path.abspath]
     else:
-        fs = [os.path.normpath, os.path.abspath]
+        funcs = [os.path.normpath, os.path.abspath]
 
-    return chaincalls(fs, path)
+    return chaincalls(funcs, path)
 
 
-def flip(xy):
+def flip(pair):
     """
-    :param xy: A tuple of pair items
+    :param pair: A tuple of pair items
 
     >>> flip((1, 2))
     (2, 1)
     """
-    (x, y) = xy
-    return (y, x)
+    (fst, snd) = pair
+    return (snd, fst)
 
 
 def concat(xss):
@@ -159,10 +159,13 @@ def parse_filespec(fspec, sep=':', gpat='*'):
 
     TODO: Allow '*' (glob pattern) in filepath when escaped with '\\', etc.
     """
-    tp = (ft, fp) = tuple(fspec.split(sep)) if sep in fspec else (None, fspec)
+    if sep in fspec:
+        tpl = (ftype, fpath) = tuple(fspec.split(sep))
+    else:
+        tpl = (ftype, fpath) = (None, fspec)
 
-    return [(fs, ft) for fs in sorted(glob.glob(fp))] \
-        if gpat in fspec else [flip(tp)]
+    return [(fs, ftype) for fs in sorted(glob.glob(fpath))] \
+        if gpat in fspec else [flip(tpl)]
 
 
 def parse_and_load_contexts(contexts, werr=False):
@@ -243,8 +246,8 @@ def find_template_from_path(filepath, paths=None):
     if paths is None or not paths:
         paths = [os.path.dirname(filepath), os.curdir]
 
-    for p in paths:
-        candidate = os.path.join(p, filepath)
+    for path in paths:
+        candidate = os.path.join(path, filepath)
         if os.path.exists(candidate):
             return candidate
 

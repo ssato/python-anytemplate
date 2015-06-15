@@ -2,6 +2,7 @@
 # Copyright (C) 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
 import os
 import unittest
 
@@ -13,7 +14,7 @@ except ImportError:
     TT = None
 
 
-class Test_00(unittest.TestCase):
+class Test10(unittest.TestCase):
 
     def test_20_renders(self):
         tmpl_s = "Hello, {{name}}!"
@@ -53,7 +54,7 @@ class Test_00(unittest.TestCase):
             self.assertEquals(egn.renders(tmpl_s), '')
 
 
-class Test_10(unittest.TestCase):
+class Test20(unittest.TestCase):
 
     def setUp(self):
         self.workdir = anytemplate.tests.common.setup_workdir()
@@ -84,8 +85,8 @@ class Test_10(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            r = egn.render(os.path.basename(tmpl), {'a': "aaa", },
-                           at_paths=[self.workdir])
-            self.assertEquals(r, "a = aaa")
+            res = egn.render(os.path.basename(tmpl), {'a': "aaa", },
+                             at_paths=[self.workdir])
+            self.assertEquals(res, "a = aaa")
 
 # vim:sw=4:ts=4:et:

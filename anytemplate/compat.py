@@ -2,6 +2,7 @@
 # Author: Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
+# pylint: disable=invalid-name, redefined-builtin
 """Module to keep backward compatibilities.
 """
 from __future__ import absolute_import
@@ -30,8 +31,8 @@ def _from_iterable(iterables):
     >>> list(_from_iterable([[1, 2], [3, 4]]))
     [1, 2, 3, 4]
     """
-    for x in iterables:
-        for element in x:
+    for itr in iterables:
+        for element in itr:
             yield element
 
 

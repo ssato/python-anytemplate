@@ -2,6 +2,7 @@
 # Copyright (C). 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
 import os.path
 import unittest
 
@@ -15,7 +16,7 @@ from anytemplate.engine import find_by_name
 from anytemplate.globals import TemplateNotFound
 
 
-class Test_00(unittest.TestCase):
+class Test00(unittest.TestCase):
 
     def test_00_list_engines(self):
         clss = TT.list_engines()
@@ -72,7 +73,7 @@ class Test_00(unittest.TestCase):
                 pass
 
 
-class Test_10_with_workdir(unittest.TestCase):
+class Test10(unittest.TestCase):
 
     def setUp(self):
         self.workdir = anytemplate.tests.common.setup_workdir()

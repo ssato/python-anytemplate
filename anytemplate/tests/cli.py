@@ -2,6 +2,7 @@
 # Copyright (C) 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
 """Tests of anytempalte.cli
 """
 import os.path
@@ -43,7 +44,7 @@ def run_and_check_exit_code(args=None, code=0):
     return True
 
 
-class Test_00(unittest.TestCase):
+class Test00(unittest.TestCase):
 
     def run_and_check_exit_code(self, args=[], code=0, _not=False):
         if _not:
@@ -85,7 +86,7 @@ class Test_00(unittest.TestCase):
             pass
 
 
-class Test_10_with_workdir(unittest.TestCase):
+class Test10(unittest.TestCase):
 
     def setUp(self):
         self.workdir = anytemplate.tests.common.setup_workdir()

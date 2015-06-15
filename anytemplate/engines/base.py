@@ -2,6 +2,7 @@
 # Author: Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
+# pylint: disable=unused-argument, no-self-use
 """
 Base class for template engine implementations.
 """
@@ -18,7 +19,6 @@ from anytemplate.globals import TemplateNotFound
 LOGGER = logging.getLogger(__name__)
 
 
-# pylint: disable=unused-argument
 def fallback_renders(template_content, *args, **kwargs):
     """
     Render given template string `template_content`.
@@ -74,7 +74,6 @@ def filter_kwargs(keys, kwargs):
             yield (k, kwargs[k])
 
 
-# pylint: enable=unused-argument
 class Engine(object):
     """
     Abstract class implementation of Template Engines.

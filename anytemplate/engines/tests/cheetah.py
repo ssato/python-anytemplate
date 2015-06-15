@@ -2,6 +2,7 @@
 # Copyright (C) 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
 import os
 import unittest
 
@@ -17,7 +18,7 @@ except ImportError:
     TT = None
 
 
-class Test_00(unittest.TestCase):
+class Test(unittest.TestCase):
 
     def test_12__init__w_kwargs(self):
         if TT is not None:
@@ -67,7 +68,7 @@ class Test_00(unittest.TestCase):
                               tmpl_s)
 
 
-class Test_10(unittest.TestCase):
+class Test10(unittest.TestCase):
 
     def setUp(self):
         self.workdir = anytemplate.tests.common.setup_workdir()
@@ -83,8 +84,8 @@ class Test_10(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            r = egn.render(tmpl, ctx, at_paths=[self.workdir])
-            self.assertEquals(r, ctx["greeting"])
+            res = egn.render(tmpl, ctx, at_paths=[self.workdir])
+            self.assertEquals(res, ctx["greeting"])
 
     def test_12_render__no_context(self):
         tmpl = os.path.join(self.workdir, "a.t")
@@ -93,8 +94,8 @@ class Test_10(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            r = egn.render(tmpl)
-            self.assertEquals(r, "hello!")
+            res = egn.render(tmpl)
+            self.assertEquals(res, "hello!")
 
     def test_26_render_impl__w_source(self):
         tmpl = os.path.join(self.workdir, "a.t")
@@ -104,8 +105,8 @@ class Test_10(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            r = egn.render_impl(tmpl, ctx, at_paths=[self.workdir],
-                                source="aaa")
-            self.assertEquals(r, ctx["greeting"])
+            res = egn.render_impl(tmpl, ctx, at_paths=[self.workdir],
+                                  source="aaa")
+            self.assertEquals(res, ctx["greeting"])
 
 # vim:sw=4:ts=4:et:
