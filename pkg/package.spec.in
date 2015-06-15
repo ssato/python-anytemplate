@@ -95,6 +95,7 @@ rm -rf $RPM_BUILD_ROOT
 - fix bugs that template engine specific keyword options are not correctly
   processed in jinja2 and cheetah modules
 - fix a lot of potential issues found by pylint and flake8
+- make pep8/flake8 ignoring 'module level import not at top of file' error"
 - various small bug fixes and refactorings
 
 * Wed Jun  3 2015 Satoru SATOH <ssato@redhat.com> - 0.0.4-1
