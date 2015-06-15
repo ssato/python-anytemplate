@@ -18,6 +18,15 @@ import anytemplate.utils
 LOGGER = logging.getLogger(__name__)
 
 
+def _render(tmpl, ctx):
+    """
+    :param tmpl: mako.template.Template object
+    :param ctx: A dict or dict-like object to instantiate given
+    """
+    is_py3k = anytemplate.compat.IS_PYTHON_3
+    return tmpl.render_unicode(**ctx) if is_py3k else tmpl.render(**ctx)
+
+
 class Engine(anytemplate.engines.base.Engine):
     """
     Template Engine class to support `Mako <http://www.makotemplates.org/>`_ .
@@ -83,16 +92,6 @@ class Engine(anytemplate.engines.base.Engine):
         self.lookup_options = self.filter_options(kwargs,
                                                   self.engine_valid_options())
 
-    def __render(self, tmpl, context):
-        """
-        :param tmpl: mako.template.Template object
-        :param context: A dict or dict-like object to instantiate given
-        """
-        if anytemplate.compat.IS_PYTHON_3:
-            return tmpl.render_unicode(**context)
-        else:
-            return tmpl.render(**context)
-
     def renders_impl(self, template_content, context, at_paths=None,
                      at_encoding=anytemplate.compat.ENCODING,
                      **kwargs):
@@ -128,7 +127,7 @@ class Engine(anytemplate.engines.base.Engine):
             kwargs["lookup"] = lookup
 
         tmpl = mako.template.Template(**kwargs)
-        return self.__render(tmpl, context)
+        return _render(tmpl, context)
 
     def render_impl(self, template, context, at_paths=None,
                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
@@ -169,6 +168,6 @@ class Engine(anytemplate.engines.base.Engine):
         kwargs["filename"] = template
 
         tmpl = mako.template.Template(**kwargs)
-        return self.__render(tmpl, context)
+        return _render(tmpl, context)
 
 # vim:sw=4:ts=4:et:
