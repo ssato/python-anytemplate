@@ -33,13 +33,13 @@ This is a python library works as an abstraction layer for various python
 template engines and rendering libraries, and provide a few very simple and
 easily understandable APIs to render templates.
 
-It also provide a CLI tool called anytemplate_cli to render templates written
-in these various template languages.
+Also a CLI tool called anytemplate_cli is provided to render templates written
+in these template languages.
 
 - Author: Satoru SATOH <ssato@redhat.com>
 - License: MIT
 
-It supports the following template engines currently:
+The following template engines are supported currently:
 
 .. csv-table::
    :header: "Name", "Notes"
@@ -272,14 +272,14 @@ format of context files, by help of python standard json or simplejson library.
 Template search paths
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The CLI tool (anytemplate_cli) supports to specify the template search
-paths with -T|--template-path option. This is useful when using 'include'
-directive in templates; ex. -T .:templates/.
+Template search paths are specified with -T|--template-path option of the CLI
+tool (anytemplate_cli).  This is useful when using 'include' directive in
+templates; ex. -T .:templates/.
 
-NOTE: The default search path will be [., dir_in_which_given_template_file_is]
-where templatedir is the directory in which the given template file exists if
--T option is not given.  And even if -T option is used, templatedir will be
-appended to that search paths at the end.
+NOTE: The default search path will be ['.',
+dir_in_which_given_template_file_is] where templatedir is the directory in
+which the given template file exists if -T option is not given.  And even if -T
+option is used, templatedir will be appended to that search paths at the end.
 
 Build & Install
 ================
@@ -314,10 +314,13 @@ TODO & Issues
 
 - Add descriptions (doctext) of template engine and library specific options: WIP
 - Add descriptions (doctext) how anytemplate wraps each template engine and library: WIP
-- Complete unit tests of each template engine and library including template engine specific options, etc.
+- Complete unit tests:
+
+  - Add test cases of each template engine specific options: WIP
+
 - Stablize public and private (internal) APIs:
 
-  - Private APIs still needs a lot of work especially. It's very vague how it should be as each template engine have its own concept and design and I'm not sure how to abstract them.
+  - Private APIs still needs a lot of work especially. It's very vague how it should be as each template engine have its own concept and design and I'm not sure how to abstract them yet.
   - I don't think public APIs have large issues but these be affected by changes of private APIs more or less; I'm thinking to deprecate the keyword parameter 'at_cls_args' for example.
 
 Misc
