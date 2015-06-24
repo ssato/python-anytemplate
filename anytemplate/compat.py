@@ -2,7 +2,7 @@
 # Author: Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
-# pylint: disable=invalid-name, redefined-builtin
+# pylint: disable=invalid-name, redefined-builtin, unused-argument
 """Module to keep backward compatibilities.
 """
 from __future__ import absolute_import
@@ -36,8 +36,7 @@ def _from_iterable(iterables):
             yield element
 
 
-# pylint disable=unused-argument
-def json_load(filepath, *args):
+def json_load(filepath, *args, **kwargs):
     """
     Alternative if anyconfig is not available.
 
@@ -46,7 +45,6 @@ def json_load(filepath, *args):
     return json.load(open(filepath))
 
 
-# pylint enable=unused-argument
 def get_file_extension(filepath):
     """
     Copy if anyconfig.utils.get_file_extension is not available.
