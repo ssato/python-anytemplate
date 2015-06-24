@@ -64,7 +64,7 @@ def get_file_extension(filepath):
 
 
 if IS_PYTHON_3:
-    # pylint disable=invalid-name
+    # pylint: disable=invalid-name
     from_iterable = itertools.chain.from_iterable
     # pylint: disable=redefined-builtin
     raw_input = input
@@ -78,14 +78,14 @@ if IS_PYTHON_3:
         """
         return codecs.open(filepath, flag + 'b', encoding)
 else:
-    # pylint disable=invalid-name
+    # pylint: disable=invalid-name
     try:
         from_iterable = itertools.chain.from_iterable
     except AttributeError:
         from_iterable = _from_iterable
 
     raw_input = raw_input
-    # pylint enable=invalid-name
+    # pylint: enable=invalid-name
 
     def copen(filepath, flag='r', encoding=ENCODING):
         """
