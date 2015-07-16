@@ -24,7 +24,7 @@ def option_parser():
     """
     :return: Option parsing object :: optparse.OptionParser
     """
-    defaults = dict(template_paths=[], contexts=[], output='-',
+    defaults = dict(template_paths=[], contexts=[], schema=None, output='-',
                     engine=None, list_engines=False, verbose=1)
 
     psr = optparse.OptionParser("%prog [OPTION ...] TEMPLATE_FILE")
@@ -43,6 +43,9 @@ def option_parser():
                         " [type:]<file_name_or_path_or_glob_pattern>"
                         " ex. -C json:common.json -C ./specific.yaml -C "
                         "yaml:test.dat, -C yaml:/etc/foo.d/*.conf")
+    psr.add_option("-s", "--schema",
+                   help="JSON schema file in any formats anyconfig supports, "
+                        "to validate context files")
     psr.add_option("-E", "--engine",
                    help="Specify template engine name such as 'jinja2'")
     psr.add_option("-L", "--list-engines", action="store_true",
@@ -90,7 +93,8 @@ def main(argv=None):
         return
 
     tmpl = args[0]
-    ctx = anytemplate.utils.parse_and_load_contexts(options.contexts)
+    ctx = anytemplate.utils.parse_and_load_contexts(options.contexts,
+                                                    options.schema)
     anytemplate.api.render_to(tmpl, ctx, options.output,
                               at_paths=options.template_paths,
                               at_engine=options.engine, at_ask_missing=True)

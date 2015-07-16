@@ -168,9 +168,11 @@ def parse_filespec(fspec, sep=':', gpat='*'):
         if gpat in fspec else [flip(tpl)]
 
 
-def parse_and_load_contexts(contexts, werr=False):
+def parse_and_load_contexts(contexts, schema=None, werr=False):
     """
     :param contexts: list of context file specs
+    :param schema: JSON schema file in any formats anyconfig supports, to
+        validate given context files
     :param werr: Exit immediately if True and any errors occurrs
         while loading context files
     """
@@ -180,7 +182,7 @@ def parse_and_load_contexts(contexts, werr=False):
     if contexts:
         for fpath, ftype in concat(parse_filespec(f) for f in contexts):
             try:
-                diff = load(fpath, ftype)
+                diff = load(fpath, ftype, ac_schema=schema)
             except:
                 if werr:
                     raise
