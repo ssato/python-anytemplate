@@ -6,6 +6,7 @@
 """
 from __future__ import absolute_import
 
+import Cheetah.Template  # :throw: ImportError
 import logging
 
 import anytemplate.compat
@@ -15,31 +16,12 @@ import anytemplate.engines.base
 LOGGER = logging.getLogger(__name__)
 
 
-def fallback(tmpl, at_paths=None, **kwargs):
+def render_impl(**kwargs):
     """
     :param tmpl: Template content string or file
     :param at_paths: Template search paths
-
-    >>> assert fallback("aaa", file=None) == "aaa"
     """
-    if kwargs.get("file", None) is None:
-        return anytemplate.engines.base.fallback_renders(tmpl)
-    else:
-        return anytemplate.engines.base.fallback_render(tmpl, None, at_paths)
-
-
-if anytemplate.compat.IS_PYTHON_3:
-    LOGGER.info("Cheetah is not available in python 3")
-    render_impl = fallback
-else:
-    import Cheetah.Template  # :throw: ImportError
-
-    def render_impl(**kwargs):
-        """
-        :param tmpl: Template content string or file
-        :param at_paths: Template search paths
-        """
-        return Cheetah.Template.Template(**kwargs).respond()
+    return Cheetah.Template.Template(**kwargs).respond()
 
 
 class Engine(anytemplate.engines.base.Engine):

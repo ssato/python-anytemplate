@@ -35,8 +35,6 @@ except ImportError:
 
 try:
     import anytemplate.engines.cheetah
-    import Cheetah.Template  # flake8: noqa
-
     ENGINES.append(anytemplate.engines.cheetah.Engine)
 except ImportError:
     LOGGER.info("Cheetah support was disable as needed module looks missing")

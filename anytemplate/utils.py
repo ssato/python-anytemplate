@@ -16,9 +16,9 @@ import sys
 import anytemplate.compat
 
 try:
-    from anyconfig.api import container, load
+    from anyconfig.api import container as Container, load
 except ImportError:
-    container = dict
+    Container = dict
     load = anytemplate.compat.json_load
 
 
@@ -173,7 +173,7 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
     :param werr: Exit immediately if True and any errors occurrs
         while loading context files
     """
-    ctx = container()
+    ctx = Container()
     diff = None
 
     if contexts:
