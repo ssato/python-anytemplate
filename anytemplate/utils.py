@@ -152,11 +152,9 @@ def parse_filespec(fspec, sep=':', gpat='*'):
     >>> parse_filespec("yaml:foo.dat")
     [('foo.dat', 'yaml')]
 
-    # TODO:
+    TODO: Allow '*' (glob pattern) in filepath when escaped with '\\', etc.
     # >>> parse_filespec("yaml:bar/*.conf")
     # [('bar/a.conf', 'yaml'), ('bar/b.conf', 'yaml')]
-
-    TODO: Allow '*' (glob pattern) in filepath when escaped with '\\', etc.
     """
     if sep in fspec:
         tpl = (ftype, fpath) = tuple(fspec.split(sep))
