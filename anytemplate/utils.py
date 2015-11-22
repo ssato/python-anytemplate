@@ -184,7 +184,7 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
                 diff = load(fpath, ftype, ac_schema=schema)
                 if diff is not None:
                     ctx.update(diff)
-            except:
+            except (IOError, OSError, AttributeError):
                 if werr:
                     raise
     return ctx
