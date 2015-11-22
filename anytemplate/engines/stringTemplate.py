@@ -19,10 +19,10 @@
 from __future__ import absolute_import
 
 import string
-import anytemplate.engines.base
-import anytemplate.compat
 
-from anytemplate.globals import CompileError
+import anytemplate.compat
+import anytemplate.engines.base
+import anytemplate.globals
 
 
 class Engine(anytemplate.engines.base.Engine):
@@ -32,55 +32,50 @@ class Engine(anytemplate.engines.base.Engine):
     _name = "string.Template"
     _priority = 50
 
-    def renders_impl(self, template_content, context, at_paths=False,
-                     at_encoding=anytemplate.compat.ENCODING,
-                     safe=False, **kwargs):
+    def renders_impl(self, template_content, context, **options):
         """
         Inherited class must implement this!
 
         :param template_content: Template content
-        :param context: A dict or dict-like object to instantiate given
-            template file
-        :param at_paths: Template search paths
-        :param at_encoding: Template encoding
-        :param safe: Safely substitute parameters in templates, that is,
-            original template content will be returned if some of template
-            parameters are not found in given context
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
+        :param context:
+            A dict or dict-like object to instantiate given template file
+        :param options: Options such as:
+
+            - at_paths: Template search paths (common option)
+            - at_encoding: Template encoding (common option)
+            - safe: Safely substitute parameters in templates, that is,
+              original template content will be returned if some of template
+              parameters are not found in given context
 
         :return: To be rendered string in inherited classes
         """
-        if safe:
+        if options.get("safe", False):
             return string.Template(template_content).safe_substitute(context)
         else:
             try:
                 return string.Template(template_content).substitute(context)
             except KeyError as exc:
-                raise CompileError(str(exc))
+                raise anytemplate.globals.CompileError(str(exc))
 
-    def render_impl(self, template, context, at_paths=None,
-                    at_encoding=anytemplate.compat.ENCODING,
-                    safe=False, **kwargs):
+    def render_impl(self, template, context, **options):
         """
         Inherited class must implement this!
 
         :param template: Template file path
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_paths: Template search paths
-        :param at_encoding: Template encoding
-        :param safe: Safely substitute parameters in templates, that is,
-            original template content will be returned if some of template
-            parameters are not found in given context
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
+        :param options: Same options as :meth:`renders_impl`
+
+            - at_paths: Template search paths (common option)
+            - at_encoding: Template encoding (common option)
+            - safe: Safely substitute parameters in templates, that is,
+              original template content will be returned if some of template
+              parameters are not found in given context
 
         :return: To be rendered string in inherited classes
         """
-        read_content = anytemplate.engines.base.fallback_render
-        tmpl = read_content(template, {}, at_paths=at_paths,
-                            at_encoding=at_encoding)
-        return self.renders_impl(tmpl, context, safe=safe)
+        ropts = dict((k, v) for k, v in options.items() if k != "safe")
+        tmpl = anytemplate.engines.base.fallback_render(template, {}, **ropts)
+        return self.renders_impl(tmpl, context, **options)
 
 # vim:sw=4:ts=4:et:
