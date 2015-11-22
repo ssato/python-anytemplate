@@ -36,16 +36,12 @@
 """
 from __future__ import absolute_import
 
-import logging
 import mako.template  # :throw: ImportError
 import mako.lookup
 
 import anytemplate.compat
 import anytemplate.engines.base
 import anytemplate.utils
-
-
-LOGGER = logging.getLogger(__name__)
 
 
 def _render(tmpl, ctx):

@@ -23,13 +23,9 @@ Template engine to add support of `Cheetah <http://www.cheetahtemplate.org>`_ .
 from __future__ import absolute_import
 
 import Cheetah.Template  # :throw: ImportError
-import logging
 
 import anytemplate.compat
 import anytemplate.engines.base
-
-
-LOGGER = logging.getLogger(__name__)
 
 
 def render_impl(**kwargs):

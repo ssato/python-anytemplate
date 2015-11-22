@@ -18,15 +18,11 @@
 """
 from __future__ import absolute_import
 
-import logging
 import string
 import anytemplate.engines.base
 import anytemplate.compat
 
 from anytemplate.globals import CompileError
-
-
-LOGGER = logging.getLogger(__name__)
 
 
 class Engine(anytemplate.engines.base.Engine):

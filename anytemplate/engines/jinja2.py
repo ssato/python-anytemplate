@@ -27,7 +27,6 @@ from __future__ import absolute_import
 
 import jinja2.exceptions   # :throw: ImportError if missing
 import jinja2
-import logging
 import os.path
 import os
 
@@ -35,10 +34,7 @@ import anytemplate.compat
 import anytemplate.engines.base
 
 from anytemplate.globals import TemplateNotFound
-
-
-LOGGER = logging.getLogger(__name__)
-ENCODING = anytemplate.compat.ENCODING
+from anytemplate.compat import ENCODING
 
 
 class Engine(anytemplate.engines.base.Engine):
@@ -67,7 +63,7 @@ class Engine(anytemplate.engines.base.Engine):
                                                 self.engine_valid_options())
 
     def __render(self, template, context, is_file=True, at_paths=None,
-                 at_encoding=anytemplate.compat.ENCODING, **kwargs):
+                 at_encoding=ENCODING, **kwargs):
         """
         Render given template string and return the result.
 
@@ -98,8 +94,7 @@ class Engine(anytemplate.engines.base.Engine):
             raise TemplateNotFound(str(exc))
 
     def renders_impl(self, template_content, context, at_paths=None,
-                     at_encoding=anytemplate.compat.ENCODING,
-                     **kwargs):
+                     at_encoding=ENCODING, **kwargs):
         """
         Render given template string and return the result.
 
@@ -124,7 +119,7 @@ class Engine(anytemplate.engines.base.Engine):
                              **kwargs)
 
     def render_impl(self, template, context, at_paths=None,
-                    at_encoding=anytemplate.compat.ENCODING, **kwargs):
+                    at_encoding=ENCODING, **kwargs):
         """
         Render given template file and return the result.
 

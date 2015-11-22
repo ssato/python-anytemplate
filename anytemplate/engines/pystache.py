@@ -24,16 +24,12 @@
 """
 from __future__ import absolute_import
 
-import logging
 import os.path
 import pystache.renderer  # :throw: ImportError
 import pystache.defaults
 
 import anytemplate.compat
 import anytemplate.engines.base
-
-
-LOGGER = logging.getLogger(__name__)
 
 
 class Engine(anytemplate.engines.base.Engine):
