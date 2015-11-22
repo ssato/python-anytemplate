@@ -93,10 +93,9 @@ def normpath(path):
     >>> normpath("~root/t")
     '/root/t'
     """
+    funcs = [os.path.normpath, os.path.abspath]
     if "~" in path:
-        funcs = [os.path.expanduser, os.path.normpath, os.path.abspath]
-    else:
-        funcs = [os.path.normpath, os.path.abspath]
+        funcs = [os.path.expanduser] + funcs
 
     return chaincalls(funcs, path)
 
