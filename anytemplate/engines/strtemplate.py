@@ -27,7 +27,7 @@ import anytemplate.globals
 
 class Engine(anytemplate.engines.base.Engine):
     """
-    Template engine class to support stringTemplate.
+    Template engine class to support string.Template.
     """
     _name = "string.Template"
     _priority = 50

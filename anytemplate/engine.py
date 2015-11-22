@@ -11,9 +11,9 @@ import operator
 from anytemplate.globals import LOGGER
 
 import anytemplate.engines.base
-import anytemplate.engines.stringTemplate
+import anytemplate.engines.strtemplate
 
-ENGINES = [anytemplate.engines.stringTemplate.Engine, ]
+ENGINES = [anytemplate.engines.strtemplate.Engine, ]
 
 try:
     import anytemplate.engines.jinja2

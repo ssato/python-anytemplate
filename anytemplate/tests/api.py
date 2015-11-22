@@ -2,14 +2,14 @@
 # Copyright (C). 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
-# pylint: disable=missing-docstring
+# pylint: disable=missing-docstring, invalid-name
 import os.path
 import unittest
 
 import anytemplate.api as TT
 import anytemplate.compat
 import anytemplate.engine
-import anytemplate.engines.stringTemplate
+import anytemplate.engines.strtemplate
 import anytemplate.tests.common
 
 from anytemplate.engine import find_by_name
@@ -21,7 +21,7 @@ class Test00(unittest.TestCase):
     def test_00_list_engines(self):
         clss = TT.list_engines()
         self.assertTrue(clss)
-        self.assertTrue(anytemplate.engines.stringTemplate.Engine in clss)
+        self.assertTrue(anytemplate.engines.strtemplate.Engine in clss)
 
     def test_10_find_engine__wo_any_info(self):
         cls = TT.find_engine()
@@ -43,7 +43,7 @@ class Test00(unittest.TestCase):
 
     def test_16_find_engine__by_name(self):
         cls = TT.find_engine("foo.t", "string.Template")
-        self.assertEquals(cls, anytemplate.engines.stringTemplate.Engine)
+        self.assertEquals(cls, anytemplate.engines.strtemplate.Engine)
 
     def test_18_find_engine__by_name__not_found(self):
         try:
@@ -52,7 +52,7 @@ class Test00(unittest.TestCase):
         except TT.TemplateEngineNotFound:
             pass
 
-    def test_20_renders__stringTemplate(self):
+    def test_20_renders__strtemplate(self):
         self.assertEquals(TT.renders("$a", dict(a="aaa", ),
                                      at_engine="string.Template"),
                           "aaa")

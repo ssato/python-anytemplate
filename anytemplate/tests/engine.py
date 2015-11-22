@@ -6,19 +6,19 @@
 import unittest
 
 import anytemplate.engine as TT
-import anytemplate.engines.stringTemplate as stringTemplate
+import anytemplate.engines.strtemplate as strtemplate
 
 
 class Test(unittest.TestCase):
 
     def test_10_find_by_filename(self):
-        stringTemplate.Engine._file_extensions.append("t")
+        strtemplate.Engine._file_extensions.append("t")
         clss = TT.find_by_filename("foo.t")
-        self.assertTrue(stringTemplate.Engine in clss)
+        self.assertTrue(strtemplate.Engine in clss)
 
     def test_20_find_by_name__found(self):
         self.assertEquals(TT.find_by_name("string.Template"),
-                          stringTemplate.Engine)
+                          strtemplate.Engine)
 
     def test_20_find_by_name__not_found(self):
         self.assertTrue(TT.find_by_name("not_existing_engine") is None)

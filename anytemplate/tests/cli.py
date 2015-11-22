@@ -94,13 +94,15 @@ class Test10(unittest.TestCase):
     def tearDown(self):
         anytemplate.tests.common.cleanup_workdir(self.workdir)
 
-    def run_and_check_exit_code(self, args=[], code=0, _not=False):
+    def run_and_check_exit_code(self, args=None, code=0, _not=False):
+        if args is None:
+            args = []
         if _not:
             self.assertFalse(run_and_check_exit_code(args, code))
         else:
             self.assertTrue(run_and_check_exit_code(args, code))
 
-    def test_10_main__stringTemplate(self):
+    def test_10_main__strtemplate(self):
         tmpl = os.path.join(self.workdir, "test.tmpl")
         ctx = os.path.join(self.workdir, "ctx.yml")
         output = os.path.join(self.workdir, "output.txt")

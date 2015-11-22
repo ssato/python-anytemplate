@@ -5,7 +5,7 @@
 # pylint: disable=missing-docstring
 import os.path
 import unittest
-import anytemplate.engines.stringTemplate as TT
+import anytemplate.engines.strtemplate as TT
 import anytemplate.engines.base
 import anytemplate.tests.common
 
