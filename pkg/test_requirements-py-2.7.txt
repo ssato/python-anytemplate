@@ -1,12 +1,6 @@
+-r requirements-py-2.7.txt
 coveralls
 # flake8  # disabled until 'pkg_resources.VersionConflict' error.
 nose
 pep8
 pylint
-anyconfig
-PyYAML
-jinja2
-mako
-tenjin
-Cheetah
-pystache
