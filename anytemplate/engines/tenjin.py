@@ -60,7 +60,7 @@ class Engine(anytemplate.engines.base.Engine):
     _name = "tenjin"
     _priority = 30
 
-    # TODO: Template '.pyhtml' appear in its example doc.
+    # .. note:: Template '.pyhtml' appear in its example doc.
     _file_extensions = ["pythml"]
 
     # see `help(tenjin.Engine.__init__)` and `help(tenjin.Engine.render)`.
