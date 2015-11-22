@@ -182,13 +182,11 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
         for fpath, ftype in concat(parse_filespec(f) for f in contexts):
             try:
                 diff = load(fpath, ftype, ac_schema=schema)
+                if diff is not None:
+                    ctx.update(diff)
             except:
                 if werr:
                     raise
-
-            if diff is not None:
-                ctx.update(diff)
-
     return ctx
 
 
