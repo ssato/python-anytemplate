@@ -55,8 +55,8 @@ LOGGER = logging.getLogger(__name__)
 
 class Engine(anytemplate.engines.base.Engine):
     """
+    Template engine class to support Tenjin.
     """
-
     _name = "tenjin"
     _priority = 30
 
