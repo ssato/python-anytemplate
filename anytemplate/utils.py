@@ -73,6 +73,9 @@ def chaincalls(callables, obj):
 
     >>> chaincalls([lambda a: a + 1, lambda b: b + 2], 0)
     3
+    >>> chaincalls([[]], 0)
+    Traceback (most recent call last):
+    ValueError: Not callable: '[]'
     """
     for fun in callables:
         if not callable(fun):
