@@ -200,21 +200,21 @@ def write_to_output(content, output=None,
     :param output: Output destination
     :param encoding: Character set encoding of outputs
     """
-    if anytemplate.compat.IS_PYTHON_3:
-        if isinstance(content, bytes):
-            content = str(content, encoding)
+    if anytemplate.compat.IS_PYTHON_3 and isinstance(content, bytes):
+        content = str(content, encoding)
 
     if output and not output == '-':
         outdir = os.path.dirname(output)
         if outdir and not os.path.exists(outdir):
             os.makedirs(outdir)
 
-        anytemplate.compat.copen(output, 'w').write(content)
+        with anytemplate.compat.copen(output, 'w') as out:
+            out.write(content)
+
+    elif anytemplate.compat.IS_PYTHON_3:
+        print(content)
     else:
-        if anytemplate.compat.IS_PYTHON_3:
-            print(content)
-        else:
-            print(content.encode(encoding.lower()), file=get_output_stream())
+        print(content.encode(encoding.lower()), file=get_output_stream())
 
 
 def mk_template_paths(filepath, paths=None):
