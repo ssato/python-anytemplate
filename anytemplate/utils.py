@@ -75,7 +75,8 @@ def chaincalls(callables, obj):
     3
     """
     for fun in callables:
-        assert callable(fun), "%s is not callable object!" % str(fun)
+        if not callable(fun):
+            raise ValueError("Not callable: %r" % repr(fun))
         obj = fun(obj)
 
     return obj
