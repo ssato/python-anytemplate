@@ -3,7 +3,7 @@
 :copyright: (c) 2012 - 2015 by Satoru SATOH <ssato@redhat.com>
 :license: MIT
 """
-# TODO: unicode_literals
+# unicode_literals ?
 from __future__ import absolute_import, print_function
 
 import codecs
