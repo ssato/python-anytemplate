@@ -39,7 +39,8 @@ def get_output_stream(encoding=anytemplate.compat.ENCODING,
     :param encoding: Characters set encoding, e.g. UTF-8
     :return: sys.stdout can output encoded strings
 
-    >>> _out = get_output_stream("UTF-8")
+    >>> get_output_stream("UTF-8")  # doctest: +ELLIPSIS
+    <encodings.utf_8.StreamWriter ... at 0x...>
     """
     return codecs.getwriter(encoding)(ostream)
 
