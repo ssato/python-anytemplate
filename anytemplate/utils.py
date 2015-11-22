@@ -21,11 +21,6 @@ except ImportError:
     container = dict
     load = anytemplate.compat.json_load
 
-try:
-    from anyconfig.utils import get_file_extension  # flake8: noqa
-except ImportError:
-    from anytemplate.compat import get_file_extension
-
 
 LOGGER = logging.getLogger(__name__)
 

@@ -15,6 +15,11 @@ import anytemplate.utils
 
 from anytemplate.globals import TemplateNotFound
 
+try:
+    from anyconfig.utils import get_file_extension  # flake8: noqa
+except ImportError:
+    from anytemplate.compat import get_file_extension
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -104,8 +109,7 @@ class Engine(object):
         """
         :return: Whether the engine can process given template file or not.
         """
-        return (anytemplate.utils.get_file_extension(template_file) in
-                cls.file_extensions())
+        return get_file_extension(template_file) in cls.file_extensions()
 
     @classmethod
     def priority(cls):
