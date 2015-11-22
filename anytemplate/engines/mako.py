@@ -2,7 +2,37 @@
 # Copyright (c) 2015 by Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
-"""Mako support.
+"""Template engine to add support of `Mako <http://www.makotemplates.org/>`_ .
+
+- Limitations: None obvious
+- Supported template engine specific option parameters:
+
+  - Engine._engine_valid_opts for mako.lookup.TemplateLookup:
+
+    - Supported: directories, collection_size, filesystem_checks,
+      modulename_callable
+
+    - Notes: The sum value of keyword parameters both at_paths and directories
+      will be passed to mako.lookup.TemplateLookup.__init__() as the keyword
+      parameter "directories" which represents template search paths.
+
+  - Engine._render_valid_opts for mako.template.Template:
+
+    - Supported: text, filename, uri, format_exceptions, error_handler,
+      output_encoding, encoding_errors, module_directory, cache_args,
+      cache_impl, cache_enabled, cache_type, cache_dir, cache_url,
+      module_filename, input_encoding, disable_unicode, module_writer,
+      bytestring_passthrough, default_filters, buffer_filters,
+      strict_undefined, imports, future_imports, enable_loop, preprocessor,
+      lexer_cls
+
+    - Notes: 'text' parameter passed to Engine.render() and 'filename'
+      parameter passed to Engine.renders() will be ignored because it's
+      meaningless.
+
+ - References:
+
+   - http://docs.makotemplates.org/en/latest/
 """
 from __future__ import absolute_import
 
@@ -29,40 +59,8 @@ def _render(tmpl, ctx):
 
 class Engine(anytemplate.engines.base.Engine):
     """
-    Template Engine class to support `Mako <http://www.makotemplates.org/>`_ .
-
-    - Limitations: None obvious
-    - Supported template engine specific option parameters:
-
-      - Engine._engine_valid_opts for mako.lookup.TemplateLookup:
-
-        - Supported: directories, collection_size, filesystem_checks,
-          modulename_callable
-
-        - Notes: The sum value of keyword parameters both at_paths and
-          directories will be passed to mako.lookup.TemplateLookup.__init__()
-          as the keyword parameter "directories" which represents template
-          search paths.
-
-      - Engine._render_valid_opts for mako.template.Template:
-
-        - Supported: text, filename, uri, format_exceptions, error_handler,
-          output_encoding, encoding_errors, module_directory, cache_args,
-          cache_impl, cache_enabled, cache_type, cache_dir, cache_url,
-          module_filename, input_encoding, disable_unicode, module_writer,
-          bytestring_passthrough, default_filters, buffer_filters,
-          strict_undefined, imports, future_imports, enable_loop, preprocessor,
-          lexer_cls
-
-        - Notes: 'text' parameter passed to Engine.render() and 'filename'
-          parameter passed to Engine.renders() will be ignored because it's
-          meaningless.
-
-     - References:
-
-       - http://docs.makotemplates.org/en/latest/
-     """
-
+    Template engine class to support Mako.
+    """
     _name = "mako"
     _priority = 30
 

@@ -2,7 +2,25 @@
 # Copyright (c) 2015 by Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
-"""Pystache (python implementation of mustache) support.
+"""Template engine to add support of
+`Pystache <https://github.com/defunkt/pystache>`_ , python implementation of
+`Mustache <https://mustache.github.io>`_ .
+
+- Limitations: None obvious except for pystache's custom function loading
+  feature at present
+- Supported template engine specific option parameters:
+
+  - Supported: file_encoding, string_encoding, decode_errors, search_dirs,
+    file_extension, escape, partials, missing_tags
+
+  - Notes: The sum value of keyword parameters both at_paths and search_dirs
+    will be passed to pystache.render.Renderer.__init__() as the keyword
+    parameter "search_dirs" which represents template search paths.
+
+ - References:
+
+   - https://mustache.github.io
+   - https://github.com/defunkt/pystache
 """
 from __future__ import absolute_import
 
@@ -20,28 +38,8 @@ LOGGER = logging.getLogger(__name__)
 
 class Engine(anytemplate.engines.base.Engine):
     """
-    Template Engine class to support
-    `Pystache <https://github.com/defunkt/pystache>`_ , python implementation
-    of `Mustache <https://mustache.github.io>`_ .
-
-    - Limitations: None obvious except for pystache's custom function loading
-          feature at present
-    - Supported template engine specific option parameters:
-
-      - Supported: file_encoding, string_encoding, decode_errors, search_dirs,
-        file_extension, escape, partials, missing_tags
-
-      - Notes: The sum value of keyword parameters both at_paths and
-        search_dirs will be passed to pystache.render.Renderer.__init__() as
-        the keyword parameter "search_dirs" which represents template search
-        paths.
-
-     - References:
-
-       - https://mustache.github.io
-       - https://github.com/defunkt/pystache
-     """
-
+    Template engine class to support pystache.
+    """
     _name = "pystache"
     _priority = 30
     _file_extensions = ["mustache"]

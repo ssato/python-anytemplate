@@ -2,7 +2,26 @@
 # Author: Satoru SATOH <ssto at redhat.com>
 # License: MIT
 #
-"""jinja2 support
+"""Template engine to add support of `Jinja2 <http://jinja.pocoo.org>`_ .
+
+- Limitations: None obvious except that only FileSystemLoader is supported.
+- Supported option parameters specific to Jinja2:
+
+  - Option parameters are passed to jinja2.Environment.__init__().
+
+  - The parameter 'loader' is not supported because anytemplate only support to
+    load tempaltes by jinja2.loaders.FileSystemLoader.
+
+  - Supported: block_start_string, block_end_string, variable_start_string,
+    variable_end_string, comment_start_string, comment_end_string,
+    line_statement_prefix, line_comment_prefix, trim_blocks, lstrip_blocks,
+    newline_sequence, keep_trailing_newline, extensions, optimized, undefined,
+    finalize, autoescape, cache_size, auto_reload, bytecode_cache
+
+- References:
+
+  - http://jinja.pocoo.org/docs/dev/api/
+  - http://jinja.pocoo.org/docs/dev/templates/
 """
 from __future__ import absolute_import
 
@@ -24,29 +43,8 @@ ENCODING = anytemplate.compat.ENCODING
 
 class Engine(anytemplate.engines.base.Engine):
     """
-    Template Engine class to support `Jinja2 <http://jinja.pocoo.org>`_ .
-
-    - Limitations: None obvious except for only FileSystemLoader is supported
-    - Supported option parameters specific to Jinja2:
-
-      - Option parameters are passed to jinja2.Environment.__init__().
-
-      - The parameter 'loader' is not supported because anytemplate only
-        support to load tempaltes by jinja2.loaders.FileSystemLoader.
-
-      - Supported: block_start_string, block_end_string, variable_start_string,
-        variable_end_string, comment_start_string, comment_end_string,
-        line_statement_prefix, line_comment_prefix, trim_blocks, lstrip_blocks,
-        newline_sequence, keep_trailing_newline, extensions, optimized,
-        undefined, finalize, autoescape, cache_size, auto_reload,
-        bytecode_cache
-
-    - References:
-
-      - http://jinja.pocoo.org/docs/dev/api/
-      - http://jinja.pocoo.org/docs/dev/templates/
+    Template engine class to support Jinja2.
     """
-
     _name = "jinja2"
     _file_extensions = ["j2", "jinja2", "jinja"]
     _priority = 10
