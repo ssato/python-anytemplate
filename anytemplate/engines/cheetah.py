@@ -22,7 +22,10 @@ Template engine to add support of `Cheetah <http://www.cheetahtemplate.org>`_ .
 """
 from __future__ import absolute_import
 
-import Cheetah.Template  # :throw: ImportError
+try:
+    from Cheetah.Template import Template  # :throw: ImportError
+except ImportError:
+    Template = None
 
 import anytemplate.compat
 import anytemplate.engines.base
@@ -33,7 +36,15 @@ def render_impl(**kwargs):
     :param tmpl: Template content string or file
     :param at_paths: Template search paths
     """
-    return Cheetah.Template.Template(**kwargs).respond()
+    if Template is None:
+        tmpl = kwargs.get("file", None)
+        if tmpl is None:
+            tmpl = kwargs.get("source", None)
+            return anytemplate.engines.base.fallback_renders(tmpl)
+        else:
+            return anytemplate.engines.base.fallback_render(tmpl, None,
+                                                            **kwargs)
+    return Template(**kwargs).respond()
 
 
 class Engine(anytemplate.engines.base.Engine):

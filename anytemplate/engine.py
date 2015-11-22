@@ -33,11 +33,11 @@ try:
 except ImportError:
     LOGGER.info("tenjin support was disable as needed module looks missing")
 
-try:
-    import anytemplate.engines.cheetah
-    ENGINES.append(anytemplate.engines.cheetah.Engine)
-except ImportError:
+import anytemplate.engines.cheetah
+if anytemplate.engines.cheetah.Template is None:
     LOGGER.info("Cheetah support was disable as needed module looks missing")
+else:
+    ENGINES.append(anytemplate.engines.cheetah.Engine)
 
 try:
     import anytemplate.engines.pystache
