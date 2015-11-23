@@ -17,6 +17,7 @@ import anytemplate.utils
 from anytemplate.globals import (
     TemplateNotFound, TemplateEngineNotFound, CompileError  # flake8: noqa
 )
+from anytemplate.engine import find_by_filename as list_engines
 
 
 LOGGER = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ def find_engine(filepath=None, name=None):
     :return: Template engine class found
     """
     if name is None:
-        engines = anytemplate.engine.find_by_filename(filepath)
+        engines = list_engines(filepath)
         if not engines:
             raise TemplateEngineNotFound("filename=%s" % str(filepath))
 
