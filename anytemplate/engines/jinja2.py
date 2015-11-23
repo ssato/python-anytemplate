@@ -62,8 +62,8 @@ class Engine(anytemplate.engines.base.Engine):
         self._env_options = self.filter_options(kwargs,
                                                 self.engine_valid_options())
 
-    def __render(self, template, context, is_file=True, at_paths=None,
-                 at_encoding=ENCODING, **kwargs):
+    def _render(self, template, context, is_file, at_paths=None,
+                at_encoding=ENCODING, **kwargs):
         """
         Render given template string and return the result.
 
@@ -93,50 +93,46 @@ class Engine(anytemplate.engines.base.Engine):
         except jinja2.exceptions.TemplateNotFound as exc:
             raise TemplateNotFound(str(exc))
 
-    def renders_impl(self, template_content, context, at_paths=None,
-                     at_encoding=ENCODING, **kwargs):
+    def renders_impl(self, template_content, context, **opts):
         """
         Render given template string and return the result.
 
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_paths: Template search paths
-        :param at_encoding: Template encoding
-        :param kwargs: Keyword arguments passed to jinja2.Envrionment. Please
-            note that 'loader' option is not supported because anytemplate does
-            not support to load template except for files
+        :param opts: Options such as:
+            - at_paths: Template search paths
+            - at_encoding: Template encoding
+            - other keyword options passed to jinja2.Envrionment. Please note
+              that 'loader' option is not supported because anytemplate does
+              not support to load template except for files
 
         :return: Rendered string
 
-        >>> engine = Engine()
-        >>> s = engine.renders_impl('a = {{ a }}, b = "{{ b }}"',
-        ...                         {'a': 1, 'b': 'bbb'}, ['.'])
-        >>> assert s == 'a = 1, b = "bbb"'
+        >>> egn = Engine()
+        >>> tmpl_s = 'a = {{ a }}, b = "{{ b }}"'
+        >>> ctx = {'a': 1, 'b': 'bbb'}
+        >>> egn.renders_impl(tmpl_s, ctx, at_paths=['.']) == 'a = 1, b = "bbb"'
+        True
         """
-        return self.__render(template_content, context, is_file=False,
-                             at_paths=at_paths, at_encoding=at_encoding,
-                             **kwargs)
+        return self._render(template_content, context, False, **opts)
 
-    def render_impl(self, template, context, at_paths=None,
-                    at_encoding=ENCODING, **kwargs):
+    def render_impl(self, template, context, **opts):
         """
         Render given template file and return the result.
 
         :param template: Template file path
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_paths: Template search paths
-        :param at_encoding: Template encoding
-        :param kwargs: Keyword arguments passed to jinja2.Envrionment. Please
-            note that 'loader' option is not supported because anytemplate does
-            not support to load template except for files
-
+        :param opts: Options such as:
+            - at_paths: Template search paths
+            - at_encoding: Template encoding
+            - other keyword options passed to jinja2.Envrionment. Please note
+              that 'loader' option is not supported because anytemplate does
+              not support to load template except for files
 
         :return: Rendered string
         """
-        return self.__render(os.path.basename(template), context, is_file=True,
-                             at_paths=at_paths, at_encoding=at_encoding,
-                             **kwargs)
+        return self._render(os.path.basename(template), context, True, **opts)
 
 # vim:sw=4:ts=4:et:
