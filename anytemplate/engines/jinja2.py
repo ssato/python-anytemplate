@@ -9,8 +9,8 @@
 
   - Option parameters are passed to jinja2.Environment.__init__().
 
-  - The parameter 'loader' is not supported because anytemplate only support to
-    load tempaltes by jinja2.loaders.FileSystemLoader.
+  - The parameter 'loader' is not supported because anytemplate only supports
+    jinja2.loaders.FileSystemLoader.
 
   - Supported: block_start_string, block_end_string, variable_start_string,
     variable_end_string, comment_start_string, comment_end_string,
