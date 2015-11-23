@@ -13,8 +13,10 @@ import anytemplate.engine
 import anytemplate.globals
 import anytemplate.utils
 
-from anytemplate.globals import LOGGER, TemplateNotFound, \
-    TemplateEngineNotFound, CompileError  # flake8: noqa
+from anytemplate.globals import (
+    LOGGER, TemplateNotFound, TemplateEngineNotFound,
+    CompileError  # flake8: noqa
+)
 
 
 def list_engines():
