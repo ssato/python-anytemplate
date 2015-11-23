@@ -69,6 +69,9 @@ def find_by_filename(filename, engines=None):
     if engines is None:
         engines = ENGINES
 
+    if filename is None:
+        return list_engines_by_priority(engines)
+
     return sorted((e for e in engines if e.supports(filename)),
                   key=operator.methodcaller("priority"))
 
