@@ -188,8 +188,20 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
     return ctx
 
 
-def write_to_output(content, output=None,
-                    encoding=anytemplate.compat.ENCODING):
+def _write_to_filepath(content, output):
+    """
+    :param content: Content string to write to
+    :param output: Output file path
+    """
+    outdir = os.path.dirname(output)
+    if outdir and not os.path.exists(outdir):
+        os.makedirs(outdir)
+
+    with anytemplate.compat.copen(output, 'w') as out:
+        out.write(content)
+
+
+def write_to_output(content, output=None, encoding=anytemplate.compat.ENCODING):
     """
     :param content: Content string to write to
     :param output: Output destination
@@ -199,13 +211,7 @@ def write_to_output(content, output=None,
         content = str(content, encoding)
 
     if output and not output == '-':
-        outdir = os.path.dirname(output)
-        if outdir and not os.path.exists(outdir):
-            os.makedirs(outdir)
-
-        with anytemplate.compat.copen(output, 'w') as out:
-            out.write(content)
-
+        _write_to_filepath(content, output)
     elif anytemplate.compat.IS_PYTHON_3:
         print(content)
     else:
@@ -221,10 +227,14 @@ def mk_template_paths(filepath, paths=None):
 
     >>> fn = __file__
     >>> fdir = os.path.abspath(os.path.dirname(fn))
-    >>> assert mk_template_paths(fn, []) == [fdir]
-    >>> assert mk_template_paths(fn, ["/etc"]) == ["/etc", fdir]
-    >>> assert mk_template_paths(None, ["/etc"]) == ["/etc"]
-    >>> assert mk_template_paths(None, None) == [os.curdir]
+    >>> mk_template_paths(fn, []) == [fdir]
+    True
+    >>> mk_template_paths(fn, ["/etc"]) == ["/etc", fdir]
+    True
+    >>> mk_template_paths(None, ["/etc"]) == ["/etc"]
+    True
+    >>> mk_template_paths(None, None) == [os.curdir]
+    True
     """
     if filepath is None:
         return [os.curdir] if paths is None else paths
