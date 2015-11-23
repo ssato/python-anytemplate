@@ -81,8 +81,7 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
         return render_fn(target, context=context, at_paths=at_paths,
                          at_encoding=at_encoding, **kwargs)
     except TemplateNotFound as exc:
-        LOGGER.warn("** Missing template[s]: paths=%s",
-                    ','.join(at_paths))
+        LOGGER.warn("** Missing template[s]: paths=%s", ','.join(at_paths))
         if not at_ask_missing:
             raise TemplateNotFound(str(exc))
 
@@ -107,61 +106,52 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
         raise CompileError(str(exc))
 
 
-def renders(template, context=None, at_paths=None,
-            at_encoding=anytemplate.compat.ENCODING, at_engine=None,
-            at_ask_missing=False, at_cls_args=None, **kwargs):
+def renders(template, context=None, **options):
     """
     Compile and render given template string and return the result string.
 
     :param template: Template content string
     :param context: A dict or dict-like object to instantiate given
         template file
-    :param at_paths: Template search paths
-    :param at_encoding: Template encoding
-    :param at_engine: Specify the name of template engine to use explicitly or
-        None to find it automatically anyhow.
-    :param at_cls_args: Arguments passed to instantiate template engine class
-    :param kwargs: Keyword arguments passed to the template engine to
-        render templates with specific features enabled.
+    :param options: Optional keyword arguments such as:
+
+        - at_paths: Template search paths
+        - at_encoding: Template encoding
+        - at_engine: Specify the name of template engine to use explicitly or
+          None to find it automatically anyhow.
+        - at_cls_args: Arguments passed to instantiate template engine class
+        - other keyword arguments passed to the template engine to render
+          templates with specific features enabled.
 
     :return: Rendered string
     """
-    return _render(template, context=context, at_paths=at_paths,
-                   at_encoding=at_encoding, at_engine=at_engine,
-                   at_ask_missing=at_ask_missing, at_cls_args=at_cls_args,
-                   **kwargs)
+    return _render(template, context=context, **options)
 
 
-def render(filepath, context=None, at_paths=None,
-           at_encoding=anytemplate.compat.ENCODING,
-           at_engine=None, at_ask_missing=False,
-           at_cls_args=None, **kwargs):
+def render(filepath, context=None, **options):
     """
     Compile and render given template file and return the result string.
 
     :param filepath: Template file path
     :param context: A dict or dict-like object to instantiate given
         template file
-    :param at_paths: Template search paths
-    :param at_encoding: Template encoding
-    :param at_engine: Specify the name of template engine to use explicitly or
-        None to find it automatically anyhow.
-    :param at_cls_args: Arguments passed to instantiate template engine class
-    :param kwargs: Keyword arguments passed to the template engine to
-        render templates with specific features enabled.
+    :param options: Optional keyword arguments such as:
+
+        - at_paths: Template search paths
+        - at_encoding: Template encoding
+        - at_engine: Specify the name of template engine to use explicitly or
+          None to find it automatically anyhow.
+        - at_cls_args: Arguments passed to instantiate template engine class
+        - other keyword arguments passed to the template engine to render
+          templates with specific features enabled.
 
     :return: Rendered string
     """
-    return _render(filepath=filepath, context=context, at_paths=at_paths,
-                   at_encoding=at_encoding, at_engine=at_engine,
-                   at_ask_missing=at_ask_missing, at_cls_args=at_cls_args,
-                   **kwargs)
+    return _render(filepath=filepath, context=context, **options)
 
 
-def render_to(filepath, context=None, output=None, at_paths=None,
-              at_encoding=anytemplate.compat.ENCODING,
-              at_engine=None, at_ask_missing=False,
-              at_cls_args=None, **kwargs):
+def render_to(filepath, context=None, output=None,
+              at_encoding=anytemplate.compat.ENCODING, **options):
     """
     Render given template file and write the result string to given `output`.
     The result string will be printed to sys.stdout if output is None or '-'.
@@ -171,18 +161,17 @@ def render_to(filepath, context=None, output=None, at_paths=None,
         template file
     :param output: File path to write the rendered result string to or None/'-'
         to print it to stdout
-    :param at_paths: Template search paths
     :param at_encoding: Template encoding
-    :param at_engine: Specify the name of template engine to use explicitly or
-        None to find it automatically anyhow.
-    :param at_cls_args: Arguments passed to instantiate template engine class
-    :param kwargs: Keyword arguments passed to the template engine to
-        render templates with specific features enabled.
+    :param options: Optional keyword arguments such as:
+
+        - at_paths: Template search paths
+        - at_engine: Specify the name of template engine to use explicitly or
+          None to find it automatically anyhow.
+        - at_cls_args: Arguments passed to instantiate template engine class
+        - other keyword arguments passed to the template engine to render
+          templates with specific features enabled.
     """
-    res = render(filepath, context=context, at_paths=at_paths,
-                 at_encoding=at_encoding, at_engine=at_engine,
-                 at_ask_missing=at_ask_missing, at_cls_args=at_cls_args,
-                 **kwargs)
+    res = render(filepath, context=context, **options)
     anytemplate.utils.write_to_output(res, output, at_encoding)
 
 # vim:sw=4:ts=4:et:
