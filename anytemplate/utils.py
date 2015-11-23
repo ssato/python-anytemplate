@@ -201,7 +201,8 @@ def _write_to_filepath(content, output):
         out.write(content)
 
 
-def write_to_output(content, output=None, encoding=anytemplate.compat.ENCODING):
+def write_to_output(content, output=None,
+                    encoding=anytemplate.compat.ENCODING):
     """
     :param content: Content string to write to
     :param output: Output destination
