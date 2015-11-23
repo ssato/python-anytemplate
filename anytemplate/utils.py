@@ -40,16 +40,6 @@ def get_output_stream(encoding=anytemplate.compat.ENCODING,
     return codecs.getwriter(encoding)(ostream)
 
 
-def get_input_stream(encoding=anytemplate.compat.ENCODING):
-    """
-    :param encoding: Chart sets encoding
-    :return: sys.stdout can output encoded strings
-
-    >>> _t = get_input_stream("UTF-8")
-    """
-    return codecs.getreader(encoding)(sys.stdin)
-
-
 def uniq(items):
     """Remove duplicates in given list with its order kept.
 
