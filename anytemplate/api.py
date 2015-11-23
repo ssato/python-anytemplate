@@ -6,6 +6,7 @@
 """
 from __future__ import absolute_import
 
+import logging
 import os.path
 
 import anytemplate.compat
@@ -14,9 +15,11 @@ import anytemplate.globals
 import anytemplate.utils
 
 from anytemplate.globals import (
-    LOGGER, TemplateNotFound, TemplateEngineNotFound,
-    CompileError  # flake8: noqa
+    TemplateNotFound, TemplateEngineNotFound, CompileError  # flake8: noqa
 )
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def list_engines():
