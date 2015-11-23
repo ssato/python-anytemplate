@@ -29,28 +29,20 @@ class Test00(unittest.TestCase):
 
     def test_12_find_engine__by_filepath(self):
         if find_by_name("jinja2"):
-            import anytemplate.engines.jinja2
-
             cls = TT.find_engine("foo.j2")
             self.assertEquals(cls, anytemplate.engines.jinja2.Engine)
 
     def test_14_find_engine__by_filepath__not_found(self):
-        try:
-            TT.find_engine("foo.not_existing_tmpl_ext")
-            assert False, "Not reached here"
-        except TT.TemplateEngineNotFound:
-            pass
+        self.assertRaises(TT.TemplateEngineNotFound,
+                          TT.find_engine, "foo.not_existing_tmpl_ext")
 
     def test_16_find_engine__by_name(self):
         cls = TT.find_engine("foo.t", "string.Template")
         self.assertEquals(cls, anytemplate.engines.strtemplate.Engine)
 
     def test_18_find_engine__by_name__not_found(self):
-        try:
-            TT.find_engine(None, "not_existing_tmpl_name")
-            assert False, "Not reached here"
-        except TT.TemplateEngineNotFound:
-            pass
+        self.assertRaises(TT.TemplateEngineNotFound,
+                          TT.find_engine, None, "not_existing_tmpl_name")
 
     def test_20_renders__strtemplate(self):
         self.assertEquals(TT.renders("$a", dict(a="aaa", ),
@@ -65,12 +57,10 @@ class Test00(unittest.TestCase):
 
     def test_22_renders__jinja2__template_not_found(self):
         if find_by_name("jinja2"):
-            try:
-                TT.renders("{% include 'not_existing.j2' %}",
-                           at_engine="jinja2", at_ask_missing=False)
-                assert False, "Not reached here"
-            except TemplateNotFound:
-                pass
+            self.assertRaises(TemplateNotFound,
+                              TT.renders,
+                              "{% include 'not_existing.j2' %}",
+                              at_engine="jinja2", at_ask_missing=False)
 
 
 class Test10(unittest.TestCase):
@@ -119,11 +109,9 @@ class Test10(unittest.TestCase):
                           "aaa")
 
     def test_22_render__template_missing(self):
-        try:
-            TT.render("not_exisiting_tmpl", at_engine="string.Template")
-            assert False, "Not reached here"
-        except TemplateNotFound:
-            pass
+        self.assertRaises(TemplateNotFound,
+                          TT.render,
+                          "not_exisiting_tmpl", at_engine="string.Template")
 
     def test_24__render__with_engine_specific_options(self):
         tmpl = os.path.join(self.workdir, "a.t")

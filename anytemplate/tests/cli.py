@@ -46,7 +46,9 @@ def run_and_check_exit_code(args=None, code=0):
 
 class Test00(unittest.TestCase):
 
-    def run_and_check_exit_code(self, args=[], code=0, _not=False):
+    def run_and_check_exit_code(self, args=None, code=0, _not=False):
+        if args is None:
+            args = []
         if _not:
             self.assertFalse(run_and_check_exit_code(args, code))
         else:
@@ -62,28 +64,16 @@ class Test00(unittest.TestCase):
         self.run_and_check_exit_code(["--wrong-option-xyz"], _not=True)
 
     def test_20_main__wo_args(self):
-        try:
-            TT.main()
-        except SystemExit:
-            pass
+        self.assertRaises(SystemExit, TT.main, [])
 
     def test_22_main__show_usage(self):
-        try:
-            TT.main(["dummy", "--help"])
-        except SystemExit:
-            pass
+        self.assertRaises(SystemExit, TT.main, ["dummy", "--help"])
 
     def test_24_main__show_usage(self):
-        try:
-            TT.main(["dummy", "--wrong-option-xyz"])
-        except SystemExit:
-            pass
+        self.assertRaises(SystemExit, TT.main, ["dummy", "--wrong-option"])
 
     def test_26_main__list_engines(self):
-        try:
-            TT.main(["dummy", "--list-engines"])
-        except SystemExit:
-            pass
+        TT.main(["dummy", "--list-engines"])
 
 
 class Test10(unittest.TestCase):

@@ -35,8 +35,8 @@ def diff(result, exp):
     :param result: Result string
     :param exp: Expected result string
     """
-    diff = difflib.unified_diff(result.splitlines(), exp.splitlines(),
-                                'Result', 'Expected')
-    return "\n'" + "\n".join(diff) + "'"
+    diff_ = difflib.unified_diff(result.splitlines(), exp.splitlines(),
+                                 'Result', 'Expected')
+    return "\n'" + "\n".join(diff_) + "'"
 
 # vim:sw=4:ts=4:et:

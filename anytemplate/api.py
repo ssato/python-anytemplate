@@ -2,6 +2,8 @@
 # Copyright (C) 2015 Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
+# Suppress warning of list_engines
+# pylint: disable=unused-import
 """anytemplate.api - API of anytemplate module
 """
 from __future__ import absolute_import
@@ -32,7 +34,7 @@ def find_engine(filepath=None, name=None):
     :return: Template engine class found
     """
     if name is None:
-        engines = list_engines(filepath)
+        engines = anytemplate.engine.find_by_filename(filepath)
         if not engines:
             raise TemplateEngineNotFound("filename=%s" % str(filepath))
 
@@ -94,14 +96,12 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
             ).strip()
 
         usr_tmpl = anytemplate.utils.normpath(_at_usr_tmpl)
-        usr_tmpldir = os.path.dirname(usr_tmpl)
-
         if template is None:
             LOGGER.debug("Render %s instead of %s", usr_tmpl, filepath)
             target = usr_tmpl
 
         return render_fn(target, context=context,
-                         at_paths=(at_paths + [usr_tmpldir]),
+                         at_paths=(at_paths + [os.path.dirname(usr_tmpl)]),
                          at_encoding=at_encoding, **kwargs)
     except Exception as exc:
         raise CompileError(str(exc))

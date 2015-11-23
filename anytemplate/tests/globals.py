@@ -9,7 +9,8 @@ import anytemplate.globals as TT
 
 class Test(unittest.TestCase):
 
-    def test_20_LOGGER(self):
+    def test_20_logger(self):
         TT.LOGGER.info("test log")
+        self.assertTrue(TT.NullHandler is not None)
 
 # vim:sw=4:ts=4:et:
