@@ -57,7 +57,7 @@ def list_engines_by_priority(engines=None):
     return sorted(engines, key=operator.methodcaller("priority"))
 
 
-def find_by_filename(filename, engines=None):
+def find_by_filename(filename=None, engines=None):
     """
     Find a list of template engine classes to render template `filename`.
 
