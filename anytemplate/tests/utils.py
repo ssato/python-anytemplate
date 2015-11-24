@@ -3,6 +3,8 @@
 # License: MIT
 #
 # pylint: disable=missing-docstring, invalid-name
+from __future__ import absolute_import, with_statement
+
 import os.path
 import os
 import unittest
@@ -75,6 +77,16 @@ class Test00(unittest.TestCase):
     def test_64_find_template_from_path__none(self):
         self.assertTrue(TT.find_template_from_path("not_existing") is None)
 
+    def test_70_mk_template_paths(self):
+        fname = __file__
+        fdir = os.path.abspath(os.path.dirname(fname))
+
+        self.assertEquals(TT.mk_template_paths(fname, []), [fdir])
+        self.assertEquals(TT.mk_template_paths(fname, ["/etc"]),
+                          ["/etc", fdir])
+        self.assertEquals(TT.mk_template_paths(None, ["/etc"]), ["/etc"])
+        self.assertEquals(TT.mk_template_paths(None, None), [os.curdir])
+
 
 class Test10(unittest.TestCase):
 
@@ -103,6 +115,11 @@ class Test10(unittest.TestCase):
         self.assertEquals(open(output).read(), "hello")
 
     def test_52_write_to_output__stdout(self):
-        TT.write_to_output("hello")
+        with anytemplate.tests.common.TempDir() as dir_:
+            outpath = os.path.join(dir_, "test.out")
+            TT.write_to_output("hello", output=outpath)
+            self.assertTrue(os.path.exists(outpath))
+
+            os.remove(outpath)
 
 # vim:sw=4:ts=4:et:
