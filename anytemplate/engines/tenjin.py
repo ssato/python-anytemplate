@@ -36,6 +36,9 @@
 from __future__ import absolute_import
 
 import logging
+import os.path
+import os
+import tempfile
 import tenjin  # :throw: ImportError
 tenjin.set_template_encoding('utf-8')  # FIXME
 
@@ -77,28 +80,44 @@ class Engine(anytemplate.engines.base.Engine):
         self.engine_options = self.filter_options(kwargs,
                                                   self.engine_valid_options())
 
-    def renders_impl(self, template_content, context, at_paths=None,
-                     at_encoding=anytemplate.compat.ENCODING,
-                     **kwargs):
+    def renders_impl(self, template_content, context, **kwargs):
         """
         Render given template string and return the result.
 
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_paths: Template search paths
-        :param at_encoding: Template encoding
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
+        :param kwargs: Keyword arguments such as:
+            - at_paths: Template search paths
+            - at_encoding: Template encoding
+            - Other keyword arguments passed to the template engine to render
+              templates with specific features enabled.
 
         :return: Rendered string
         """
-        LOGGER.warn("Just return given template content as tenjin does not "
-                    "support render template content directly !")
-        return template_content
+        tmpdir = os.environ.get("TMPDIR", "/tmp")
+        res = template_content
+        try:
+            (ofd, opath) = tempfile.mkstemp(prefix="at-tenjin-tmpl-",
+                                            dir=tmpdir)
+            os.write(ofd, template_content)
+            os.close(ofd)
 
-    def render_impl(self, template, context, at_paths=None,
-                    at_encoding=anytemplate.compat.ENCODING, **kwargs):
+            res = self.render_impl(opath, context, **kwargs)
+        except (IOError, OSError) as exc:
+            LOGGER.error("Failed to render from tempral template: %s"
+                         " [exc=%r]", opath, exc)
+            raise
+        finally:
+            try:
+                os.remove(opath)
+                os.removedirs(os.path.dirname(opath))
+            except (IOError, OSError):
+                pass
+
+        return res
+
+    def render_impl(self, template, context, at_paths=None, **kwargs):
         """
         Render given template file and return the result.
 
@@ -106,7 +125,6 @@ class Engine(anytemplate.engines.base.Engine):
         :param context: A dict or dict-like object to instantiate given
             template file
         :param at_paths: Template search paths
-        :param at_encoding: Template encoding
         :param kwargs: Keyword arguments passed to the template engine to
             render templates with specific features enabled.
 
