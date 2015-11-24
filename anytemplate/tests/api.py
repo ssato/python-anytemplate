@@ -63,13 +63,7 @@ class Test00(unittest.TestCase):
                               at_engine="jinja2", at_ask_missing=False)
 
 
-class Test10(unittest.TestCase):
-
-    def setUp(self):
-        self.workdir = anytemplate.tests.common.setup_workdir()
-
-    def tearDown(self):
-        anytemplate.tests.common.cleanup_workdir(self.workdir)
+class Test10(anytemplate.tests.common.TestsWithWorkdir):
 
     def test_10__render__usr_tmpl_given_by_kwargs(self):
         tmpl = os.path.join(self.workdir, "a.t")

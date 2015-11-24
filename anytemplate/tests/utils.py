@@ -88,13 +88,7 @@ class Test00(unittest.TestCase):
         self.assertEquals(TT.mk_template_paths(None, None), [os.curdir])
 
 
-class Test10(unittest.TestCase):
-
-    def setUp(self):
-        self.workdir = anytemplate.tests.common.setup_workdir()
-
-    def tearDown(self):
-        anytemplate.tests.common.cleanup_workdir(self.workdir)
+class Test10(anytemplate.tests.common.TestsWithWorkdir):
 
     def test_40_parse_and_load_contexts(self):
         jsns = [os.path.join(self.workdir, "a.json"),

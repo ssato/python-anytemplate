@@ -76,13 +76,7 @@ class Test00(unittest.TestCase):
         TT.main(["dummy", "--list-engines"])
 
 
-class Test10(unittest.TestCase):
-
-    def setUp(self):
-        self.workdir = anytemplate.tests.common.setup_workdir()
-
-    def tearDown(self):
-        anytemplate.tests.common.cleanup_workdir(self.workdir)
+class Test10(anytemplate.tests.common.TestsWithWorkdir):
 
     def run_and_check_exit_code(self, args=None, code=0, _not=False):
         if args is None:
