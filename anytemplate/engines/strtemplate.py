@@ -25,6 +25,30 @@ import anytemplate.engines.base
 import anytemplate.globals
 
 
+def renders(template_content, context, **options):
+    """
+    :param template_content: Template content
+    :param context:
+        A dict or dict-like object to instantiate given template file
+    :param options: Options such as:
+
+        - at_paths: Template search paths (common option)
+        - at_encoding: Template encoding (common option)
+        - safe: Safely substitute parameters in templates, that is,
+          original template content will be returned if some of template
+          parameters are not found in given context
+
+    :return: Rendered string
+    """
+    if options.get("safe", False):
+        return string.Template(template_content).safe_substitute(context)
+    else:
+        try:
+            return string.Template(template_content).substitute(context)
+        except KeyError as exc:
+            raise anytemplate.globals.CompileError(str(exc))
+
+
 class Engine(anytemplate.engines.base.Engine):
     """
     Template engine class to support string.Template.
@@ -32,30 +56,7 @@ class Engine(anytemplate.engines.base.Engine):
     _name = "string.Template"
     _priority = 50
 
-    def renders_impl(self, template_content, context, **options):
-        """
-        Inherited class must implement this!
-
-        :param template_content: Template content
-        :param context:
-            A dict or dict-like object to instantiate given template file
-        :param options: Options such as:
-
-            - at_paths: Template search paths (common option)
-            - at_encoding: Template encoding (common option)
-            - safe: Safely substitute parameters in templates, that is,
-              original template content will be returned if some of template
-              parameters are not found in given context
-
-        :return: To be rendered string in inherited classes
-        """
-        if options.get("safe", False):
-            return string.Template(template_content).safe_substitute(context)
-        else:
-            try:
-                return string.Template(template_content).substitute(context)
-            except KeyError as exc:
-                raise anytemplate.globals.CompileError(str(exc))
+    renders_impl = anytemplate.engines.base.to_method(renders)
 
     def render_impl(self, template, context, **options):
         """
