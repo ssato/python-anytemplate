@@ -9,6 +9,7 @@ import os.path
 import os
 import difflib
 import tempfile
+import unittest
 
 
 def selfdir():
@@ -32,7 +33,23 @@ def cleanup_workdir(workdir):
     os.system("rm -rf " + workdir)
 
 
+class TestsWithWorkdir(unittest.TestCase):
+
+    def setUp(self):
+        self.workdir = setup_workdir()
+
+    def tearDown(self):
+        cleanup_workdir(self.workdir)
+
+    def test_00_workdir_exists(self):
+        os.path.exists(self.workdir)
+
+
 class TempDir(object):
+
+    def __init__(self):
+        self._dir = None
+
     def __enter__(self):
         self._dir = setup_workdir()
         return self._dir

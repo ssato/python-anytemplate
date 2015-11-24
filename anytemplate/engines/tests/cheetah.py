@@ -60,13 +60,7 @@ class Test(unittest.TestCase):
                               tmpl_s)
 
 
-class Test10(unittest.TestCase):
-
-    def setUp(self):
-        self.workdir = anytemplate.tests.common.setup_workdir()
-
-    def tearDown(self):
-        anytemplate.tests.common.cleanup_workdir(self.workdir)
+class Test10(anytemplate.tests.common.TestsWithWorkdir):
 
     def test_10_render(self):
         tmpl = os.path.join(self.workdir, "a.t")
