@@ -2,12 +2,13 @@
 # Author: Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
-# pylint: disable=unused-argument, no-self-use
+# pylint: disable=unused-argument
 """
 Base class for template engine implementations.
 """
 from __future__ import absolute_import
 
+import functools
 import logging
 
 import anytemplate.compat
@@ -24,6 +25,22 @@ except ImportError:
 LOGGER = logging.getLogger(__name__)
 
 
+def to_method(func):
+    """
+    Lift :func:`func` to a method; it will be called with the first argument
+    `self` ignored.
+
+    :param func: Any callable object
+    """
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        """Wrapper function.
+        """
+        return func(*args[1:], **kwargs)
+
+    return wrapper
+
+
 def fallback_renders(template_content, *args, **kwargs):
     """
     Render given template string `template_content`.
@@ -32,6 +49,15 @@ def fallback_renders(template_content, *args, **kwargs):
     original template content `template_content`.
 
     :param template_content: Template content
+    :params args:
+        List of arguments like context, a dict or dict-like object to
+        instantiate given template file
+    :param kwargs: Keyword arguments such as:
+        - at_paths: Template search paths
+        - at_encoding: Template encoding
+        - kwargs: Optional keyword arguments passed to the template engine to
+          render templates with specific features enabled.
+
     :return: Rendered result string
     """
     return template_content
@@ -61,7 +87,7 @@ def fallback_render(template, context, at_paths=None,
         raise TemplateNotFound("template: %s" % template)
 
     try:
-        return anytemplate.compat.copen(tmpl).read()
+        return anytemplate.compat.copen(tmpl, encoding=at_encoding).read()
     except UnicodeDecodeError:
         return open(tmpl).read()
 
@@ -157,41 +183,8 @@ class Engine(object):
         LOGGER.debug("Intialize %s with kwargs: %s", self.name(),
                      ", ".join("%s=%s" % (k, v) for k, v in kwargs.items()))
 
-    def renders_impl(self, template_content, context, at_paths=None,
-                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
-        """
-        Render from given template content and context.
-
-        :param template_content: Template content
-        :param context: A dict or dict-like object to instantiate given
-            template file
-        :param at_paths: Template search paths
-        :param at_encoding: Template encoding
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
-
-        :return: Rendered string
-        """
-        # LOGGER.warn("Inherited class must implement this!")
-        return fallback_renders(template_content, context, at_paths=at_paths,
-                                at_encoding=at_encoding, **kwargs)
-
-    def render_impl(self, template, context, at_paths=None,
-                    at_encoding=anytemplate.compat.ENCODING, **kwargs):
-        """
-        :param template: Template file path
-        :param context: A dict or dict-like object to instantiate given
-            template file
-        :param at_paths: Template search paths
-        :param at_encoding: Template encoding
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
-
-        :return: Rendered string
-        """
-        # LOGGER.warn("Inherited class must implement this!")
-        return fallback_render(template, context, at_paths=at_paths,
-                               at_encoding=at_encoding, **kwargs)
+    renders_impl = to_method(fallback_renders)
+    render_impl = to_method(fallback_render)
 
     def renders(self, template_content, context=None, at_paths=None,
                 at_encoding=anytemplate.compat.ENCODING, **kwargs):
