@@ -216,16 +216,12 @@ def mk_template_paths(filepath, paths=None):
     :param filepath: (Base) filepath of template file or None
     :param paths: A list of template search paths or None
 
-    >>> fn = __file__
-    >>> fdir = os.path.abspath(os.path.dirname(fn))
-    >>> mk_template_paths(fn, []) == [fdir]
-    True
-    >>> mk_template_paths(fn, ["/etc"]) == ["/etc", fdir]
-    True
-    >>> mk_template_paths(None, ["/etc"]) == ["/etc"]
-    True
-    >>> mk_template_paths(None, None) == [os.curdir]
-    True
+    >>> mk_template_paths("/tmp/t.j2", [])
+    ['/tmp']
+    >>> mk_template_paths("/tmp/t.j2", ["/etc"])
+    ['/etc', '/tmp']
+    >>> mk_template_paths(None, ["/etc"])
+    ['/etc']
     """
     if filepath is None:
         return [os.curdir] if paths is None else paths
