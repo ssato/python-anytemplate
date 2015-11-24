@@ -2,7 +2,11 @@
 # Copyright (C) 2015 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
+# pylint: disable=missing-docstring
+from __future__ import absolute_import
+
 import os.path
+import os
 import difflib
 import tempfile
 
@@ -26,6 +30,15 @@ def cleanup_workdir(workdir):
     FIXME: Danger!
     """
     os.system("rm -rf " + workdir)
+
+
+class TempDir(object):
+    def __enter__(self):
+        self._dir = setup_workdir()
+        return self._dir
+
+    def __exit__(self, _type, _value, _traceback):
+        os.removedirs(self._dir)
 
 
 def diff(result, exp):
