@@ -138,6 +138,7 @@ class Engine(anytemplate.engines.base.Engine):
         engine = tenjin.Engine(**self.engine_options)
         LOGGER.warn("engine_options=%s", str(self.engine_options))
 
+        kwargs = self.filter_options(kwargs, self.render_valid_options())
         return engine.render(template, context, **kwargs)
 
 # vim:sw=4:ts=4:et:
