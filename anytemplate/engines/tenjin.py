@@ -80,16 +80,17 @@ class Engine(anytemplate.engines.base.Engine):
         self.engine_options = self.filter_options(kwargs,
                                                   self.engine_valid_options())
 
-    def renders_impl(self, template_content, context, **kwargs):
+    def renders_impl(self, template_content, context,
+                     at_encoding=anytemplate.compat.ENCODING, **kwargs):
         """
         Render given template string and return the result.
 
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
             template file
+        :param at_encoding: Template encoding
         :param kwargs: Keyword arguments such as:
             - at_paths: Template search paths
-            - at_encoding: Template encoding
             - Other keyword arguments passed to the template engine to render
               templates with specific features enabled.
 
@@ -100,7 +101,7 @@ class Engine(anytemplate.engines.base.Engine):
         try:
             (ofd, opath) = tempfile.mkstemp(prefix="at-tenjin-tmpl-",
                                             dir=tmpdir)
-            os.write(ofd, template_content)
+            os.write(ofd, template_content.encode(at_encoding))
             os.close(ofd)
 
             res = self.render_impl(opath, context, **kwargs)
