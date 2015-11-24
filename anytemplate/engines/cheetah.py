@@ -103,24 +103,25 @@ class Engine(anytemplate.engines.base.Engine):
         # if at_paths is not None:
         #    paths = at_paths + self._engine_valid_opts.get(..., [])
         #    ...
+        kwargs = self.filter_options(kwargs, self.engine_valid_options())
         self.engine_options.update(kwargs)
+
         return render_impl(**self.engine_options)
 
-    def renders_impl(self, template_content, context, at_paths=None,
-                     at_encoding=anytemplate.compat.ENCODING,
-                     **kwargs):
+    def renders_impl(self, template_content, context, **kwargs):
         """
         Render given template string and return the result.
 
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_paths: Template search paths but it is not actually processed
-            in this module (TODO)
-        :param at_encoding: Template encoding but it is not actually prcoessed
-            in this module (TODO)
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
+        :param kwargs: Keyword arguments such as:
+            - at_paths: Template search paths but it is not actually processed
+              in this module (TODO)
+            - at_encoding: Template encoding but it is not actually prcoessed
+              in this module (TODO)
+            - Other keyword arguments passed to the template engine to render
+              templates with specific features enabled.
 
         :return: Rendered string
         """
@@ -131,18 +132,20 @@ class Engine(anytemplate.engines.base.Engine):
 
         return self.__render(context, **kwargs)
 
-    def render_impl(self, template, context, at_paths=None,
-                    at_encoding=anytemplate.compat.ENCODING, **kwargs):
+    def render_impl(self, template, context, **kwargs):
         """
         Render given template file and return the result.
 
         :param template: Template file path
         :param context: A dict or dict-like object to instantiate given
             template file
-        :param at_paths: Template search paths
-        :param at_encoding: Template encoding
-        :param kwargs: Keyword arguments passed to the template engine to
-            render templates with specific features enabled.
+        :param kwargs: Keyword arguments such as:
+            - at_paths: Template search paths but it is not actually processed
+              in this module (TODO)
+            - at_encoding: Template encoding but it is not actually prcoessed
+              in this module (TODO)
+            - Other keyword arguments passed to the template engine to render
+              templates with specific features enabled.
 
         :return: Rendered string
         """
