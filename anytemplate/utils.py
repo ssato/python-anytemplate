@@ -16,7 +16,7 @@ import sys
 import anytemplate.compat
 
 try:
-    from anyconfig.api import container as Container, load
+    from anyconfig.api import to_container as Container, load
 except ImportError:
     Container = dict
     load = anytemplate.compat.json_load
@@ -169,7 +169,7 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
     if contexts:
         for fpath, ftype in concat(parse_filespec(f) for f in contexts):
             try:
-                diff = load(fpath, ftype, ac_schema=schema)
+                diff = load(fpath, ac_parser=ftype, ac_schema=schema)
                 if diff is not None:
                     ctx.update(diff)
             except (IOError, OSError, AttributeError):
