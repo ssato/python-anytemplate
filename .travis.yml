@@ -1,7 +1,8 @@
 # Ref. http://about.travis-ci.org/docs/user/languages/python/
 language: python
 python:
-    - 2.6
+# Disabled for a while until fixes happen in outside of anytemplate, e.g. ordereddict, asteroid.
+#    - 2.6
     - 2.7
     - 3.3
     - 3.4
