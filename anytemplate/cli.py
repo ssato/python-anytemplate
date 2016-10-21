@@ -93,8 +93,11 @@ def main(argv=None):
         return
 
     tmpl = args[0]
-    ctx = anytemplate.utils.parse_and_load_contexts(options.contexts,
-                                                    options.schema)
+
+    if options.contexts:
+        LOGGER.info("Loading contexts: %s ...", ", ".join(options.contexts[:3]))
+        ctx = anytemplate.utils.parse_and_load_contexts(options.contexts,
+                                                        options.schema)
     anytemplate.api.render_to(tmpl, ctx, options.output,
                               at_paths=options.template_paths,
                               at_engine=options.engine, at_ask_missing=True)
