@@ -95,7 +95,7 @@ def main(argv=None):
     tmpl = args[0]
 
     if options.contexts:
-        LOGGER.info("Loading contexts: %s ...", ", ".join(options.contexts[:3]))
+        LOGGER.info("Loading contexts: %r ...", options.contexts[:3])
         ctx = anytemplate.utils.parse_and_load_contexts(options.contexts,
                                                         options.schema)
     anytemplate.api.render_to(tmpl, ctx, options.output,
