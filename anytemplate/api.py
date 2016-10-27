@@ -104,7 +104,7 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
                          at_paths=(at_paths + [os.path.dirname(usr_tmpl)]),
                          at_encoding=at_encoding, **kwargs)
     except Exception as exc:
-        raise CompileError(str(exc))
+        raise CompileError("exc=%r, template=%s" % (exc, target[:200]))
 
 
 def renders(template, context=None, **options):
