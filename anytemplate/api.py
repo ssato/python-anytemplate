@@ -84,7 +84,7 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
         return render_fn(target, context=context, at_paths=at_paths,
                          at_encoding=at_encoding, **kwargs)
     except TemplateNotFound as exc:
-        LOGGER.warn("** Missing template[s]: paths=%s", ','.join(at_paths))
+        LOGGER.warn("** Missing template[s]: paths=%r", at_paths)
         if not at_ask_missing:
             raise TemplateNotFound(str(exc))
 
