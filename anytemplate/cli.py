@@ -93,6 +93,7 @@ def main(argv=None):
         return
 
     tmpl = args[0]
+    ctx = {}
 
     if options.contexts:
         LOGGER.info("Loading contexts: %r ...", options.contexts[:3])
