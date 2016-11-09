@@ -7,7 +7,6 @@
 """
 import os.path
 import os
-import subprocess
 import unittest
 
 import anytemplate.cli as TT
@@ -17,19 +16,6 @@ from anytemplate.engine import find_by_name
 
 
 CLI_SCRIPT = os.path.join(anytemplate.tests.common.selfdir(), "..", "cli.py")
-
-
-def run(args=None):
-    """
-    :throw: subprocess.CalledProcessError if something goes wrong
-    """
-    args = ["python", CLI_SCRIPT] + ([] if args is None else args)
-    devnull = open("/dev/null", 'w')
-
-    env = os.environ.copy()
-    env["PYTHONPATH"] = os.path.join(anytemplate.tests.common.selfdir(), "..")
-
-    subprocess.check_call(args, stdout=devnull, stderr=devnull, env=env)
 
 
 def run_and_check_exit_code(args=None, code=0):
