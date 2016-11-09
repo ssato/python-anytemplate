@@ -17,13 +17,10 @@ class Test(unittest.TestCase):
     def test_20_instance_methods(self):
         engine = TT.Engine()
         self.assertTrue(isinstance(engine, TT.Engine))
-        try:
-            engine.renders_impl("aaa", {})  # Template string must be given.
-            engine.render_impl(__file__, {})
+        engine.renders_impl("aaa", {})  # Template string must be given.
+        engine.render_impl(__file__, {})
 
-            engine.renders("aaa")
-            engine.render(__file__)
-        except NotImplementedError:
-            pass
+        engine.renders("aaa")
+        engine.render(__file__)
 
 # vim:sw=4:ts=4:et:
