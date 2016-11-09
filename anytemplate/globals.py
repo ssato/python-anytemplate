@@ -6,18 +6,21 @@
 """
 import logging
 
-try:
-    from logging import NullHandler
-except ImportError:  # python < 2.7 don't have it.
-    class NullHandler(logging.Handler):
-        """Handler does nothing.
-        """
-        def emit(self, record):
-            pass
 
 PACKAGE = "anytemplate"
 VERSION = "0.0.5"
 AUTHOR = "Satoru SATOH <ssat@redhat.com>"
+
+
+class NullHandler_(logging.Handler):
+    """Handler does nothing."""
+    def emit(self, record):
+        pass
+
+try:
+    from logging import NullHandler
+except ImportError:  # python < 2.7 don't have it.
+    NullHandler = NullHandler_
 
 # See: "Configuring Logging for a Library" in python standard logging howto,
 # e.g. https://docs.python.org/2/howto/logging.html#library-config.
