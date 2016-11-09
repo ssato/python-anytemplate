@@ -5,11 +5,11 @@ anytemplate
 About
 ======
 
-.. image:: https://pypip.in/version/anytemplate/badge.svg
+.. image:: https://img.shields.io/pypi/v/anytemplate.svg
    :target: https://pypi.python.org/pypi/anytemplate/
    :alt: [Latest Version]
 
-.. image:: https://pypip.in/py_versions/anytemplate/badge.svg
+.. image:: https://img.shields.io/pypi/pyversions/anytemplate.svg
    :target: https://pypi.python.org/pypi/anytemplate/
    :alt: [Python versions]
 
