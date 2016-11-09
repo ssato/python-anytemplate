@@ -91,6 +91,18 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Nov  9 2016 Satoru SATOH <ssato@redhat.com> - 0.1.0-1
+- add schema file support if anyconfig >=0.0.10 is installed
+- add python 3.5 support
+- fix: make cheetah (dummy) engine works for python 3.x even if it's not
+  available
+- enhancement: implement basic renders method to tenjin module
+- fix: encode str to byte correctly (especially for python 3.x)
+- fix: follow API changes in python-anyconfig >= 0.5.0
+- fix: initialize ctx even if options.cotentxs was empty
+- some more minor fixes, refactorings and enhancements
+- jumped up the version as it may be in stable enough
+
 * Tue Jun 16 2015 Satoru SATOH <ssato@redhat.com> - 0.0.5-1
 - fix bugs that template engine specific keyword options are not correctly
   processed in jinja2 and cheetah modules
