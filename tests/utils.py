@@ -10,7 +10,7 @@ import os
 import unittest
 
 import anytemplate.utils as TT
-import anytemplate.tests.common
+import tests.common
 
 
 class Test00(unittest.TestCase):
@@ -88,7 +88,7 @@ class Test00(unittest.TestCase):
         self.assertEquals(TT.mk_template_paths(None, None), [os.curdir])
 
 
-class Test10(anytemplate.tests.common.TestsWithWorkdir):
+class Test10(tests.common.TestsWithWorkdir):
 
     def test_40_parse_and_load_contexts(self):
         jsns = [os.path.join(self.workdir, "a.json"),
@@ -109,7 +109,7 @@ class Test10(anytemplate.tests.common.TestsWithWorkdir):
         self.assertEquals(open(output).read(), "hello")
 
     def test_52_write_to_output__stdout(self):
-        with anytemplate.tests.common.TempDir() as dir_:
+        with tests.common.TempDir() as dir_:
             outpath = os.path.join(dir_, "test.out")
             TT.write_to_output("hello", output=outpath)
             self.assertTrue(os.path.exists(outpath))

@@ -10,7 +10,7 @@ import anytemplate.api as TT
 import anytemplate.compat
 import anytemplate.engine
 import anytemplate.engines.strtemplate
-import anytemplate.tests.common
+import tests.common
 
 from anytemplate.engine import find_by_name
 from anytemplate.globals import TemplateNotFound
@@ -63,7 +63,7 @@ class Test00(unittest.TestCase):
                               at_engine="jinja2", at_ask_missing=False)
 
 
-class Test10(anytemplate.tests.common.TestsWithWorkdir):
+class Test10(tests.common.TestsWithWorkdir):
 
     def test_10__render__usr_tmpl_given_by_kwargs(self):
         tmpl = os.path.join(self.workdir, "a.t")

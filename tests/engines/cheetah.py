@@ -6,7 +6,7 @@
 import os
 import unittest
 
-import anytemplate.tests.common
+import tests.common
 import anytemplate.engines.cheetah as TT
 
 
@@ -60,7 +60,7 @@ class Test(unittest.TestCase):
                               tmpl_s)
 
 
-class Test10(anytemplate.tests.common.TestsWithWorkdir):
+class Test10(tests.common.TestsWithWorkdir):
 
     def test_10_render(self):
         tmpl = os.path.join(self.workdir, "a.t")

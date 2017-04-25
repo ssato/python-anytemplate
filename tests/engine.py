@@ -15,6 +15,7 @@ class Test(unittest.TestCase):
         strtemplate.Engine._file_extensions.append("t")
         clss = TT.find_by_filename("foo.t")
         self.assertTrue(strtemplate.Engine in clss)
+        strtemplate.Engine._file_extensions.remove("t")
 
     def test_20_find_by_name__found(self):
         self.assertEquals(TT.find_by_name("string.Template"),

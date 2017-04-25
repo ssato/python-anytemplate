@@ -6,8 +6,7 @@
 import os.path
 import unittest
 import anytemplate.engines.strtemplate as TT
-import anytemplate.engines.base
-import anytemplate.tests.common
+import tests.common
 
 from anytemplate.globals import CompileError
 
@@ -38,11 +37,11 @@ class Test00(unittest.TestCase):
 class Test10(unittest.TestCase):
 
     def setUp(self):
-        self.workdir = anytemplate.tests.common.setup_workdir()
+        self.workdir = tests.common.setup_workdir()
 
     def tearDown(self):
         if os.path.exists(self.workdir):
-            anytemplate.tests.common.cleanup_workdir(self.workdir)
+            tests.common.cleanup_workdir(self.workdir)
 
     def test_20_render_impl(self):
         engine = TT.Engine()

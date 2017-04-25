@@ -23,7 +23,7 @@ def setup_workdir():
     """
     :return: Path of the created working dir
     """
-    return tempfile.mkdtemp(dir="/tmp", prefix="python-anytemplate-tests-")
+    return tempfile.mkdtemp(dir="/tmp", prefix="python-tests-")
 
 
 def cleanup_workdir(workdir):

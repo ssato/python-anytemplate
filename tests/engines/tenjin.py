@@ -6,7 +6,7 @@
 import os
 import unittest
 
-import anytemplate.tests.common
+import tests.common
 try:
     import anytemplate.engines.tenjin as TT
 except ImportError:
@@ -24,7 +24,7 @@ class Test00(unittest.TestCase):
             self.assertEquals(egn.renders(tmpl_c, ctx), exp)
 
 
-class Test10(anytemplate.tests.common.TestsWithWorkdir):
+class Test10(tests.common.TestsWithWorkdir):
 
     def test_10_render(self):
         tmpl = "a.t"
@@ -41,6 +41,6 @@ class Test10(anytemplate.tests.common.TestsWithWorkdir):
             res = egn.render(tmpl, dict(a="aaa", b="bbb", cs=["c", "d"]),
                              at_paths=[self.workdir, os.curdir])
             self.assertEquals(res, exp,
-                              anytemplate.tests.common.diff(res, exp))
+                              tests.common.diff(res, exp))
 
 # vim:sw=4:ts=4:et:

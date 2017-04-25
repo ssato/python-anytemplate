@@ -6,7 +6,7 @@
 import os
 import unittest
 
-import anytemplate.tests.common
+import tests.common
 try:
     import anytemplate.engines.jinja2 as TT
 except ImportError:
@@ -30,7 +30,7 @@ class Test00(unittest.TestCase):
                               "aaa")
 
 
-class Test10(anytemplate.tests.common.TestsWithWorkdir):
+class Test10(tests.common.TestsWithWorkdir):
 
     def test_10_render(self):
         tmpl = "a.j2"

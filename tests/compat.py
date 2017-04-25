@@ -7,16 +7,16 @@ import os.path
 import unittest
 
 import anytemplate.compat as TT
-import anytemplate.tests.common
+import tests.common
 
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.workdir = anytemplate.tests.common.setup_workdir()
+        self.workdir = tests.common.setup_workdir()
 
     def tearDown(self):
-        anytemplate.tests.common.cleanup_workdir(self.workdir)
+        tests.common.cleanup_workdir(self.workdir)
 
     def test_20_json_load(self):
         fpath = os.path.join(self.workdir, "a.json")

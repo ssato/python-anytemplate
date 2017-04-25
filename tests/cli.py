@@ -10,12 +10,12 @@ import os
 import unittest
 
 import anytemplate.cli as TT
-import anytemplate.tests.common
+import tests.common
 
 from anytemplate.engine import find_by_name
 
 
-CLI_SCRIPT = os.path.join(anytemplate.tests.common.selfdir(), "..", "cli.py")
+CLI_SCRIPT = os.path.join(tests.common.selfdir(), "..", "cli.py")
 
 
 def run_and_check_exit_code(args=None, code=0):
@@ -62,7 +62,7 @@ class Test00(unittest.TestCase):
         TT.main(["dummy", "--list-engines"])
 
 
-class Test10(anytemplate.tests.common.TestsWithWorkdir):
+class Test10(tests.common.TestsWithWorkdir):
 
     def run_and_check_exit_code(self, args=None, code=0, _not=False):
         if args is None:

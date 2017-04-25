@@ -6,7 +6,7 @@
 import os
 import unittest
 
-import anytemplate.tests.common
+import tests.common
 
 try:
     import anytemplate.engines.pystache as TT
@@ -57,10 +57,10 @@ class Test10(unittest.TestCase):
 class Test20(unittest.TestCase):
 
     def setUp(self):
-        self.workdir = anytemplate.tests.common.setup_workdir()
+        self.workdir = tests.common.setup_workdir()
 
     def tearDown(self):
-        anytemplate.tests.common.cleanup_workdir(self.workdir)
+        tests.common.cleanup_workdir(self.workdir)
 
     def test_10_render__abspath(self):
         tmpl = os.path.join(self.workdir, "a.mustache")
