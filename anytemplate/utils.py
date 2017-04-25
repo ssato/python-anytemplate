@@ -13,8 +13,12 @@ import os.path
 import os
 import sys
 
-import anyconfig
 import anytemplate.compat
+
+try:
+    from anyconfig.api import load, merge
+except ImportError:
+    from anytemplate.compat import json_load as load, merge
 
 
 LOGGER = logging.getLogger(__name__)
@@ -164,9 +168,9 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
     if contexts:
         for fpath, ftype in concat(parse_filespec(f) for f in contexts):
             try:
-                diff = anyconfig.load(fpath, ac_parser=ftype, ac_schema=schema)
+                diff = load(fpath, ac_parser=ftype, ac_schema=schema)
                 if diff is not None:
-                    anyconfig.merge(ctx, diff)
+                    merge(ctx, diff)
             except (IOError, OSError, AttributeError):
                 if werr:
                     raise
