@@ -63,6 +63,21 @@ def get_file_extension(filepath):
         return ''
 
 
+def merge(dic, diff):
+    """
+    Merge mapping objects.
+
+    :param dic: Original mapping object to update with `diff`
+    :param diff: Diff mapping object
+    :return: None but `dic` will be updated
+
+    >>> dic = {}
+    >>> merge(dic, {'a': 1})
+    >>> assert 'a' in dic and dic['a'] == 1
+    """
+    dic.update(diff)
+
+
 if IS_PYTHON_3:
     from_iterable = itertools.chain.from_iterable
     raw_input = input
