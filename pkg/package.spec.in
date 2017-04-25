@@ -91,6 +91,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Apr 25 2017 Satoru SATOH <ssato@redhat.com> - 0.1.1-1
+- fix: follow API changes in anyconfig; anyconfig.to_container was deprecated
+  and removed, etc.
+- change: move test cases under tests/
+
 * Wed Nov  9 2016 Satoru SATOH <ssato@redhat.com> - 0.1.0-1
 - add schema file support if anyconfig >=0.0.10 is installed
 - add python 3.5 support
