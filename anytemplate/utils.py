@@ -13,13 +13,8 @@ import os.path
 import os
 import sys
 
+import anyconfig
 import anytemplate.compat
-
-try:
-    from anyconfig.api import to_container as Container, load
-except ImportError:
-    Container = dict
-    load = anytemplate.compat.json_load
 
 
 LOGGER = logging.getLogger(__name__)
@@ -125,9 +120,9 @@ def parse_filespec(fspec, sep=':', gpat='*'):
     """
     Parse given filespec `fspec` and return [(filetype, filepath)].
 
-    Because anyconfig.api.load should find correct file's type to load by the
-    file extension, this function will not try guessing file's type if not file
-    type is specified explicitly.
+    Because anyconfig.load should find correct file's type to load by the file
+    extension, this function will not try guessing file's type if not file type
+    is specified explicitly.
 
     :param fspec: filespec
     :param sep: a char separating filetype and filepath in filespec
@@ -163,15 +158,15 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
     :param werr: Exit immediately if True and any errors occurrs
         while loading context files
     """
-    ctx = Container()
+    ctx = dict()
     diff = None
 
     if contexts:
         for fpath, ftype in concat(parse_filespec(f) for f in contexts):
             try:
-                diff = load(fpath, ac_parser=ftype, ac_schema=schema)
+                diff = anyconfig.load(fpath, ac_parser=ftype, ac_schema=schema)
                 if diff is not None:
-                    ctx.update(diff)
+                    anyconfig.merge(ctx, diff)
             except (IOError, OSError, AttributeError):
                 if werr:
                     raise
