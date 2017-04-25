@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2012 - 2016 Satoru SATOH <ssato @ redhat.com>
+# Copyright (C) 2012 - 2017 Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
 """anytemplate globals.
@@ -8,7 +8,7 @@ import logging
 
 
 PACKAGE = "anytemplate"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 AUTHOR = "Satoru SATOH <ssat@redhat.com>"
 
 

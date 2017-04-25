@@ -8,7 +8,7 @@ import subprocess
 
 # See anytemplate/globals.py
 PACKAGE = "anytemplate"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 # For daily snapshot versioning mode:
 if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
