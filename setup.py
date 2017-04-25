@@ -81,7 +81,7 @@ setup(name=PACKAGE,
       license="MIT",
       url="https://github.com/ssato/python-anytemplate",
       classifiers=CLASSIFIERS,
-      packages=find_packages(),
+      packages=find_packages(exclude=['tests']),
       data_files=data_files,
       entry_points=open("pkg/entry_points.txt").read(),
       cmdclass={
