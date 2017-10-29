@@ -8,7 +8,7 @@ import logging
 
 
 PACKAGE = "anytemplate"
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 AUTHOR = "Satoru SATOH <ssat@redhat.com>"
 
 
