@@ -13,12 +13,11 @@ Summary:        A python template abstraction layer module
 Group:          Development/Tools
 License:        MIT
 URL:            https://github.com/ssato/%{name}
-#Source0:        https://github.com/ssato/%{name}/tarball/master/%{name}-%{version}.tar.gz
+#Source0:        https://github.com/ssato/%%{name}/tarball/master/%%{name}-%%{version}.tar.gz
 Source0:        %{pkgname}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-setuptools
-BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 Requires:       python-anyconfig
@@ -91,6 +90,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Oct 29 2017 Satoru SATOH <ssato@redhat.com> - 0.1.2-1
+- fix: remove macro expansion in the comment line in this RPM SPEC
+- fix: remove duplicated buildarch lines in this RPM SPEC
+
 * Tue Apr 25 2017 Satoru SATOH <ssato@redhat.com> - 0.1.1-1
 - fix: follow API changes in anyconfig; anyconfig.to_container was deprecated
   and removed, etc.
