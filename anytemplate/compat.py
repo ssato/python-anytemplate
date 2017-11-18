@@ -20,7 +20,7 @@ except ImportError:
 
 
 IS_PYTHON_3 = sys.version_info[0] == 3
-ENCODING = locale.getdefaultlocale()[1]
+ENCODING = locale.getdefaultlocale()[1] or "UTF-8"
 
 
 # Borrowed from library doc, 9.7.1 Itertools functions:
