@@ -30,7 +30,7 @@ class Test00(unittest.TestCase):
     def test_12_find_engine__by_filepath(self):
         if find_by_name("jinja2"):
             cls = TT.find_engine("foo.j2")
-            self.assertEquals(cls, anytemplate.engines.jinja2.Engine)
+            self.assertEqual(cls, anytemplate.engines.jinja2.Engine)
 
     def test_14_find_engine__by_filepath__not_found(self):
         self.assertRaises(TT.TemplateEngineNotFound,
@@ -38,22 +38,22 @@ class Test00(unittest.TestCase):
 
     def test_16_find_engine__by_name(self):
         cls = TT.find_engine("foo.t", "string.Template")
-        self.assertEquals(cls, anytemplate.engines.strtemplate.Engine)
+        self.assertEqual(cls, anytemplate.engines.strtemplate.Engine)
 
     def test_18_find_engine__by_name__not_found(self):
         self.assertRaises(TT.TemplateEngineNotFound,
                           TT.find_engine, None, "not_existing_tmpl_name")
 
     def test_20_renders__strtemplate(self):
-        self.assertEquals(TT.renders("$a", dict(a="aaa", ),
-                                     at_engine="string.Template"),
-                          "aaa")
+        self.assertEqual(TT.renders("$a", dict(a="aaa", ),
+                                    at_engine="string.Template"),
+                         "aaa")
 
     def test_22_renders__jinja2(self):
         if find_by_name("jinja2"):
-            self.assertEquals(TT.renders("{{ a }}", dict(a="aaa", ),
-                                         at_engine="jinja2"),
-                              "aaa")
+            self.assertEqual(TT.renders("{{ a }}", dict(a="aaa", ),
+                                        at_engine="jinja2"),
+                             "aaa")
 
     def test_22_renders__jinja2__template_not_found(self):
         if find_by_name("jinja2"):
@@ -69,23 +69,23 @@ class Test10(tests.common.TestsWithWorkdir):
         tmpl = os.path.join(self.workdir, "a.t")
         open(tmpl, 'w').write("$a")
 
-        self.assertEquals(TT._render(None, os.path.basename(tmpl),
-                                     dict(a="aaa", ),
-                                     at_engine="string.Template",
-                                     at_ask_missing=True,
-                                     _at_usr_tmpl=tmpl),
-                          "aaa")
+        self.assertEqual(TT._render(None, os.path.basename(tmpl),
+                                    dict(a="aaa", ),
+                                    at_engine="string.Template",
+                                    at_ask_missing=True,
+                                    _at_usr_tmpl=tmpl),
+                         "aaa")
 
     def test_12__render__usr_tmpl_given_by_kwargs__altname(self):
         tmpl = os.path.join(self.workdir, "a.t")
         open(tmpl, 'w').write("$a")
 
-        self.assertEquals(TT._render(None, "b.t",
-                                     dict(a="aaa", ),
-                                     at_engine="string.Template",
-                                     at_ask_missing=True,
-                                     _at_usr_tmpl=tmpl),
-                          "aaa")
+        self.assertEqual(TT._render(None, "b.t",
+                                    dict(a="aaa", ),
+                                    at_engine="string.Template",
+                                    at_ask_missing=True,
+                                    _at_usr_tmpl=tmpl),
+                         "aaa")
 
     def test_14__render__usr_tmpl_given(self):
         """
@@ -98,9 +98,9 @@ class Test10(tests.common.TestsWithWorkdir):
         tmpl = os.path.join(self.workdir, "a.t")
         open(tmpl, 'w').write("$a")
 
-        self.assertEquals(TT.render(tmpl, dict(a="aaa", ),
-                                    at_engine="string.Template"),
-                          "aaa")
+        self.assertEqual(TT.render(tmpl, dict(a="aaa", ),
+                                   at_engine="string.Template"),
+                         "aaa")
 
     def test_22_render__template_missing(self):
         self.assertRaises(TemplateNotFound,
@@ -115,9 +115,9 @@ class Test10(tests.common.TestsWithWorkdir):
 {{ xs|join(',') }}
 """)
         if find_by_name("jinja2"):
-            self.assertEquals(TT.render(tmpl, at_engine="jinja2",
-                                        extensions=["jinja2.ext.do"]),
-                              "1,2,3,4")
+            self.assertEqual(TT.render(tmpl, at_engine="jinja2",
+                                       extensions=["jinja2.ext.do"]),
+                             "1,2,3,4")
 
     def test_30_render_to(self):
         tmpl = os.path.join(self.workdir, "a.t")
@@ -127,6 +127,6 @@ class Test10(tests.common.TestsWithWorkdir):
         TT.render_to(tmpl, dict(a="aaa", ), output,
                      at_engine="string.Template")
         self.assertTrue(os.path.exists(output))
-        self.assertEquals(open(output).read(), "aaa")
+        self.assertEqual(open(output).read(), "aaa")
 
 # vim:sw=4:ts=4:et:

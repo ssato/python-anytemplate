@@ -18,8 +18,8 @@ class Test(unittest.TestCase):
         strtemplate.Engine._file_extensions.remove("t")
 
     def test_20_find_by_name__found(self):
-        self.assertEquals(TT.find_by_name("string.Template"),
-                          strtemplate.Engine)
+        self.assertEqual(TT.find_by_name("string.Template"),
+                         strtemplate.Engine)
 
     def test_20_find_by_name__not_found(self):
         self.assertTrue(TT.find_by_name("not_existing_engine") is None)

@@ -23,41 +23,40 @@ class Test(unittest.TestCase):
 
         if TT.Template is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s, {"name": "John", }), exp)
+            self.assertEqual(egn.renders(tmpl_s, {"name": "John", }), exp)
 
     def test_22_renders__no_context(self):
         tmpl_s = "hello world!"
 
         if TT.Template is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s), tmpl_s)
+            self.assertEqual(egn.renders(tmpl_s), tmpl_s)
 
     def test_24_renders__no_context__w_at_path(self):
         tmpl_s = "hello world!"
 
         if TT.Template is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s, at_paths=['.']), tmpl_s)
+            self.assertEqual(egn.renders(tmpl_s, at_paths=['.']), tmpl_s)
 
     def test_26_renders__no_context__w_file(self):
         tmpl_s = "hello world!"
 
         if TT.Template is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s, file="x"), tmpl_s)
+            self.assertEqual(egn.renders(tmpl_s, file="x"), tmpl_s)
 
     def test_28_renders__with_engine_special_option(self):
         if TT.Template is not None:
             egn = TT.Engine(compilerSettings={'cheetahVarStartToken': '@'})
-            self.assertEquals(egn.renders("@a", {'a': ""}), '')
+            self.assertEqual(egn.renders("@a", {'a': ""}), '')
 
     def test_36_renders_impl__no_context__w_filename(self):
         tmpl_s = "hello world!"
 
         if TT.Template is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders_impl(tmpl_s, {}, file="x"),
-                              tmpl_s)
+            self.assertEqual(egn.renders_impl(tmpl_s, {}, file="x"), tmpl_s)
 
 
 class Test10(tests.common.TestsWithWorkdir):
@@ -71,7 +70,7 @@ class Test10(tests.common.TestsWithWorkdir):
         if TT.Template is not None:
             egn = TT.Engine()
             res = egn.render(tmpl, ctx, at_paths=[self.workdir])
-            self.assertEquals(res, ctx["greeting"])
+            self.assertEqual(res, ctx["greeting"])
 
     def test_12_render__no_context(self):
         tmpl = os.path.join(self.workdir, "a.t")
@@ -81,7 +80,7 @@ class Test10(tests.common.TestsWithWorkdir):
         if TT.Template is not None:
             egn = TT.Engine()
             res = egn.render(tmpl)
-            self.assertEquals(res, "hello!")
+            self.assertEqual(res, "hello!")
 
     def test_26_render_impl__w_source(self):
         tmpl = os.path.join(self.workdir, "a.t")
@@ -93,6 +92,6 @@ class Test10(tests.common.TestsWithWorkdir):
             egn = TT.Engine()
             res = egn.render_impl(tmpl, ctx, at_paths=[self.workdir],
                                   source="aaa")
-            self.assertEquals(res, ctx["greeting"])
+            self.assertEqual(res, ctx["greeting"])
 
 # vim:sw=4:ts=4:et:

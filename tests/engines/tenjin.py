@@ -21,7 +21,7 @@ class Test00(unittest.TestCase):
             ctx = dict(a="aaa", b=12)
             exp = "aaa 12"
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_c, ctx), exp)
+            self.assertEqual(egn.renders(tmpl_c, ctx), exp)
 
 
 class Test10(tests.common.TestsWithWorkdir):
@@ -40,7 +40,6 @@ class Test10(tests.common.TestsWithWorkdir):
             egn = TT.Engine()
             res = egn.render(tmpl, dict(a="aaa", b="bbb", cs=["c", "d"]),
                              at_paths=[self.workdir, os.curdir])
-            self.assertEquals(res, exp,
-                              tests.common.diff(res, exp))
+            self.assertEqual(res, exp, tests.common.diff(res, exp))
 
 # vim:sw=4:ts=4:et:

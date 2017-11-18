@@ -22,36 +22,36 @@ class Test10(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s, {"name": "John", }), exp)
+            self.assertEqual(egn.renders(tmpl_s, {"name": "John", }), exp)
 
     def test_22_renders__no_context(self):
         tmpl_s = "Hello world!"
 
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s), tmpl_s)
+            self.assertEqual(egn.renders(tmpl_s), tmpl_s)
 
     def test_24_renders__no_context__w_at_path(self):
         tmpl_s = "Hello world!"
 
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s, at_paths=['.']), tmpl_s)
+            self.assertEqual(egn.renders(tmpl_s, at_paths=['.']), tmpl_s)
 
     def test_26_renders__no_context__w_custom_options(self):
         tmpl_s = "Hello world!"
 
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s, missing_tags="strict"),
-                              tmpl_s)
+            self.assertEqual(egn.renders(tmpl_s, missing_tags="strict"),
+                             tmpl_s)
 
     def test_28_renders__with_special_option(self):
         tmpl_s = "{{ a }}"
 
         if TT is not None:
             egn = TT.Engine(missing_tags='ignore')
-            self.assertEquals(egn.renders(tmpl_s), '')
+            self.assertEqual(egn.renders(tmpl_s), '')
 
 
 class Test20(unittest.TestCase):
@@ -68,7 +68,7 @@ class Test20(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.render(tmpl, {'a': "aaa", }), "a = aaa")
+            self.assertEqual(egn.render(tmpl, {'a': "aaa", }), "a = aaa")
 
     def test_12_render__abspath__no_context(self):
         tmpl = os.path.join(self.workdir, "a.mustache")
@@ -77,7 +77,7 @@ class Test20(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.render(tmpl), tmpl_s)
+            self.assertEqual(egn.render(tmpl), tmpl_s)
 
     def test_14_render__basename(self):
         tmpl = os.path.join(self.workdir, "a.mustache")
@@ -87,6 +87,6 @@ class Test20(unittest.TestCase):
             egn = TT.Engine()
             res = egn.render(os.path.basename(tmpl), {'a': "aaa", },
                              at_paths=[self.workdir])
-            self.assertEquals(res, "a = aaa")
+            self.assertEqual(res, "a = aaa")
 
 # vim:sw=4:ts=4:et:

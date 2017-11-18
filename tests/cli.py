@@ -81,7 +81,7 @@ class Test10(tests.common.TestsWithWorkdir):
 
         self.run_and_check_exit_code(["-E", "string.Template", "-C", ctx,
                                       "-o", output, tmpl])
-        self.assertEquals(open(output).read(), "aaa\n")
+        self.assertEqual(open(output).read(), "aaa\n")
 
     def test_20_main__jinja2(self):
         if find_by_name("jinja2"):
@@ -90,6 +90,6 @@ class Test10(tests.common.TestsWithWorkdir):
             open(tmpl, 'w').write("{{ hello|default('hello') }}")
 
             self.run_and_check_exit_code(["-o", output, tmpl])
-            self.assertEquals(open(output).read(), "hello")
+            self.assertEqual(open(output).read(), "hello")
 
 # vim:sw=4:ts=4:et:

@@ -20,14 +20,14 @@ class Test00(unittest.TestCase):
 
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders(tmpl_s, {'a': 1, 'b': 'bbb'}),
-                              'a = 1, b = "bbb"')
+            self.assertEqual(egn.renders(tmpl_s, {'a': 1, 'b': 'bbb'}),
+                             'a = 1, b = "bbb"')
 
     def test_22_renders__no_context(self):
         if TT is not None:
             egn = TT.Engine()
-            self.assertEquals(egn.renders("{{ a|default('aaa') }}"),
-                              "aaa")
+            self.assertEqual(egn.renders("{{ a|default('aaa') }}"),
+                             "aaa")
 
 
 class Test10(tests.common.TestsWithWorkdir):
@@ -39,7 +39,7 @@ class Test10(tests.common.TestsWithWorkdir):
         if TT is not None:
             egn = TT.Engine()
             res = egn.render(tmpl, {'a': "aaa", }, [self.workdir])
-            self.assertEquals(res, "a = aaa")
+            self.assertEqual(res, "a = aaa")
 
     def test_12_render__with_extension(self):
         tmpl = "b.j2"
@@ -54,6 +54,6 @@ class Test10(tests.common.TestsWithWorkdir):
             egn = TT.Engine()
             res = egn.render(tmpl, at_paths=[self.workdir],
                              extensions=["jinja2.ext.do"])
-            self.assertEquals(res, "1,2,3,4")
+            self.assertEqual(res, "1,2,3,4")
 
 # vim:sw=4:ts=4:et:

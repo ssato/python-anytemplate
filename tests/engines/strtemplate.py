@@ -18,11 +18,11 @@ class Test00(unittest.TestCase):
 
         trs = (("aaa", None, "aaa"), ("$a", {'a': "aaa"}, "aaa"))
         for (tmpl_s, ctx, exp) in trs:
-            self.assertEquals(engine.renders_impl(tmpl_s, ctx), exp)
+            self.assertEqual(engine.renders_impl(tmpl_s, ctx), exp)
 
     def test_22_renders_impl__safe(self):
         engine = TT.Engine()
-        self.assertEquals(engine.renders_impl("$a", {}, safe=True), "$a")
+        self.assertEqual(engine.renders_impl("$a", {}, safe=True), "$a")
 
     def test_24_renders_impl__error(self):
         engine = TT.Engine()
@@ -51,6 +51,6 @@ class Test10(unittest.TestCase):
             tmpl = os.path.join(self.workdir, "test.tmpl")
             open(tmpl, 'w').write(tmpl_s)
 
-            self.assertEquals(engine.render_impl(tmpl, ctx), exp)
+            self.assertEqual(engine.render_impl(tmpl, ctx), exp)
 
 # vim:sw=4:ts=4:et:

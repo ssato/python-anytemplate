@@ -24,6 +24,6 @@ class Test(unittest.TestCase):
 
         TT.json.dump(obj, open(fpath, 'w'))
 
-        self.assertEquals(TT.json_load(fpath, "dummy_arg0"), obj)
+        self.assertEqual(TT.json_load(fpath, "dummy_arg0"), obj)
 
 # vim:sw=4:ts=4:et:

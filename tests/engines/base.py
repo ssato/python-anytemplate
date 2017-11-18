@@ -10,8 +10,8 @@ import anytemplate.engines.base as TT  # stands for test target
 class Test(unittest.TestCase):
 
     def test_10_class_methods(self):
-        self.assertEquals(TT.Engine.name(), "base")
-        self.assertEquals(TT.Engine.file_extensions(), [])
+        self.assertEqual(TT.Engine.name(), "base")
+        self.assertEqual(TT.Engine.file_extensions(), [])
         self.assertFalse(TT.Engine.supports("foo.tmpl"))
 
     def test_20_instance_methods(self):
