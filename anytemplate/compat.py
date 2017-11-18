@@ -59,8 +59,8 @@ def get_file_extension(filepath):
     _ext = os.path.splitext(filepath)[-1]
     if _ext:
         return _ext[1:] if _ext.startswith('.') else _ext
-    else:
-        return ''
+
+    return ''
 
 
 def merge(dic, diff):
