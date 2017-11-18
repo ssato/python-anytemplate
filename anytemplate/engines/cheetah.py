@@ -41,9 +41,9 @@ def render_impl(**kwargs):
         if tmpl is None:
             tmpl = kwargs.get("source", None)
             return anytemplate.engines.base.fallback_renders(tmpl)
-        else:
-            return anytemplate.engines.base.fallback_render(tmpl, None,
-                                                            **kwargs)
+
+        return anytemplate.engines.base.fallback_render(tmpl, None, **kwargs)
+
     return Template(**kwargs).respond()
 
 
@@ -72,8 +72,8 @@ class Engine(anytemplate.engines.base.Engine):
         if anytemplate.compat.IS_PYTHON_3:
             cls._priority = 99
             return False  # Always as it's not ported to python 3.
-        else:
-            return super(Engine, cls).supports(template_file=template_file)
+
+        return super(Engine, cls).supports(template_file=template_file)
 
     def __init__(self, **kwargs):
         """
