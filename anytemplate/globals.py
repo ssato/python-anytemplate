@@ -12,7 +12,7 @@ VERSION = "0.1.2"
 AUTHOR = "Satoru SATOH <ssat@redhat.com>"
 
 
-class NullHandler_(logging.Handler):
+class MyNullHandler(logging.Handler):
     """Handler does nothing."""
     def emit(self, record):
         pass
@@ -21,7 +21,7 @@ class NullHandler_(logging.Handler):
 try:
     from logging import NullHandler
 except ImportError:  # python < 2.7 don't have it.
-    NullHandler = NullHandler_
+    NullHandler = MyNullHandler
 
 # See: "Configuring Logging for a Library" in python standard logging howto,
 # e.g. https://docs.python.org/2/howto/logging.html#library-config.
