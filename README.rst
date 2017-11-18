@@ -297,6 +297,20 @@ or:
 
    $ python setup.py rpm
 
+or you can install pre-built RPMs from one of my copr repos, https://copr.fedorainfracloud.org/coprs/ssato/python-anyconfig/
+
+.. code-block:: console
+
+   # Fedora
+   $ sudo dnf copr enable ssato/python-anyconfig
+   $ sudo dnf install -y python-anytemplate   # or python3-anytemplate (python3 version)
+
+.. code-block:: console
+
+   # RHEL, CentOS
+   $ (cd /etc/yum.repos.d; sudo curl -O https://copr.fedorainfracloud.org/coprs/ssato/python-anyconfig/repo/epel-7/ssato-python-anyconfig-epel-7.repo)
+   $ sudo dnf install -y python-anytemplate   # or python3-anytemplate (python3 version)
+
 Otherwise, try usual ways to build and/or install python modules such like 'pip
 install git+https://github.com/ssato/python-anytemplate' and 'python setup.py
 bdist', etc.
