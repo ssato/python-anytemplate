@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015 Satoru SATOH <ssato @ redhat.com>
+# Copyright (C) 2015 - 2018 Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
 # Suppress warning of list_engines
@@ -10,6 +10,7 @@ from __future__ import absolute_import
 
 import logging
 import os.path
+import sys
 
 import anytemplate.compat
 import anytemplate.engine
@@ -133,7 +134,7 @@ def render(filepath, context=None, **options):
     """
     Compile and render given template file and return the result string.
 
-    :param filepath: Template file path
+    :param filepath: Template file path or '-'
     :param context: A dict or dict-like object to instantiate given
         template file
     :param options: Optional keyword arguments such as:
@@ -148,6 +149,9 @@ def render(filepath, context=None, **options):
 
     :return: Rendered string
     """
+    if filepath == '-':
+        return _render(sys.stdin.read(), context=context, **options)
+
     return _render(filepath=filepath, context=context, **options)
 
 
