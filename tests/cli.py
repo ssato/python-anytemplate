@@ -105,7 +105,7 @@ class Test20(tests.common.TestsWithWorkdir):
                                       "%s -E string.Template -C yaml:- "
                                       "-o - %s" % (_RUN_CLI, tmpl),
                                       cwd=_CWD, shell=True)
-        self.assertEqual(out.rstrip(), "aaa")
+        self.assertEqual(out.rstrip(), tests.common.to_bytes("aaa"))
 
     def test_20_strtemplate_read_tmpl_from_stdin(self):
         ctx = os.path.join(self.workdir, "ctx.yml")
@@ -115,6 +115,6 @@ class Test20(tests.common.TestsWithWorkdir):
                                       "%s -E string.Template -C yaml:%s "
                                       "-o - -" % (_RUN_CLI, ctx),
                                       cwd=_CWD, shell=True)
-        self.assertEqual(out.rstrip(), "aaa")
+        self.assertEqual(out.rstrip(), tests.common.to_bytes("aaa"))
 
 # vim:sw=4:ts=4:et:
