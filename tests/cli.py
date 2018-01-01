@@ -1,12 +1,13 @@
 #
-# Copyright (C) 2015 Satoru SATOH <ssato at redhat.com>
+# Copyright (C) 2015 - 2018 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
-# pylint: disable=missing-docstring
+# pylint: disable=missing-docstring,invalid-name
 """Tests of anytempalte.cli
 """
 import os.path
 import os
+import subprocess
 import unittest
 
 import anytemplate.cli as TT
@@ -15,7 +16,8 @@ import tests.common
 from anytemplate.engine import find_by_name
 
 
-CLI_SCRIPT = os.path.join(tests.common.selfdir(), "..", "cli.py")
+_CWD = os.path.abspath(os.path.join(tests.common.selfdir(), ".."))
+_RUN_CLI = "PYTHONPATH=. python ./anytemplate/cli.py"
 
 
 def run_and_check_exit_code(args=None, code=0):
@@ -91,5 +93,28 @@ class Test10(tests.common.TestsWithWorkdir):
 
             self.run_and_check_exit_code(["-o", output, tmpl])
             self.assertEqual(open(output).read(), "hello")
+
+
+class Test20(tests.common.TestsWithWorkdir):
+
+    def test_10_strtemplate_read_ctx_from_stdin(self):
+        tmpl = os.path.join(self.workdir, "test.tmpl")
+        open(tmpl, 'w').write("$a\n")
+
+        out = subprocess.check_output("echo 'a: aaa' | "
+                                      "%s -E string.Template -C yaml:- "
+                                      "-o - %s" % (_RUN_CLI, tmpl),
+                                      cwd=_CWD, shell=True)
+        self.assertEqual(out.rstrip(), "aaa")
+
+    def test_20_strtemplate_read_tmpl_from_stdin(self):
+        ctx = os.path.join(self.workdir, "ctx.yml")
+        open(ctx, 'w').write("a: aaa\n")
+
+        out = subprocess.check_output("echo '$a' | "
+                                      "%s -E string.Template -C yaml:%s "
+                                      "-o - -" % (_RUN_CLI, ctx),
+                                      cwd=_CWD, shell=True)
+        self.assertEqual(out.rstrip(), "aaa")
 
 # vim:sw=4:ts=4:et:
