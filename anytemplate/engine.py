@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015 Satoru SATOH <ssato @ redhat.com>
+# Copyright (C) 2015 - 2018 Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
 """A module to consolidate access to template engine backends.
@@ -11,9 +11,15 @@ import operator
 from anytemplate.globals import LOGGER
 
 import anytemplate.engines.base
+import anytemplate.engines.cheetah
 import anytemplate.engines.strtemplate
 
 ENGINES = [anytemplate.engines.strtemplate.Engine, ]
+
+if anytemplate.engines.cheetah.Template is None:
+    LOGGER.info("Cheetah support was disable as needed module looks missing")
+else:
+    ENGINES.append(anytemplate.engines.cheetah.Engine)
 
 try:
     import anytemplate.engines.jinja2
@@ -32,12 +38,6 @@ try:
     ENGINES.append(anytemplate.engines.tenjin.Engine)
 except ImportError:
     LOGGER.info("tenjin support was disable as needed module looks missing")
-
-import anytemplate.engines.cheetah
-if anytemplate.engines.cheetah.Template is None:
-    LOGGER.info("Cheetah support was disable as needed module looks missing")
-else:
-    ENGINES.append(anytemplate.engines.cheetah.Engine)
 
 try:
     import anytemplate.engines.pystache

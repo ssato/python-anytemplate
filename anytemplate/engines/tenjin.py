@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 by Satoru SATOH <ssato @ redhat.com>
+# Copyright (c) 2015 - 2018 by Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
 # pylint: disable=unused-import
@@ -40,7 +40,10 @@ import os.path
 import os
 import tempfile
 import tenjin  # :throw: ImportError
-tenjin.set_template_encoding('utf-8')  # FIXME
+
+import anytemplate.compat
+import anytemplate.engines.base
+import anytemplate.utils
 
 # TODO: It seems that tenjin forces this to make it work factually.
 from tenjin.helpers import CaptureContext, cache_as, capture_as, \
@@ -48,9 +51,7 @@ from tenjin.helpers import CaptureContext, cache_as, capture_as, \
     generate_tostrfunc, html, new_cycle, not_cached, start_capture, \
     stop_capture, to_str, unquote  # flake8: noqa
 
-import anytemplate.compat
-import anytemplate.engines.base
-import anytemplate.utils
+tenjin.set_template_encoding('utf-8')  # FIXME
 
 
 LOGGER = logging.getLogger(__name__)

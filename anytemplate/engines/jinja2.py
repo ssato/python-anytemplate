@@ -25,10 +25,11 @@
 """
 from __future__ import absolute_import
 
-import jinja2.exceptions   # :throw: ImportError if missing
-import jinja2
 import os.path
 import os
+
+import jinja2.exceptions   # :throw: ImportError if missing
+import jinja2
 
 import anytemplate.compat
 import anytemplate.engines.base
