@@ -36,6 +36,15 @@ def _from_iterable(iterables):
             yield element
 
 
+def json_loads(content, *args, **kwargs):
+    """
+    Alternative if anyconfig is not available.
+
+    :param content: JSON string
+    """
+    return json.loads(content)
+
+
 def json_load(filepath, *args, **kwargs):
     """
     Alternative if anyconfig is not available.
