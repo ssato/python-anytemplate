@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: (c) 2012 - 2015 by Satoru SATOH <ssato@redhat.com>
+:copyright: (c) 2012 - 2018 by Satoru SATOH <ssato@redhat.com>
 :license: MIT
 """
 # unicode_literals ?
@@ -16,9 +16,11 @@ import sys
 import anytemplate.compat
 
 try:
-    from anyconfig.api import load, merge
+    from anyconfig.api import loads, load, merge
 except ImportError:
-    from anytemplate.compat import json_load as load, merge
+    from anytemplate.compat import (
+        json_loads as loads, json_load as load, merge
+    )
 
 
 LOGGER = logging.getLogger(__name__)
@@ -154,6 +156,19 @@ def parse_filespec(fspec, sep=':', gpat='*'):
         if gpat in fspec else [flip(tpl)]
 
 
+def load_context(ctx_path, ctx_type, scm=None):
+    """
+    :param ctx_path: context file path or '-' (read from stdin)
+    :param ctx_type: context file type
+    :param scm: JSON schema file in any formats anyconfig supports, to
+        validate given context files
+    """
+    if ctx_path == '-':
+        return loads(sys.stdin.read(), ac_parser=ctx_type, ac_schema=scm)
+
+    return load(ctx_path, ac_parser=ctx_type, ac_schema=scm)
+
+
 def parse_and_load_contexts(contexts, schema=None, werr=False):
     """
     :param contexts: list of context file specs
@@ -166,9 +181,9 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
     diff = None
 
     if contexts:
-        for fpath, ftype in concat(parse_filespec(f) for f in contexts):
+        for ctx_path, ctx_type in concat(parse_filespec(c) for c in contexts):
             try:
-                diff = load(fpath, ac_parser=ftype, ac_schema=schema)
+                diff = load_context(ctx_path, ctx_type, scm=schema)
                 if diff is not None:
                     merge(ctx, diff)
             except (IOError, OSError, AttributeError):
