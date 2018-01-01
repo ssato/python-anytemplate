@@ -8,8 +8,20 @@ from __future__ import absolute_import
 import os.path
 import os
 import difflib
+import sys
 import tempfile
 import unittest
+
+
+(_PY_MAJOR, _PY_MINOR) = sys.version_info[:2]
+IS_PYTHON_3 = _PY_MAJOR == 3
+
+
+def to_bytes(astr):
+    """
+    Convert a string to bytes. Do nothing in python 2.6.
+    """
+    return bytes(astr, 'utf-8') if IS_PYTHON_3 else astr
 
 
 def selfdir():
