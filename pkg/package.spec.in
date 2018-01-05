@@ -66,7 +66,7 @@ This is a version for python-3.x.
 %install
 %if %{with python3}
 %py3_install
-mv %{buildroot}%{_bindir}/anytemplate_cli %{buildroot}%{_bindir}/py3anytemplate_cli
+mv %{buildroot}%{_bindir}/anytemplate_cli %{buildroot}%{_bindir}/anytemplate_cli-3
 %endif
 %py2_install
 
@@ -80,7 +80,7 @@ mv %{buildroot}%{_bindir}/anytemplate_cli %{buildroot}%{_bindir}/py3anytemplate_
 %files -n python3-%{pkgname}
 %defattr(644,root,root,755)
 %doc README.rst examples
-%attr(755,root,root) %{_bindir}/py3anytemplate_cli
+%attr(755,root,root) %{_bindir}/anytemplate_cli-3
 %{python3_sitelib}/*
 %endif
 
