@@ -1,4 +1,4 @@
-%define pkgname anytemplate
+%global pkgname anytemplate
 
 Name:           python-%{pkgname}
 Version:        @VERSION@
