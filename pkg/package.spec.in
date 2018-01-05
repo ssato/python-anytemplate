@@ -55,7 +55,7 @@ This is a version for python-3.x.
 %endif
 
 %prep
-%setup -q -n %{pkgname}-%{version}
+%autosetup -n %{pkgname}-%{version}
 
 %if %{with python3}
 rm -rf %{py3dir}
