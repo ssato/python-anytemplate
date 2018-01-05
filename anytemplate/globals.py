@@ -9,7 +9,7 @@ import logging
 
 PACKAGE = "anytemplate"
 VERSION = "0.1.3"
-AUTHOR = "Satoru SATOH <ssat@redhat.com>"
+AUTHOR = "Satoru SATOH <ssato@redhat.com>"
 
 
 class MyNullHandler(logging.Handler):
