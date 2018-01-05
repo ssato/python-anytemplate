@@ -70,9 +70,6 @@ mv %{buildroot}%{_bindir}/anytemplate_cli %{buildroot}%{_bindir}/py3anytemplate_
 %endif
 %py2_install
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files -n python2-%{pkgname}
 %defattr(-,root,root,-)
 %doc README.rst examples
