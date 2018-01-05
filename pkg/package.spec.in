@@ -39,16 +39,14 @@ Requires:       python2-anyconfig
 
 %description -n python2-%{pkgname} %{desc}
 
-%if 0%{?with_python3}
+%if %{with python3}
 %package -n python3-%{pkgname}
 Summary:        %{sumtxt}
-%if %{with python3}
 Requires:       python3-jinja2
 Requires:       python3-anyconfig
 Requires:       python3-PyYAML
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-%endif
 Requires:       python3-anyconfig
 Requires:       python3-PyYAML
 %{?python_provide:%python_provide python3-%{pkgname}}
