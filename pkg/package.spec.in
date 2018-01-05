@@ -18,6 +18,14 @@ BuildArch:      noarch
 %bcond_with python3
 %endif
 
+%global desc \
+Python library works as an abstraction layer for various python template\
+engines and rendering libraries, and provide a few very simple and easily\
+understandable APIs to render templates.\
+\
+Also a CLI tool called anytemplate_cli is provided to render templates written\
+in these template languages.
+
 BuildRequires:  python-setuptools
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
@@ -39,8 +47,7 @@ A template abstraction layer module for python.
 Summary:        A python template abstraction layer module
 Group:          Development/Tools
 
-%description -n python3-%{pkgname}
-A template abstraction layer module for python.
+%description -n python3-%{pkgname} %{desc}
 
 This is a version for python-3.x.
 %endif
