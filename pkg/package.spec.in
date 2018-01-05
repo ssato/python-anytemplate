@@ -30,8 +30,13 @@ in these template languages.
 
 %package -n python2-%{pkgname}
 Summary:        %{sumtxt}
+%if 0%{?rhel} == 7
+BuildRequires:  python-setuptools
+BuildRequires:  python-devel
+%else
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-devel
+%endif
 Requires:       PyYAML
 Requires:       python2-jinja2
 Requires:       python2-anyconfig
