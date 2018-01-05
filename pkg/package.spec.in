@@ -85,6 +85,10 @@ mv %{buildroot}%{_bindir}/anytemplate_cli %{buildroot}%{_bindir}/anytemplate_cli
 %endif
 
 %changelog
+* Fri Jan  5 2018 Satoru SATOH <ssato@redhat.com> - 0.1.4-1
+- enhancement: support to load templates and contexts from stdin '-'
+- fix/refactor: clean up the RPM SPEC to comply w/ the Fedora python guidelines
+
 * Sat Nov 18 2017 Satoru SATOH <ssato@redhat.com> - 0.1.3-1
 - fix: make it runnable even if locale is not set such like in docker env
 - fix: some warnings such as deprecated-method, no-else-return and invalid-name
