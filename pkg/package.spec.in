@@ -30,11 +30,11 @@ in these template languages.
 
 %package -n python2-%{pkgname}
 Summary:        %{sumtxt}
-BuildRequires:  python-setuptools
-BuildRequires:  python-devel
-BuildRequires:  python-setuptools
-Requires:       python-anyconfig
+BuildRequires:  python2-setuptools
+BuildRequires:  python2-devel
 Requires:       PyYAML
+Requires:       python2-jinja2
+Requires:       python2-anyconfig
 %{?python_provide:%python_provide python2-%{pkgname}}
 
 %description -n python2-%{pkgname} %{desc}
