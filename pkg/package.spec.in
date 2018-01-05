@@ -26,11 +26,22 @@ understandable APIs to render templates.\
 Also a CLI tool called anytemplate_cli is provided to render templates written\
 in these template languages.
 
+%description %{desc}
+
+%package -n python2-%{pkgname}
+Summary:        %{sumtxt}
 BuildRequires:  python-setuptools
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 Requires:       python-anyconfig
 Requires:       PyYAML
+%{?python_provide:%python_provide python2-%{pkgname}}
+
+%description -n python2-%{pkgname} %{desc}
+
+%if 0%{?with_python3}
+%package -n python3-%{pkgname}
+Summary:        %{sumtxt}
 %if %{with python3}
 Requires:       python3-jinja2
 Requires:       python3-anyconfig
@@ -38,14 +49,9 @@ Requires:       python3-PyYAML
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 %endif
-
-%description
-A template abstraction layer module for python.
-
-%if 0%{?with_python3}
-%package -n python3-%{pkgname}
-Summary:        A python template abstraction layer module
-Group:          Development/Tools
+Requires:       python3-anyconfig
+Requires:       python3-PyYAML
+%{?python_provide:%python_provide python3-%{pkgname}}
 
 %description -n python3-%{pkgname} %{desc}
 
@@ -83,7 +89,7 @@ popd
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -n python2-%{pkgname}
 %defattr(-,root,root,-)
 %doc README.rst examples
 %{_bindir}/anytemplate_cli
