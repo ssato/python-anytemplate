@@ -1,9 +1,10 @@
 %global pkgname anytemplate
+%global sumtxt Python library provides common APIs for various template engines
 
 Name:           python-%{pkgname}
 Version:        @VERSION@
 Release:        1%{?dist}
-Summary:        A python template abstraction layer module
+Summary:        %{sumtxt}
 Group:          Development/Tools
 License:        MIT
 URL:            https://github.com/ssato/%{name}
