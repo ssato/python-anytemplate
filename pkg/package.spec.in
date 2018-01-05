@@ -1,5 +1,7 @@
-%if 0%{?fedora}
-%global with_python3 1
+%if 0%{?fedora} || 0%{?rhel} > 7
+%bcond_without python3
+%else
+%bcond_with python3
 %endif
 
 # disable debuginfo
@@ -22,7 +24,7 @@ BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 Requires:       python-anyconfig
 Requires:       PyYAML
-%if 0%{?with_python3}
+%if %{with python3}
 Requires:       python3-jinja2
 Requires:       python3-anyconfig
 Requires:       python3-PyYAML
@@ -47,7 +49,7 @@ This is a version for python-3.x.
 %prep
 %setup -q -n %{pkgname}-%{version}
 
-%if 0%{?with_python3}
+%if %{with python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
 %endif
@@ -55,7 +57,7 @@ cp -a . %{py3dir}
 %build
 %{__python} setup.py build
 
-%if 0%{?with_python3}
+%if %{with python3}
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
@@ -64,7 +66,7 @@ popd
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%if 0%{?with_python3}
+%if %{with python3}
 pushd %{py3dir}
 %{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 mv $RPM_BUILD_ROOT%{_bindir}/anytemplate_cli $RPM_BUILD_ROOT%{_bindir}/py3anytemplate_cli
@@ -81,7 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/anytemplate_cli
 %{python_sitelib}/*
 
-%if 0%{?with_python3}
+%if %{with python3}
 %files -n python3-%{pkgname}
 %defattr(644,root,root,755)
 %doc README.rst examples
