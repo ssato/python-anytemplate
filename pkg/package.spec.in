@@ -4,8 +4,6 @@
 %bcond_with python3
 %endif
 
-# disable debuginfo
-%define debug_package %{nil}
 %define pkgname anytemplate
 
 Name:           python-%{pkgname}
