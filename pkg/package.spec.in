@@ -1,16 +1,5 @@
 %global pkgname anytemplate
 
-Name:           python-%{pkgname}
-Version:        @VERSION@
-Release:        1%{?dist}
-Summary:        Python library provides common APIs for various template engines
-Group:          Development/Tools
-License:        MIT
-URL:            https://github.com/ssato/%{name}
-#Source0:        https://github.com/ssato/%%{name}/tarball/master/%%{name}-%%{version}.tar.gz
-Source0:        %{pkgname}-%{version}.tar.gz
-BuildArch:      noarch
-
 %if 0%{?fedora} || 0%{?rhel} > 7
 %bcond_without python3
 %else
@@ -24,6 +13,17 @@ understandable APIs to render templates.\
 \
 Also a CLI tool called anytemplate_cli is provided to render templates written\
 in these template languages.
+
+Name:           python-%{pkgname}
+Version:        @VERSION@
+Release:        1%{?dist}
+Summary:        Python library provides common APIs for various template engines
+Group:          Development/Tools
+License:        MIT
+URL:            https://github.com/ssato/%{name}
+#Source0:        https://github.com/ssato/%%{name}/tarball/master/%%{name}-%%{version}.tar.gz
+Source0:        %{pkgname}-%{version}.tar.gz
+BuildArch:      noarch
 
 %description %{desc}
 
