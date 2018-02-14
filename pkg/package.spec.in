@@ -25,10 +25,6 @@ URL:            https://github.com/ssato/python-anytemplate
 Source0:        %{pkgname}-%{version}.tar.gz
 BuildArch:      noarch
 
-%description %{desc}
-
-%package -n python2-%{pkgname}
-Summary:        %{summary}
 %if 0%{?rhel} == 7
 BuildRequires:  python-setuptools
 BuildRequires:  python-devel
@@ -36,6 +32,15 @@ BuildRequires:  python-devel
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-devel
 %endif
+%if %{with python3}
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
+%endif
+
+%description %{desc}
+
+%package -n python2-%{pkgname}
+Summary:        %{summary}
 Requires:       PyYAML
 Requires:       python2-jinja2
 Requires:       python2-anyconfig
@@ -46,8 +51,6 @@ Requires:       python2-anyconfig
 %if %{with python3}
 %package -n python3-%{pkgname}
 Summary:        %{summary}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 Requires:       python3-PyYAML
 Requires:       python3-jinja2
 Requires:       python3-anyconfig
