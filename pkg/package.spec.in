@@ -77,13 +77,11 @@ This is a version for python-3.x.
 %endif
 
 %files -n python2-%{pkgname}
-%defattr(-,root,root,-)
 %doc README.rst examples
 %{python_sitelib}/*
 
 %if %{with python3}
 %files -n python3-%{pkgname}
-%defattr(644,root,root,755)
 %doc README.rst examples
 %{python3_sitelib}/*
 %endif
