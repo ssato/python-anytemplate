@@ -1,10 +1,9 @@
 %global pkgname anytemplate
-%global sumtxt Python library provides common APIs for various template engines
 
 Name:           python-%{pkgname}
 Version:        @VERSION@
 Release:        1%{?dist}
-Summary:        %{sumtxt}
+Summary:        Python library provides common APIs for various template engines
 Group:          Development/Tools
 License:        MIT
 URL:            https://github.com/ssato/%{name}
@@ -29,7 +28,7 @@ in these template languages.
 %description %{desc}
 
 %package -n python2-%{pkgname}
-Summary:        %{sumtxt}
+Summary:        %{summary}
 %if 0%{?rhel} == 7
 BuildRequires:  python-setuptools
 BuildRequires:  python-devel
@@ -46,7 +45,7 @@ Requires:       python2-anyconfig
 
 %if %{with python3}
 %package -n python3-%{pkgname}
-Summary:        %{sumtxt}
+Summary:        %{summary}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 Requires:       python3-PyYAML
