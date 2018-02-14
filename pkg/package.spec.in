@@ -71,25 +71,23 @@ This is a version for python-3.x.
 %endif
 
 %install
+%py2_install
 %if %{with python3}
 %py3_install
-mv %{buildroot}%{_bindir}/anytemplate_cli %{buildroot}%{_bindir}/anytemplate_cli-3
 %endif
-%py2_install
 
 %files -n python2-%{pkgname}
 %defattr(-,root,root,-)
 %doc README.rst examples
-%{_bindir}/anytemplate_cli
 %{python_sitelib}/*
 
 %if %{with python3}
 %files -n python3-%{pkgname}
 %defattr(644,root,root,755)
 %doc README.rst examples
-%attr(755,root,root) %{_bindir}/anytemplate_cli-3
 %{python3_sitelib}/*
 %endif
+%{_bindir}/*
 
 %changelog
 * Fri Jan  5 2018 Satoru SATOH <ssato@redhat.com> - 0.1.4-1
