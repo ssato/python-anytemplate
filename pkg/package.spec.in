@@ -21,8 +21,7 @@ Summary:        Python library provides common APIs for various template engines
 Group:          Development/Tools
 License:        MIT
 URL:            https://github.com/ssato/python-anytemplate
-#Source0:        https://github.com/ssato/%%{name}/tarball/master/%%{name}-%%{version}.tar.gz
-Source0:        %{pkgname}-%{version}.tar.gz
+Source0:        %{url}/archive/RELEASE_%{version}.tar.gz
 BuildArch:      noarch
 
 %if 0%{?rhel} == 7
