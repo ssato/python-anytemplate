@@ -23,14 +23,8 @@ License:        MIT
 URL:            https://github.com/ssato/python-anytemplate
 Source0:        %{url}/archive/RELEASE_%{version}.tar.gz
 BuildArch:      noarch
-
-%if 0%{?rhel} == 7
-BuildRequires:  python-setuptools
-BuildRequires:  python-devel
-%else
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-devel
-%endif
 %if %{with python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
