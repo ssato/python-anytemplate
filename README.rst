@@ -13,7 +13,7 @@ About
    :target: https://pypi.python.org/pypi/anytemplate/
    :alt: [Python versions]
 
-.. .. image:: https://pypip.in/license/anytemplate/badge.png
+.. .. image:: https://img.shields.io/pypi/l/anytemplate.svg
    :target: https://pypi.python.org/pypi/anytemplate/
    :alt: [MIT License]
 
