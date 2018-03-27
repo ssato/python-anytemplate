@@ -22,9 +22,7 @@ python:
 ##        - python: 3.2
 ##          env: LANG="en_US.utf-8"
 install:
-    - if [[ $TRAVIS_PYTHON_VERSION < '2.7' ]]; then
-        pip install -r pkg/test_requirements-py-2.6.txt;
-      elif [[ $TRAVIS_PYTHON_VERSION = '2.7' ]]; then
+    - if [[ $TRAVIS_PYTHON_VERSION = '2.7' ]]; then
         pip install -r pkg/test_requirements-py-2.7.txt;
       else
         pip install -r pkg/test_requirements.txt;

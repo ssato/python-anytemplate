@@ -1,8 +1,0 @@
-Cheetah
-PyYAML
-anyconfig
-jinja2
-mako
-pystache
-simplejson
-tenjin
