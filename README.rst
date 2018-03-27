@@ -49,8 +49,10 @@ The following template engines are supported currently:
    `jinja2 <http://jinja.pocoo.org>`_ , Highest priory will be given and becomes default if found
    `mako <http://www.makotemplates.org>`_ ,
    `tenjin <http://www.kuwata-lab.com/tenjin/>`_ , renders() API is not supported
-   `Cheetah <http://www.cheetahtemplate.org>`_ , Only available for python 2.x as it does not look supporting python 3.x
+   `Cheetah <http://cheetahtemplate.org>`_ , To use with python 3.x, Cheetah3 [#]_ is needed.
    `pystache <https://github.com/defunkt/pystache>`_ ,
+
+.. [#] https://pypi.python.org/pypi/Cheetah3/ , which is not yet available in stable Fedora release according to https://apps.fedoraproject.org/packages/python-cheetah.
 
 Features
 ==========
