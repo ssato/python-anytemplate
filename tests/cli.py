@@ -43,7 +43,7 @@ class Test00(unittest.TestCase):
             self.assertTrue(run_and_check_exit_code(args, code))
 
     def test_10_main__wo_args(self):
-        self.run_and_check_exit_code()
+        self.run_and_check_exit_code(code=1)
 
     def test_12__show_usage(self):
         self.run_and_check_exit_code(["--help"])
