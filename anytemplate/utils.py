@@ -259,7 +259,7 @@ def find_template_from_path(filepath, paths=None):
         if os.path.exists(candidate):
             return candidate
 
-    LOGGER.warn("Could not find template=%s in paths=%s", filepath, paths)
+    LOGGER.warning("Could not find template=%s in paths=%s", filepath, paths)
     return None
 
 # vim:sw=4:ts=4:et:
