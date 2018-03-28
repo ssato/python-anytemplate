@@ -88,7 +88,7 @@ def main(argv=None):
         if args.list_engines:
             ecs = anytemplate.api.list_engines()
             print(", ".join("%s (%s)" % (e.name(), e.priority()) for e in ecs))
-            return
+            sys.exit(0)
         else:
             psr.print_usage()
             sys.exit(1)
