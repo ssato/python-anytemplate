@@ -11,7 +11,9 @@ class Test(unittest.TestCase):
 
     def test_10_null_handler(self):
         logger = TT.logging.getLogger(__name__)
-        logger.addHandler(TT.MyNullHandler())
+        handler = TT.MyNullHandler()
+        self.assertTrue(handler is not None)
+        logger.addHandler(handler)
         logger.debug("aaa")
 
     def test_20_logger(self):
