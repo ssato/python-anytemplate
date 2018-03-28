@@ -61,7 +61,7 @@ class Test00(unittest.TestCase):
         self.assertRaises(SystemExit, TT.main, ["dummy", "--wrong-option"])
 
     def test_26_main__list_engines(self):
-        TT.main(["dummy", "--list-engines"])
+        self.assertRaises(SystemExit, TT.main, ["dummy", "--list-engines"])
 
 
 class Test10(tests.common.TestsWithWorkdir):
