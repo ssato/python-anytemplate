@@ -1,4 +1,4 @@
-* Fri Jan  5 2018 Satoru SATOH <ssato@redhat.com> - 0.1.4-1
+* Tue Mar  1 2018 Satoru SATOH <ssato@redhat.com> - 0.1.4-1
 - enhancement: support to load templates and contexts from stdin '-'
 - fix/refactor: clean up the RPM SPEC to comply w/ the Fedora python guidelines
 
