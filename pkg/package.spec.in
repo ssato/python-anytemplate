@@ -81,5 +81,8 @@ This is a version for python-3.x.
 %{_bindir}/*
 
 %changelog
+* Tue May  1 2018 Satoru SATOH <ssato@redhat.com> - 0.1.4-1
+- New upstream release
+
 * Fri May  1 2015 Satoru SATOH <ssato@redhat.com> - 0.0.1-1
 - Initial packaging
