@@ -13,7 +13,23 @@ except ImportError:
     TT = None
 
 
-class Test00(unittest.TestCase):
+class Test00(tests.common.TestsWithWorkdir):
+
+    def test_ex_loader(self):
+        if TT is not None:
+            for i in range(0, 3):
+                open(os.path.join(self.workdir, "%d.j2" % i),
+                     'w').write("%d" % i)
+
+            loader = TT.FileSystemExLoader([self.workdir], enable_glob=True)
+            env = TT.jinja2.Environment(loader=loader)
+            tmpl = env.get_template("*.j2")
+            res = tmpl.render()
+
+            self.assertEqual(res, ''.join('%d' % i for i in range(0, 3)))
+
+
+class Test10(unittest.TestCase):
 
     def test_20_renders(self):
         tmpl_s = 'a = {{ a }}, b = "{{ b }}"'
@@ -30,7 +46,7 @@ class Test00(unittest.TestCase):
                              "aaa")
 
 
-class Test10(tests.common.TestsWithWorkdir):
+class Test20(tests.common.TestsWithWorkdir):
 
     def test_10_render(self):
         tmpl = "a.j2"
