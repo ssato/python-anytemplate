@@ -67,16 +67,18 @@ This is a version for python-3.x.
 %py2_install
 %if %{with python3}
 %py3_install
+rm -rf %{buildroot}%{python3_sitelib}/tests
 %endif
+rm -rf %{buildroot}%{python_sitelib}/tests
 
 %files -n python2-%{pkgname}
 %doc README.rst examples
-%{python_sitelib}/*
+%{python_sitelib}/%{pkgname}*
 
 %if %{with python3}
 %files -n python3-%{pkgname}
 %doc README.rst examples
-%{python3_sitelib}/*
+%{python3_sitelib}/%{pkgname}*
 %endif
 %{_bindir}/*
 
