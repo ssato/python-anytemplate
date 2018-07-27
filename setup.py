@@ -58,7 +58,6 @@ class RpmCommand(SrpmCommand):
 
 setup(name=PACKAGE,
       version=VERSION,
-      packages=find_packages(exclude=['tests']),
       cmdclass={
           "srpm": SrpmCommand,
           "rpm":  RpmCommand,
