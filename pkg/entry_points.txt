@@ -1,3 +1,0 @@
-# TODO: How to process cases of multi-versions-python env.
-[console_scripts]
-anytemplate_cli = anytemplate.cli:main
