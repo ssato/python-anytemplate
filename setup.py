@@ -58,8 +58,7 @@ class RpmCommand(SrpmCommand):
 
 setup(name=PACKAGE,
       version=VERSION,
-      #packages=find_packages(exclude=['tests']),
-      #entry_points=open("pkg/entry_points.txt").read(),
+      packages=find_packages(exclude=['tests']),
       cmdclass={
           "srpm": SrpmCommand,
           "rpm":  RpmCommand,
