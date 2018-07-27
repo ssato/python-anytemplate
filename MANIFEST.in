@@ -7,4 +7,4 @@ include setup.*
 include pkg/*
 include examples/*
 recursive-include anytemplate *.py
-recursive-exclude tests *.py
+recursive-exclude tests *
