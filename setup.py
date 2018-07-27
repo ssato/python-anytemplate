@@ -15,26 +15,6 @@ if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
     import datetime
     VERSION = VERSION + datetime.datetime.now().strftime(".%Y%m%d")
 
-data_files = []
-CLASSIFIERS = ["Development Status :: 4 - Beta",
-               "Intended Audience :: Developers",
-               "Programming Language :: Python",
-               "Programming Language :: Python :: 2",
-               "Programming Language :: Python :: 2.7",
-               "Programming Language :: Python :: 3",
-               "Programming Language :: Python :: 3.3",
-               "Programming Language :: Python :: 3.4",
-               "Programming Language :: Python :: 3.5",
-               "Programming Language :: Python :: 3.6",
-               "Programming Language :: Python :: 3.7",
-               "Environment :: Console",
-               "Operating System :: OS Independent",
-               "Topic :: Software Development :: Libraries :: Python Modules",
-               "Topic :: Text Processing :: Markup",
-               "Topic :: Utilities",
-               "License :: OSI Approved :: MIT License",
-               ]
-
 
 class SrpmCommand(Command):
 
@@ -78,16 +58,8 @@ class RpmCommand(SrpmCommand):
 
 setup(name=PACKAGE,
       version=VERSION,
-      description="A python template abstraction layer module",
-      long_description=open("README.rst").read(),
-      author="Satoru SATOH",
-      author_email="ssato@redhat.com",
-      license="MIT",
-      url="https://github.com/ssato/python-anytemplate",
-      classifiers=CLASSIFIERS,
-      packages=find_packages(exclude=['tests']),
-      data_files=data_files,
-      entry_points=open("pkg/entry_points.txt").read(),
+      #packages=find_packages(exclude=['tests']),
+      #entry_points=open("pkg/entry_points.txt").read(),
       cmdclass={
           "srpm": SrpmCommand,
           "rpm":  RpmCommand,
