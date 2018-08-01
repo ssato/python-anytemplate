@@ -2,7 +2,6 @@ include ChangeLog
 include LICENSE
 include MANIFEST.in
 include README.*
-include *.spec.in
 include setup.*
 include pkg/*
 include examples/*
