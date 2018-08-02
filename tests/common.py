@@ -69,4 +69,16 @@ class TempDir(object):
     def __exit__(self, _type, _value, _traceback):
         os.removedirs(self._dir)
 
+
+class TestsWithWorkdir(unittest.TestCase):
+
+    def setUp(self):
+        self.workdir = setup_workdir()
+
+    def tearDown(self):
+        cleanup_workdir(self.workdir)
+
+    def test_00_workdir_exists(self):
+        os.path.exists(self.workdir)
+
 # vim:sw=4:ts=4:et:
