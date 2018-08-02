@@ -1,7 +1,7 @@
 -r requirements.txt
 coveralls
-flake8
+flake8 < 3.5.0
 nose
-pycodestyle
+pycodestyle < 2.4.0
 pylint
 pytest
