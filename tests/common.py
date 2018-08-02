@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015 Satoru SATOH <ssato at redhat.com>
+# Copyright (C) 2015 - 2018 Satoru SATOH <ssato at redhat.com>
 # License: MIT
 #
 # pylint: disable=missing-docstring
@@ -45,16 +45,16 @@ def cleanup_workdir(workdir):
     os.system("rm -rf " + workdir)
 
 
-class TestsWithWorkdir(unittest.TestCase):
+def diff(result, exp):
+    """
+    Print unified diff.
 
-    def setUp(self):
-        self.workdir = setup_workdir()
-
-    def tearDown(self):
-        cleanup_workdir(self.workdir)
-
-    def test_00_workdir_exists(self):
-        os.path.exists(self.workdir)
+    :param result: Result string
+    :param exp: Expected result string
+    """
+    diff_ = difflib.unified_diff(result.splitlines(), exp.splitlines(),
+                                 'Result', 'Expected')
+    return "\n'" + "\n".join(diff_) + "'"
 
 
 class TempDir(object):
@@ -68,17 +68,5 @@ class TempDir(object):
 
     def __exit__(self, _type, _value, _traceback):
         os.removedirs(self._dir)
-
-
-def diff(result, exp):
-    """
-    Print unified diff.
-
-    :param result: Result string
-    :param exp: Expected result string
-    """
-    diff_ = difflib.unified_diff(result.splitlines(), exp.splitlines(),
-                                 'Result', 'Expected')
-    return "\n'" + "\n".join(diff_) + "'"
 
 # vim:sw=4:ts=4:et:
