@@ -3,6 +3,8 @@
 # License: MIT
 #
 # pylint: disable=missing-docstring
+from __future__ import absolute_import
+
 import unittest
 import anytemplate.engines.base as TT  # stands for test target
 

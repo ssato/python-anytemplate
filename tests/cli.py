@@ -5,6 +5,8 @@
 # pylint: disable=missing-docstring,invalid-name
 """Tests of anytempalte.cli
 """
+from __future__ import absolute_import
+
 import os.path
 import os
 import subprocess

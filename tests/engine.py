@@ -3,6 +3,8 @@
 # License: MIT
 #
 # pylint: disable=missing-docstring, protected-access
+from __future__ import absolute_import
+
 import unittest
 
 import anytemplate.engine as TT

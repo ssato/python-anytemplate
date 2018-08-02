@@ -3,6 +3,8 @@
 # License: MIT
 #
 # pylint: disable=missing-docstring
+from __future__ import absolute_import
+
 import os.path
 import unittest
 import anytemplate.engines.strtemplate as TT
