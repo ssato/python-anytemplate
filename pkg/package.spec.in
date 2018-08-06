@@ -83,6 +83,9 @@ rm -rf %{buildroot}%{python_sitelib}/tests
 %{_bindir}/*
 
 %changelog
+* Tue Aug  7 2018 Satoru SATOH <ssato@redhat.com> - 0.1.5-1
+- New upstream release
+
 * Tue May  1 2018 Satoru SATOH <ssato@redhat.com> - 0.1.4-1
 - New upstream release
 
