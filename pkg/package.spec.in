@@ -1,9 +1,7 @@
 %global pkgname anytemplate
 
-%if 0%{?fedora} || 0%{?rhel} > 7
-%bcond_without python3
-%else
-%bcond_with python3
+%if 0%{?fedora} || 0%{?rhel} > 7 || 0%{?epel} > 7
+%global with_python3 1
 %endif
 
 %global desc \
@@ -23,63 +21,80 @@ License:        MIT
 URL:            https://github.com/ssato/python-anytemplate
 Source0:        %{url}/archive/RELEASE_%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires:  python2-setuptools
-BuildRequires:  python2-devel
-%if %{with python3}
+%if 0%{?with_python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+%else
+BuildRequires:  python2-setuptools
+BuildRequires:  python2-devel
 %endif
 
 %description %{desc}
+
+%if 0%{?with_python3}
+%package -n python3-%{pkgname}
+Summary:        %{summary}
+Requires:       python3-PyYAML
+Requires:       python3-jinja2
+Requires:       python3-anytemplate
+%{?python_provide:%python_provide python3-%{pkgname}}
+
+%description -n python3-%{pkgname} %{desc}
+%else
 
 %package -n python2-%{pkgname}
 Summary:        %{summary}
 Requires:       PyYAML
 Requires:       python2-jinja2
-Requires:       python2-anyconfig
+Requires:       python2-anytemplate
 %{?python_provide:%python_provide python2-%{pkgname}}
 
 %description -n python2-%{pkgname} %{desc}
-
-%if %{with python3}
-%package -n python3-%{pkgname}
-Summary:        %{summary}
-Requires:       python3-PyYAML
-Requires:       python3-jinja2
-Requires:       python3-anyconfig
-%{?python_provide:%python_provide python3-%{pkgname}}
-
-%description -n python3-%{pkgname} %{desc}
-
-This is a version for python-3.x.
 %endif
 
 %prep
 %autosetup -n %{pkgname}-%{version}
 
 %build
-%py2_build
-%if %{with python3}
+%if 0%{?with_python3}
 %py3_build
+%else
+%py2_build
 %endif
 
 %install
-%py2_install
-%if %{with python3}
+%if 0%{?with_python3}
 %py3_install
-rm -rf %{buildroot}%{python3_sitelib}/tests
+%else
+%py2_install
+# Dirty hacks.
+test -d %{buildroot}%{python_sitelib}/%{pkgname} || {
+cp -a %{pkgname} %{buildroot}%{python_sitelib}/
+}
+test -d %{buildroot}/usr/bin || {
+install -d %{buildroot}/usr/bin
+cat << EOF > %{buildroot}/usr/bin/anytemplate_cli
+#! /usr/bin/python
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.exit(
+        load_entry_point('anytemplate', 'console_scripts', 'anytemplate_cli')()
+    )
+EOF
+}
+chmod +x %{buildroot}/usr/bin/anytemplate_cli
 %endif
-rm -rf %{buildroot}%{python_sitelib}/tests
 
-%files -n python2-%{pkgname}
-%doc README.rst examples
-%{python_sitelib}/%{pkgname}*
-
-%if %{with python3}
+%if 0%{?with_python3}
 %files -n python3-%{pkgname}
-%doc README.rst examples
 %{python3_sitelib}/%{pkgname}*
+%else
+%files -n python2-%{pkgname}
+%{python_sitelib}/%{pkgname}*
 %endif
+%doc README.rst examples
 %{_bindir}/*
 
 %changelog
