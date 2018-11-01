@@ -1,14 +1,15 @@
 from __future__ import absolute_import
-from setuptools import setup, Command, find_packages
 
-import os
 import os.path
-import subprocess
+import os
+import sys
+import setuptools
+import setuptools.command.bdist_rpm
 
+sys.path.insert(0, os.path.dirname(__file__))  # load from this dir.
 
-# See anytemplate/globals.py
-PACKAGE = "anytemplate"
-VERSION = "0.1.5"
+from anytemplate import VERSION
+
 
 # For daily snapshot versioning mode:
 if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
@@ -16,51 +17,28 @@ if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
     VERSION = VERSION + datetime.datetime.now().strftime(".%Y%m%d")
 
 
-class SrpmCommand(Command):
+class bdist_rpm(setuptools.command.bdist_rpm.bdist_rpm):
+    """Override the default content of the RPM SPEC.
+    """
+    spec_tmpl = os.path.join(os.path.abspath(os.curdir),
+                             "pkg/package.spec.in")
 
-    user_options = []
-    build_stage = "s"
+    def _replace(self, line):
+        """Replace some strings in the RPM SPEC template"""
+        if "@VERSION@" in line:
+            return line.replace("@VERSION@", VERSION)
 
-    curdir = os.path.abspath(os.curdir)
-    rpmspec = os.path.join(curdir, "pkg/package.spec")
+        if "Source0:" in line:  # Dirty hack
+            return "Source0: %{pkgname}-%{version}.tar.gz"
 
-    def initialize_options(self):
-        pass
+        return line
 
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        self.pre_sdist()
-        self.run_command('sdist')
-        # Dirty hack.
-        self.copy_file("dist/%s-%s.tar.gz" % (PACKAGE, VERSION),
-                                              "dist/RELEASE_%s.tar.gz" % VERSION)
-        self.build_rpm()
-
-    def pre_sdist(self):
-        c = open(self.rpmspec + ".in").read()
-        open(self.rpmspec, "w").write(c.replace("@VERSION@", VERSION))
-
-    def build_rpm(self):
-        rpmbuild = os.path.join(self.curdir, "pkg/rpmbuild-wrapper.sh")
-        workdir = os.path.join(self.curdir, "dist")
-
-        cmd_s = "%s -w %s -s %s %s" % (rpmbuild, workdir, self.build_stage,
-                                       self.rpmspec)
-        subprocess.check_call(cmd_s, shell=True)
+    def _make_spec_file(self):
+        return [self._replace(l.rstrip()) for l
+                in open(self.spec_tmpl).readlines()]
 
 
-class RpmCommand(SrpmCommand):
-
-    build_stage = "b"
-
-
-setup(name=PACKAGE,
-      version=VERSION,
-      cmdclass={
-          "srpm": SrpmCommand,
-          "rpm":  RpmCommand,
-      },)
+setuptools.setup(name="anytemplate", version=VERSION,
+                 cmdclass=dict(bdist_rpm=bdist_rpm))
 
 # vim:sw=4:ts=4:et:
