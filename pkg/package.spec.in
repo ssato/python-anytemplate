@@ -14,7 +14,7 @@ in these template languages.
 
 Name:           python-%{pkgname}
 Version:        @VERSION@
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python library provides common APIs for various template engines
 Group:          Development/Tools
 License:        MIT
@@ -98,6 +98,9 @@ chmod +x %{buildroot}/usr/bin/anytemplate_cli
 %{_bindir}/*
 
 %changelog
+* Fri Nov  2 2018 Satoru SATOH <ssato@redhat.com> - 0.1.5-2
+- Cleanups and fixes of the RPM SPEC
+
 * Tue Aug  7 2018 Satoru SATOH <ssato@redhat.com> - 0.1.5-1
 - New upstream release
 
