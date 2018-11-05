@@ -36,7 +36,7 @@ BuildRequires:  python2-devel
 Summary:        %{summary}
 Requires:       python3-PyYAML
 Requires:       python3-jinja2
-Requires:       python3-anytemplate
+Requires:       python3-anyconfig
 %{?python_provide:%python_provide python3-%{pkgname}}
 
 %description -n python3-%{pkgname} %{desc}
@@ -46,7 +46,7 @@ Requires:       python3-anytemplate
 Summary:        %{summary}
 Requires:       PyYAML
 Requires:       python2-jinja2
-Requires:       python2-anytemplate
+Requires:       python2-anyconfig
 %{?python_provide:%python_provide python2-%{pkgname}}
 
 %description -n python2-%{pkgname} %{desc}
