@@ -323,7 +323,7 @@ Hacking
 How to test
 -------------
 
-Try to run '[WITH_COVERAGE=1] ./pkg/runtest.sh [path_to_python_code]'.
+I choose tox for manual tests and CI. Try to run 'tox [-e py27]' for example.
 
 TODO & Issues
 ===============
