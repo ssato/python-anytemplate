@@ -7,20 +7,13 @@ python:
     - 3.4
     - 3.5
     - 3.6
-# It looks failed in Travis-CI environment.
-#    - 3.7
-#matrix:
-#    include:
-#        - python: 2.4
-#          env: FULL="true"
-#        - python: 2.5
-#          env: FULL="true"
-#        - python: 2.6
-#          env: FULL="true"
-#        - python: 2.7
-#          env: FULL="true"
-##        - python: 3.2
-##          env: LANG="en_US.utf-8"
+# .. seealso:: https://github.com/travis-ci/travis-ci/issues/9815
+matrix:
+  include:
+    - python: 3.7
+      dist: xenial
+      sudo: true
+
 install:
     - pip install tox-travis
 script:
