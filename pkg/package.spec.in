@@ -69,7 +69,7 @@ Requires:       python2-anyconfig
 %py2_install
 # Dirty hacks.
 test -d %{buildroot}%{python_sitelib}/%{pkgname} || {
-cp -a %{pkgname} %{buildroot}%{python_sitelib}/
+cp -a src/%{pkgname} %{buildroot}%{python_sitelib}/
 }
 test -d %{buildroot}/usr/bin || {
 install -d %{buildroot}/usr/bin

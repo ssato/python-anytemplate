@@ -6,5 +6,5 @@ include setup.*
 include tox.ini .gitignore .travis.yml
 include pkg/*
 include examples/*
-recursive-include anytemplate *.py
+recursive-include src *.py
 recursive-include tests *.py

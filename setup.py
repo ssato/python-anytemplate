@@ -2,14 +2,16 @@ from __future__ import absolute_import
 
 import os.path
 import os
+import re
 import sys
 import setuptools
 import setuptools.command.bdist_rpm
 
-sys.path.insert(0, os.path.dirname(__file__))  # load from this dir.
 
-from anytemplate import VERSION
-
+# It might throw IndexError and so on.
+VERSION = [re.search(r'^VERSION = "([^"]+)"', l).groups()[0] for l
+           in open("src/anytemplate/globals.py").readlines()
+           if "VERSION" in l][0]
 
 # For daily snapshot versioning mode:
 if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
@@ -39,6 +41,7 @@ class bdist_rpm(setuptools.command.bdist_rpm.bdist_rpm):
 
 
 setuptools.setup(name="anytemplate", version=VERSION,
+                 package_dir={'': 'src'},
                  cmdclass=dict(bdist_rpm=bdist_rpm))
 
 # vim:sw=4:ts=4:et:
