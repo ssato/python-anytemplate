@@ -4,7 +4,6 @@ python:
 # Disabled for a while until fixes happen in outside of anytemplate, e.g. ordereddict, asteroid.
 #    - 2.6
     - 2.7
-    - 3.3
     - 3.4
     - 3.5
     - 3.6
