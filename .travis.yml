@@ -23,7 +23,7 @@ python:
 ##        - python: 3.2
 ##          env: LANG="en_US.utf-8"
 install:
-    - pip install tox
+    - pip install tox-travis
 script:
     - tox
 after_success:
