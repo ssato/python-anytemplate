@@ -19,7 +19,7 @@ from anytemplate.engine import find_by_name
 
 
 _CWD = os.path.abspath(os.path.join(tests.common.selfdir(), ".."))
-_RUN_CLI = "PYTHONPATH=. python ./anytemplate/cli.py"
+_RUN_CLI = "PYTHONPATH=./src/ python ./src/anytemplate/cli.py"
 
 
 def run_and_check_exit_code(args=None, code=0):
