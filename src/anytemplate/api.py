@@ -18,9 +18,9 @@ import anytemplate.globals
 import anytemplate.utils
 
 from anytemplate.globals import (
-    TemplateNotFound, TemplateEngineNotFound, CompileError  # flake8: noqa
+    TemplateNotFound, TemplateEngineNotFound, CompileError  # noqa: F401
 )
-from anytemplate.engine import find_by_filename as list_engines
+from anytemplate.engine import find_by_filename as list_engines  # noqa: F401
 
 
 LOGGER = logging.getLogger(__name__)

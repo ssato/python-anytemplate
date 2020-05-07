@@ -46,10 +46,12 @@ import anytemplate.engines.base
 import anytemplate.utils
 
 # TODO: It seems that tenjin forces this to make it work factually.
-from tenjin.helpers import CaptureContext, cache_as, capture_as, \
-    captured_as, echo, echo_cached, escape, fragment_cache, \
-    generate_tostrfunc, html, new_cycle, not_cached, start_capture, \
-    stop_capture, to_str, unquote  # flake8: noqa
+from tenjin.helpers import (  # noqa: F401
+    CaptureContext, cache_as, capture_as,
+    captured_as, echo, echo_cached, escape, fragment_cache,
+    generate_tostrfunc, html, new_cycle, not_cached, start_capture,
+    stop_capture, to_str, unquote
+)
 
 tenjin.set_template_encoding('utf-8')  # FIXME
 
