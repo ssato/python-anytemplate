@@ -1,9 +1,9 @@
 include ChangeLog
-include LICENSE
+include LICENSE*
 include MANIFEST.in
 include README.*
 include setup.*
-include tox.ini .gitignore .travis.yml
+include tox.ini
 include pkg/*
 include examples/*
 recursive-include src *.py
