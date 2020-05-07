@@ -1,3 +1,10 @@
+* Thu May  7 2020 Satoru SATOH <satoru.satoh@gmail.com> - 0.1.6
+- change: drop py2 support by default; keep py27 support for a while but it'll
+  be removed in the later versions
+- change: drop py3{3,4,5} support
+- fix/change: a lot of cleanup and fixes in setup.* and related stuff
+- enhancement: add releng, min test targets
+
 * Tue Mar  1 2018 Satoru SATOH <ssato@redhat.com> - 0.1.4-1
 - enhancement: support to load templates and contexts from stdin '-'
 - fix/refactor: clean up the RPM SPEC to comply w/ the Fedora python guidelines

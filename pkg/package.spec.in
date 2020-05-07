@@ -47,6 +47,9 @@ Requires:       python3-anyconfig
 %{_bindir}/*
 
 %changelog
+* Thu May  7 2020 Satoru SATOH <satoru.satoh@gmail.com> - 0.1.6-1
+- New upstream
+
 * Fri Nov  2 2018 Satoru SATOH <ssato@redhat.com> - 0.1.5-2
 - Cleanups and fixes of the RPM SPEC
 
