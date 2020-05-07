@@ -1,9 +1,5 @@
 %global pkgname anytemplate
 
-%if 0%{?fedora} || 0%{?rhel} > 7 || 0%{?epel} > 7
-%global with_python3 1
-%endif
-
 %global desc \
 Python library works as an abstraction layer for various python template\
 engines and rendering libraries, and provide a few very simple and easily\
@@ -14,24 +10,18 @@ in these template languages.
 
 Name:           python-%{pkgname}
 Version:        @VERSION@
-Release:        2%{?dist}
+Release:        @RELEASE@
 Summary:        Python library provides common APIs for various template engines
 Group:          Development/Tools
 License:        MIT
 URL:            https://github.com/ssato/python-anytemplate
 Source0:        %{url}/archive/RELEASE_%{version}.tar.gz
 BuildArch:      noarch
-%if 0%{?with_python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-%else
-BuildRequires:  python2-setuptools
-BuildRequires:  python2-devel
-%endif
 
 %description %{desc}
 
-%if 0%{?with_python3}
 %package -n python3-%{pkgname}
 Summary:        %{summary}
 Requires:       python3-PyYAML
@@ -40,61 +30,20 @@ Requires:       python3-anyconfig
 %{?python_provide:%python_provide python3-%{pkgname}}
 
 %description -n python3-%{pkgname} %{desc}
-%else
-
-%package -n python2-%{pkgname}
-Summary:        %{summary}
-Requires:       PyYAML
-Requires:       python2-jinja2
-Requires:       python2-anyconfig
-%{?python_provide:%python_provide python2-%{pkgname}}
-
-%description -n python2-%{pkgname} %{desc}
-%endif
 
 %prep
 %autosetup -n %{pkgname}-%{version}
 
 %build
-%if 0%{?with_python3}
 %py3_build
-%else
-%py2_build
-%endif
 
 %install
-%if 0%{?with_python3}
 %py3_install
-%else
-%py2_install
-# Dirty hacks.
-test -d %{buildroot}%{python_sitelib}/%{pkgname} || {
-cp -a src/%{pkgname} %{buildroot}%{python_sitelib}/
-}
-test -d %{buildroot}/usr/bin || {
-install -d %{buildroot}/usr/bin
-cat << EOF > %{buildroot}/usr/bin/anytemplate_cli
-#! /usr/bin/python
-import sys
-from pkg_resources import load_entry_point
 
-if __name__ == '__main__':
-    sys.exit(
-        load_entry_point('anytemplate', 'console_scripts', 'anytemplate_cli')()
-    )
-EOF
-}
-chmod +x %{buildroot}/usr/bin/anytemplate_cli
-%endif
-
-%if 0%{?with_python3}
 %files -n python3-%{pkgname}
-%{python3_sitelib}/%{pkgname}*
-%else
-%files -n python2-%{pkgname}
-%{python_sitelib}/%{pkgname}*
-%endif
 %doc README.rst examples
+%license LICENSE.MIT
+%{python3_sitelib}/%{pkgname}*
 %{_bindir}/*
 
 %changelog
