@@ -1,19 +1,26 @@
-# Ref. http://about.travis-ci.org/docs/user/languages/python/
+# see: http://about.travis-ci.org/docs/user/languages/python/
 language: python
 python:
-# Disabled for a while until fixes happen in outside of anytemplate, e.g. ordereddict, asteroid.
-#    - 2.6
-    - 2.7
-    - 3.4
-    - 3.5
-    - 3.6
+    - "2.7"
+    - "3.6"
+    - "3.7"
+    - "3.8"
+
 # .. seealso:: https://github.com/travis-ci/travis-ci/issues/9815
 matrix:
   include:
     - python: 3.7
-      dist: xenial
-      sudo: true
+# disabled until fix it.
+#    - python: 3.7
+#      env: TOXENV=min
+# disabled because it takes some time.
+#    - python: 3.7
+#      env: TOXENV=dists
 
+# see: http://docs.travis-ci.com/user/caching/#pip-cache
+cache: pip
+# see: http://docs.travis-ci.com/user/migrating-from-legacy/
+sudo: false
 install:
     - pip install tox-travis
 script:
