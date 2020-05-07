@@ -1,7 +1,0 @@
-Cheetah
-PyYAML
-anyconfig >= 0.9.0
-jinja2
-mako
-pystache
-tenjin

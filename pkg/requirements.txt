@@ -1,8 +1,0 @@
-anyconfig >= 0.9.0
-# https://pypi.python.org/pypi/Cheetah3/
-Cheetah3
-PyYAML
-jinja2
-mako
-tenjin
-pystache

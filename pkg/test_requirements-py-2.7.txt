@@ -1,7 +1,0 @@
--r requirements-py-2.7.txt
-coveralls
-flake8 < 3.5.0
-nose
-pycodestyle < 2.4.0
-pylint
-pytest
