@@ -1,10 +1,11 @@
+include *.txt
 include ChangeLog
 include LICENSE*
 include MANIFEST.in
 include README.*
+include pkg/*
 include setup.*
 include tox.ini
-include pkg/*
 include examples/*
 recursive-include src *.py
-recursive-include tests *.py
+recursive-include tests *.py *.bats *.txt
