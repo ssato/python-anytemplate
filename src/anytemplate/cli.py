@@ -104,6 +104,7 @@ def main(argv=None):
     anytemplate.api.render_to(args.template, ctx, args.output,
                               at_paths=args.template_paths,
                               at_engine=args.engine, at_ask_missing=True)
+    sys.exit(0)
 
 
 if __name__ == '__main__':
