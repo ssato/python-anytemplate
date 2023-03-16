@@ -1,6 +1,5 @@
 coveralls
 flake8
-nose
 pycodestyle
 pylint
 pytest
