@@ -46,7 +46,7 @@ def _load_file_itr(files, encoding):
     :param encoding: Encoding, e.g. 'utf-8'
     """
     for filename in files:
-        fileobj = jinja2.loaders.open_if_exists(filename)
+        fileobj = jinja2.utils.open_if_exists(filename)
         if fileobj is not None:
             try:
                 yield (fileobj.read().decode(encoding),
