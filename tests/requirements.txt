@@ -1,3 +1,4 @@
+anyconfig
 coveralls
 flake8
 pycodestyle
