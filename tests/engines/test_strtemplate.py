@@ -5,54 +5,45 @@
 # pylint: disable=missing-docstring
 from __future__ import absolute_import
 
-import os.path
-import unittest
-import anytemplate.engines.strtemplate as TT
-import tests.common
+import pytest
 
+import anytemplate.engines.strtemplate as TT
 from anytemplate.globals import CompileError
 
 
-class Test00(unittest.TestCase):
+@pytest.mark.parametrize(
+    ("tmpl_s", "ctx", "opts", "exp"),
+    (("aaa", None, {}, "aaa"),
+     ("$a", {'a': "aaa"}, {}, "aaa"),
+     ("$a", {}, {"safe": True}, "$a"),
+     ),
+)
+def test_renders_impl(tmpl_s, ctx, opts, exp):
+    engine = TT.Engine()
 
-    def test_20_renders_impl(self):
-        engine = TT.Engine()
-
-        trs = (("aaa", None, "aaa"), ("$a", {'a': "aaa"}, "aaa"))
-        for (tmpl_s, ctx, exp) in trs:
-            self.assertEqual(engine.renders_impl(tmpl_s, ctx), exp)
-
-    def test_22_renders_impl__safe(self):
-        engine = TT.Engine()
-        self.assertEqual(engine.renders_impl("$a", {}, safe=True), "$a")
-
-    def test_24_renders_impl__error(self):
-        engine = TT.Engine()
-        try:
-            engine.renders_impl("$a", {})
-            engine = None
-        except CompileError:
-            pass
-        self.assertFalse(engine is None)
+    assert engine.renders_impl(tmpl_s, ctx, **opts) == exp
 
 
-class Test10(unittest.TestCase):
+def test_renders_impl__error():
+    engine = TT.Engine()
+    try:
+        engine.renders_impl("$a", {})
+        engine = None
+    except CompileError:
+        pass
+    assert engine is not None
 
-    def setUp(self):
-        self.workdir = tests.common.setup_workdir()
 
-    def tearDown(self):
-        if os.path.exists(self.workdir):
-            tests.common.cleanup_workdir(self.workdir)
+@pytest.mark.parametrize(
+    ("tmpl_s", "ctx", "exp"),
+    (("aaa", None, "aaa"),
+     ("$a", {'a': "aaa"}, "aaa"),
+     ),
+)
+def test_render_impl(tmpl_s, ctx, exp, tmp_path):
+    engine = TT.Engine()
 
-    def test_20_render_impl(self):
-        engine = TT.Engine()
+    tmpl = tmp_path / "test.tmpl"
+    tmpl.write_text(tmpl_s)
 
-        trs = (("aaa", None, "aaa"), ("$a", {'a': "aaa"}, "aaa"))
-        for (tmpl_s, ctx, exp) in trs:
-            tmpl = os.path.join(self.workdir, "test.tmpl")
-            open(tmpl, 'w').write(tmpl_s)
-
-            self.assertEqual(engine.render_impl(tmpl, ctx), exp)
-
-# vim:sw=4:ts=4:et:
+    assert engine.render_impl(tmpl, ctx) == exp
