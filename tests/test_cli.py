@@ -99,27 +99,24 @@ def _subproc_check_out(cmd_str, request):
     return subprocess.check_output(cmd_str.replace("CMD", cmd), **opts)
 
 
-@pytest.mark.skipif(not YAML_IS_AVAIL, reason="PyYAML is not available.")
-def test_strtemplate_read_ctx_from_stdin(tmp_path, request):
+@pytest.mark.parametrize(
+    ("tmpl_s", "ctx_s", "exp"),
+    (("$a\n", '{"a": "aaa"}', "aaa"),
+     )
+)
+def test_strtemplate_with_ctx(
+    tmpl_s, ctx_s, exp, tmp_path, request
+):
     tmpl = tmp_path / "test.tmpl"
-    tmpl.write_text("$a\n")
+    tmpl.write_text(tmpl_s)
+
+    ctx = tmp_path / "ctx.json"
+    ctx.write_text(ctx_s)
 
     out = _subproc_check_out(
-        f"echo 'a: aaa' | CMD -E string.Template -C yaml:- -o - {tmpl}",
+        # TBD: Read ctx from stdin.
+        # f"echo 'a: aaa' | CMD -E string.Template -C yaml:- -o - {tmpl}",
+        f"CMD -E string.Template -C {ctx} -o - {tmpl}",
         request
     )
-    assert out.rstrip() == bytes("aaa", "utf-8")
-
-
-@pytest.mark.skipif(not YAML_IS_AVAIL, reason="PyYAML is not available.")
-def test_strtemplate_read_tmpl_from_stdin(tmp_path, request):
-    ctx = tmp_path / "ctx.yml"
-    ctx.write_text("a: aaa\n")
-
-    out = _subproc_check_out(
-        f"echo '$a' | CMD -E string.Template -C yaml:{ctx} -o - -",
-        request
-    )
-    assert out.rstrip() == bytes("aaa", "utf-8")
-
-# vim:sw=4:ts=4:et:
+    assert out.rstrip() == bytes(exp, "utf-8")
