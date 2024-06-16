@@ -17,9 +17,13 @@ About
    :target: https://pypi.python.org/pypi/anytemplate/
    :alt: [MIT License]
 
-.. image:: https://api.travis-ci.org/ssato/python-anytemplate.png?branch=master
-   :target: https://travis-ci.org/ssato/python-anytemplate
-   :alt: [Test status]
+.. image:: https://github.com/ssato/python-anytemplate/workflows/Tests/badge.svg
+   :target: https://github.com/ssato/python-anytemplate/actions?query=workflow%3ATests
+   :alt: [Github Actions: Test status]
+
+.. image:: https://dev.azure.com/satorusatoh0471/python-anytemplate/_apis/build/status/ssato.python-anytemplate?branchName=next
+   :target: https://dev.azure.com/satorusatoh0471/python-anytemplate/_build/latest?definitionId=1
+   :alt: [Azure Pipelines Status]
 
 .. image:: https://coveralls.io/repos/ssato/python-anytemplate/badge.png
    :target: https://coveralls.io/r/ssato/python-anytemplate
