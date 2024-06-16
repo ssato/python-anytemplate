@@ -42,5 +42,3 @@ def test_render(tmpl_s, ctx, opts, exp, tmp_path):
     assert TT.Engine().render(
         tmpl.name, ctx, at_paths=[str(tmp_path)], **opts
     ) == exp
-
-# vim:sw=4:ts=4:et:

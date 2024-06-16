@@ -23,5 +23,3 @@ def test_instance_methods():
 
     engine.renders("aaa")
     engine.render(__file__)
-
-# vim:sw=4:ts=4:et:

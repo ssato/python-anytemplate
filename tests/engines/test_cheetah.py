@@ -80,5 +80,3 @@ def test_render_impl__w_source(tmp_path):
     assert TT.Engine().render(
         str(tmpl), ctx, at_paths=[str(tmp_path)], source="aaa"
     ) == exp
-
-# vim:sw=4:ts=4:et:
