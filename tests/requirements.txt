@@ -1,3 +1,4 @@
+PyYAML
 anyconfig
 coveralls
 flake8
