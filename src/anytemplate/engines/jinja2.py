@@ -40,19 +40,20 @@ from anytemplate.globals import TemplateNotFound
 from anytemplate.compat import ENCODING
 
 
-def _load_file_itr(files, encoding):
+def _load_file_itr(files, encoding=ENCODING):
     """
     :param files: A list of file paths :: [str]
     :param encoding: Encoding, e.g. 'utf-8'
     """
     for filename in files:
-        fileobj = jinja2.loaders.open_if_exists(filename)
-        if fileobj is not None:
-            try:
-                yield (fileobj.read().decode(encoding),
-                       os.path.getmtime(filename))
-            finally:
-                fileobj.close()
+        try:
+            with open(filename, mode="rb") as fileobj:
+                yield (
+                    fileobj.read().decode(encoding),
+                    os.path.getmtime(filename)
+                )
+        except (PermissionError, IOError, OSError):
+            pass
 
 
 class FileSystemExLoader(jinja2.loaders.FileSystemLoader):

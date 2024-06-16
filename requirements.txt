@@ -1,9 +1,7 @@
-anyconfig >= 0.9.0
+anyconfig
 # Special case. https://pypi.python.org/pypi/Cheetah3/
-Cheetah3; python_version > '3.0'
-Cheetah; python_version < '3.0'
+Cheetah3
 PyYAML
 jinja2
 mako
 pystache
-tenjin

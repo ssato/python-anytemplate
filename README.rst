@@ -17,9 +17,13 @@ About
    :target: https://pypi.python.org/pypi/anytemplate/
    :alt: [MIT License]
 
-.. image:: https://api.travis-ci.org/ssato/python-anytemplate.png?branch=master
-   :target: https://travis-ci.org/ssato/python-anytemplate
-   :alt: [Test status]
+.. image:: https://github.com/ssato/python-anytemplate/workflows/Tests/badge.svg
+   :target: https://github.com/ssato/python-anytemplate/actions?query=workflow%3ATests
+   :alt: [Github Actions: Test status]
+
+.. image:: https://dev.azure.com/satorusatoh0471/python-anytemplate/_apis/build/status/ssato.python-anytemplate?branchName=next
+   :target: https://dev.azure.com/satorusatoh0471/python-anytemplate/_build/latest?definitionId=1
+   :alt: [Azure Pipelines Status]
 
 .. image:: https://coveralls.io/repos/ssato/python-anytemplate/badge.png
    :target: https://coveralls.io/r/ssato/python-anytemplate
@@ -48,7 +52,6 @@ The following template engines are supported currently:
    `string.Template <https://www.python.org>`_ , Always available as it's included in python standard lib.
    `jinja2 <http://jinja.pocoo.org>`_ , Highest priory will be given and becomes default if found
    `mako <http://www.makotemplates.org>`_ ,
-   `tenjin <http://www.kuwata-lab.com/tenjin/>`_ , renders() API is not supported
    `Cheetah <http://cheetahtemplate.org>`_ , `Cheetah3 <https://pypi.python.org/pypi/Cheetah3/>`_ is needed to use with python 3.x
    `pystache <https://github.com/defunkt/pystache>`_ ,
 
@@ -149,10 +152,6 @@ Call 'anytemplate.render' to render given template file like this:
 
     result1 = anytemplate.render("/path/to/a_template.tmpl", {'x': 'bbb'},
                                  at_engine="mako")
-
-    result2 = anytemplate.render("another_template.t", {'y': 'ccc'},
-                                 at_engine="tenjin",
-                                 at_paths=['/path/to/templates/', '.'])
 
 The parameters are similar to the previous example except for the first one.
 
