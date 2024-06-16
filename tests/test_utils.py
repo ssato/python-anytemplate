@@ -5,7 +5,6 @@
 # pylint: disable=missing-docstring, invalid-name
 from __future__ import absolute_import, with_statement
 
-import os.path
 import os
 import pathlib
 
