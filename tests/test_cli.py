@@ -19,6 +19,12 @@ try:
 except ImportError:
     J2_IS_AVAIL = False
 
+try:
+    import yaml
+    YAML_IS_AVAIL = bool(yaml)
+except ImportError:
+    YAML_IS_AVAIL = False
+
 
 def assert_run(args=None, exp_code=0, expect_fail=False):
     """Run main() and check its exit code.
@@ -93,6 +99,7 @@ def _subproc_check_out(cmd_str, request):
     return subprocess.check_output(cmd_str.replace("CMD", cmd), **opts)
 
 
+@pytest.mark.skipif(not YAML_IS_AVAIL, reason="PyYAML is not available.")
 def test_strtemplate_read_ctx_from_stdin(tmp_path, request):
     tmpl = tmp_path / "test.tmpl"
     tmpl.write_text("$a\n")
@@ -104,6 +111,7 @@ def test_strtemplate_read_ctx_from_stdin(tmp_path, request):
     assert out.rstrip() == bytes("aaa", "utf-8")
 
 
+@pytest.mark.skipif(not YAML_IS_AVAIL, reason="PyYAML is not available.")
 def test_strtemplate_read_tmpl_from_stdin(tmp_path, request):
     ctx = tmp_path / "ctx.yml"
     ctx.write_text("a: aaa\n")
