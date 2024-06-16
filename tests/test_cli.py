@@ -61,7 +61,7 @@ def test_run_main__strtemplate(tmp_path):
 
     assert_run(
         ["-E", "string.Template",
-         "-C", str(ctx), "-o", str(out),
+         "-C", f"yaml:{ctx!s}", "-o", str(out),
          str(tmpl)]
     )
     assert out.exists()
@@ -78,7 +78,7 @@ def test_run_main__jinja2(tmp_path):
     ctx.write_text("---\nmsg: hello\n")
 
     assert_run(
-        ["-C", str(ctx), "-o", str(out), str(tmpl)]
+        ["-C", f"yaml:{ctx!s}", "-o", str(out), str(tmpl)]
     )
     assert out.exists()
     assert out.read_text() == "hello"
@@ -116,7 +116,7 @@ def test_strtemplate_with_ctx(
     out = _subproc_check_out(
         # TBD: Read ctx from stdin.
         # f"echo 'a: aaa' | CMD -E string.Template -C yaml:- -o - {tmpl}",
-        f"CMD -E string.Template -C {ctx} -o - {tmpl}",
+        f"CMD -E string.Template -C json:{ctx} -o - {tmpl}",
         request
     )
     assert out.rstrip() == bytes(exp, "utf-8")
