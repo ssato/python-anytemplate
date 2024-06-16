@@ -21,5 +21,3 @@ def test_find_by_name__found():
 
 def test_find_by_name__not_found():
     assert TT.find_by_name("not_existing_engine") is None
-
-# vim:sw=4:ts=4:et:

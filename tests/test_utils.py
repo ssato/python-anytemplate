@@ -127,5 +127,3 @@ def test_write_to_output__stdout(tmp_path):
 
     assert out.exists()
     assert out.read_text() == "hello"
-
-# vim:sw=4:ts=4:et:

@@ -24,5 +24,3 @@ def test_20_engines():
 
         assert sys.modules[mod] is None
         assert anytemplate.engine is not None
-
-# vim:sw=4:ts=4:et:

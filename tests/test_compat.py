@@ -22,5 +22,3 @@ def test_json_load(tmp_path):
     TT.json.dump(_OBJ, open(str(fpath), 'w'))
 
     assert TT.json_load(fpath, "dummy_arg0") == _OBJ
-
-# vim:sw=4:ts=4:et:

@@ -19,5 +19,3 @@ def test_null_handler():
 def test_20_logger():
     TT.LOGGER.info("test log")
     assert TT.NullHandler is not None
-
-# vim:sw=4:ts=4:et:

@@ -143,5 +143,3 @@ def test_render_to(tmp_path):
     )
     assert output.exists()
     assert output.read_text() == "aaa"
-
-# vim:sw=4:ts=4:et:
