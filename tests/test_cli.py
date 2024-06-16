@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2015 - 2018 Satoru SATOH <ssato at redhat.com>
-# License: MIT
+# SPDX-License-Identifier: MIT
 #
 # pylint: disable=missing-docstring,invalid-name
 """Tests of anytempalte.cli
