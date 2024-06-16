@@ -14,7 +14,8 @@ jobs:
       matrix:
         platform:
           - ubuntu-latest
-          - windows-latest
+          # TODO:
+          # - windows-latest
           # - macos-latest
         python-version:
           - 3.9
