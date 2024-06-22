@@ -84,7 +84,7 @@ def fallback_render(template, context, at_paths=None,
     """
     tmpl = anytemplate.utils.find_template_from_path(template, at_paths)
     if tmpl is None:
-        raise TemplateNotFound("template: %s" % template)
+        raise TemplateNotFound(f"template: {template}")
 
     try:
         return anytemplate.compat.copen(tmpl, encoding=at_encoding).read()
@@ -180,8 +180,11 @@ class Engine(object):
         :param kwargs: Keyword arguments passed to the template engine to
             configure/setup its specific features.
         """
-        LOGGER.debug("Intialize %s with kwargs: %s", self.name(),
-                     ", ".join("%s=%s" % (k, v) for k, v in kwargs.items()))
+        LOGGER.debug(
+            "Intialize %s with kwargs: %s",
+            self.name(),
+            ", ".join("%s=%s" % (k, v) for k, v in kwargs.items())
+        )
 
     renders_impl = to_method(fallback_renders)
     render_impl = to_method(fallback_render)
@@ -204,10 +207,12 @@ class Engine(object):
         if context is None:
             context = {}
 
-        LOGGER.debug("Render template %s... %s context, options=%s",
-                     template_content[:10],
-                     "without" if context is None else "with a",
-                     str(kwargs))
+        LOGGER.debug(
+            "Render template %s... %s context, options=%s",
+            template_content[:10],
+            "without" if context is None else "with a",
+            str(kwargs)
+        )
         return self.renders_impl(template_content, context, at_paths=paths,
                                  at_encoding=at_encoding, **kwargs)
 
@@ -229,10 +234,10 @@ class Engine(object):
         if context is None:
             context = {}
 
-        LOGGER.debug("Render template %s %s context, options=%s",
-                     template, "without" if context is None else "with a",
-                     str(kwargs))
+        LOGGER.debug(
+            "Render template %s %s context, options=%s",
+            template, "without" if context is None else "with a",
+            str(kwargs)
+        )
         return self.render_impl(template, context, at_paths=paths,
                                 at_encoding=at_encoding, **kwargs)
-
-# vim:sw=4:ts=4:et:

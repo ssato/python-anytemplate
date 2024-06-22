@@ -87,7 +87,7 @@ def main(argv=None):
     if not args.template:
         if args.list_engines:
             ecs = anytemplate.api.list_engines()
-            print(", ".join("%s (%s)" % (e.name(), e.priority()) for e in ecs))
+            print(", ".join(f"{e.name()} ({e.priority()})" for e in ecs))
             sys.exit(0)
         else:
             psr.print_usage()
@@ -109,5 +109,3 @@ def main(argv=None):
 
 if __name__ == '__main__':
     main(sys.argv)
-
-# vim:sw=4:ts=4:et:
