@@ -9,7 +9,6 @@ from __future__ import absolute_import
 
 import codecs
 import itertools
-import locale
 import os.path
 import sys
 
@@ -20,7 +19,7 @@ except ImportError:
 
 
 IS_PYTHON_3 = sys.version_info[0] == 3
-ENCODING = locale.getdefaultlocale()[1] or "UTF-8"
+ENCODING = "UTF-8"
 
 
 # Borrowed from library doc, 9.7.1 Itertools functions:
