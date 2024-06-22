@@ -12,12 +12,13 @@ strings or template files).
 For example, jinja2 provides the way to compile template file with given
 context such like::
 
+    import pathlib
+
     import jinja2
-    import os.path
 
     def render(tmpl_file, ctx, tmpl_paths):
         env = jinja2.Environment(loader=jinja2.FileSystemLoader(tmpl_paths))
-        tmpl = env.get_template(os.path.basename(tmpl_file))
+        tmpl = env.get_template(pathlib.Path(tmpl_file).name)
 
         return tmpl.render(**ctx)
 
