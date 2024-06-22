@@ -37,13 +37,13 @@ def find_engine(filepath=None, name=None):
     if name is None:
         engines = anytemplate.engine.find_by_filename(filepath)
         if not engines:
-            raise TemplateEngineNotFound("filename=%s" % str(filepath))
+            raise TemplateEngineNotFound(f"filename={filepath!s}")
 
         return engines[0]  # It should have highest priority.
     else:
         engine = anytemplate.engine.find_by_name(name)
         if engine is None:
-            raise TemplateEngineNotFound("(template) name=%s" % name)
+            raise TemplateEngineNotFound(f"(template) name={name!s}")
 
         return engine
 
@@ -87,13 +87,13 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
     except TemplateNotFound as exc:
         LOGGER.warning("** Missing template[s]: paths=%r", at_paths)
         if not at_ask_missing:
-            raise TemplateNotFound(str(exc))
+            raise TemplateNotFound(str(exc)) from exc
 
         if _at_usr_tmpl is None:
+            _tpath = ", " + filepath if template is None else ''
             _at_usr_tmpl = anytemplate.compat.raw_input(
                 "\nPlease enter an absolute or relative path starting "
-                "from '.' of missing template file"
-                "%s : " % (", " + filepath if template is None else '')
+                f"from '.' of missing template file {_tpath}"
             ).strip()
 
         usr_tmpl = anytemplate.utils.normpath(_at_usr_tmpl)
@@ -105,7 +105,7 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
                          at_paths=(at_paths + [os.path.dirname(usr_tmpl)]),
                          at_encoding=at_encoding, **kwargs)
     except Exception as exc:
-        raise CompileError("exc=%r, template=%s" % (exc, target[:200]))
+        raise CompileError(f"exc={exc!r}, template={target[:200]}")
 
 
 def renders(template, context=None, **options):

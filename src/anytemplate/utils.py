@@ -70,7 +70,7 @@ def chaincalls(callables, obj):
     """
     for fun in callables:
         if not callable(fun):
-            raise ValueError("Not callable: %r" % repr(fun))
+            raise ValueError(f"Not callable: {fun!r}")
         obj = fun(obj)
 
     return obj
@@ -261,5 +261,3 @@ def find_template_from_path(filepath, paths=None):
 
     LOGGER.warning("Could not find template=%s in paths=%s", filepath, paths)
     return None
-
-# vim:sw=4:ts=4:et:
