@@ -4,9 +4,10 @@
 #
 """A module to consolidate access to template engine backends.
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import operator
+import typing
 
 from anytemplate.globals import LOGGER
 
@@ -14,7 +15,11 @@ import anytemplate.engines.base
 import anytemplate.engines.cheetah
 import anytemplate.engines.strtemplate
 
-ENGINES = [anytemplate.engines.strtemplate.Engine, ]
+
+EnginesType = list[typing.Type[anytemplate.engines.base.Engine]]
+ENGINES: EnginesType = [
+    anytemplate.engines.strtemplate.Engine,
+]
 
 if anytemplate.engines.cheetah.Template is None:
     LOGGER.info("Cheetah support was disable as needed module looks missing")
@@ -47,7 +52,9 @@ except ImportError:
                 "looks missing")
 
 
-def list_engines_by_priority(engines=None):
+def list_engines_by_priority(
+    engines: typing.Optional[EnginesType] = None
+) -> EnginesType:
     """
     Return a list of engines supported sorted by each priority.
     """
@@ -57,7 +64,10 @@ def list_engines_by_priority(engines=None):
     return sorted(engines, key=operator.methodcaller("priority"))
 
 
-def find_by_filename(filename=None, engines=None):
+def find_by_filename(
+    filename: typing.Optional[str] = None,
+    engines: typing.Optional[EnginesType] = None
+) -> EnginesType:
     """
     Find a list of template engine classes to render template `filename`.
 
@@ -76,7 +86,9 @@ def find_by_filename(filename=None, engines=None):
                   key=operator.methodcaller("priority"))
 
 
-def find_by_name(name, engines=None):
+def find_by_name(
+    name: str, engines: typing.Optional[EnginesType] = None
+) -> typing.Optional[typing.Type[anytemplate.engines.base.Engine]]:
     """
     Find a template engine class specified by its name `name`.
 
