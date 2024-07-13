@@ -1,0 +1,4 @@
+mypy
+types-Jinja2
+types-simplejson
+typing-extensions; python_version < "3.10"
