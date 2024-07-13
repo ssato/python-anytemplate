@@ -39,12 +39,6 @@ except ImportError:
     LOGGER.info("mako support was disable as needed module looks missing")
 
 try:
-    import anytemplate.engines.tenjin
-    ENGINES.append(anytemplate.engines.tenjin.Engine)
-except ImportError:
-    LOGGER.info("tenjin support was disable as needed module looks missing")
-
-try:
     import anytemplate.engines.pystache
     ENGINES.append(anytemplate.engines.pystache.Engine)
 except ImportError:
