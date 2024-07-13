@@ -4,30 +4,30 @@
 :license: MIT
 """
 # unicode_literals ?
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, print_function, annotations
 
 import codecs
 import glob
+import itertools
 import logging
 import os.path
 import os
 import sys
+import typing
 
 import anytemplate.compat
 
-try:
-    from anyconfig.api import loads, load, merge
-except ImportError:
-    from anytemplate.compat import (
-        json_loads as loads, json_load as load, merge
-    )
+if typing.TYPE_CHECKING:
+    import collections.abc
 
 
 LOGGER = logging.getLogger(__name__)
 
 
-def get_output_stream(encoding=anytemplate.compat.ENCODING,
-                      ostream=sys.stdout):
+def get_output_stream(
+    encoding: str = anytemplate.compat.ENCODING,
+    ostream: typing.IO = sys.stdout
+) -> codecs.StreamWriter:
     """
     Get output stream take care of characters encoding correctly.
 
@@ -41,7 +41,7 @@ def get_output_stream(encoding=anytemplate.compat.ENCODING,
     return codecs.getwriter(encoding)(ostream)
 
 
-def uniq(items):
+def uniq(items: list) -> list:
     """Remove duplicates in given list with its order kept.
 
     >>> uniq([])
@@ -57,7 +57,10 @@ def uniq(items):
     return acc
 
 
-def chaincalls(callables, obj):
+def chaincalls(
+    callables: collections.abc.Iterable[collections.abc.Callable],
+    obj: typing.Any
+) -> typing.Any:
     """
     :param callables: callable objects to apply to obj in this order
     :param obj: Object to apply callables
@@ -76,7 +79,7 @@ def chaincalls(callables, obj):
     return obj
 
 
-def normpath(path):
+def normpath(path: str) -> str:
     """Normalize given path in various different forms.
 
     >>> normpath("/tmp/../etc/hosts")
@@ -91,18 +94,9 @@ def normpath(path):
     return chaincalls(funcs, path)
 
 
-def flip(pair):
-    """
-    :param pair: A tuple of pair items
-
-    >>> flip((1, 2))
-    (2, 1)
-    """
-    (fst, snd) = pair
-    return (snd, fst)
-
-
-def concat(xss):
+def concat(
+    xss: collections.abc.Iterable[collections.abc.Iterable]
+) -> collections.abc.Iterable:
     """
     >>> concat([[]])
     []
@@ -119,10 +113,12 @@ def concat(xss):
     >>> concat((i, i*2) for i in range(3))
     [0, 0, 1, 2, 2, 4]
     """
-    return list(anytemplate.compat.from_iterable(xs for xs in xss))
+    return list(itertools.chain.from_iterable(xs for xs in xss))
 
 
-def parse_filespec(fspec, sep=':', gpat='*'):
+def parse_filespec(
+    fspec: str, sep: str = ':', gpat: str = '*'
+) -> list[tuple[str, typing.Optional[str]]]:
     """
     Parse given filespec `fspec` and return [(filetype, filepath)].
 
@@ -148,15 +144,21 @@ def parse_filespec(fspec, sep=':', gpat='*'):
     # [('bar/a.conf', 'yaml'), ('bar/b.conf', 'yaml')]
     """
     if sep in fspec:
-        tpl = (ftype, fpath) = tuple(fspec.split(sep))
+        (ftype, fpath) = tuple(fspec.split(sep))
     else:
-        tpl = (ftype, fpath) = (None, fspec)
+        (ftype, fpath) = (None, fspec)
 
-    return [(fs, ftype) for fs in sorted(glob.glob(fpath))] \
-        if gpat in fspec else [flip(tpl)]
+    if gpat in fspec:
+        return [
+            (fs, ftype) for fs in sorted(glob.glob(fpath))
+        ]
+
+    return [(fpath, ftype)]
 
 
-def load_context(ctx_path, ctx_type, scm=None):
+def load_context(
+    ctx_path: str, ctx_type: str, scm: typing.Optional[str] = None
+) -> dict:
     """
     :param ctx_path: context file path or '-' (read from stdin)
     :param ctx_type: context file type
@@ -164,12 +166,19 @@ def load_context(ctx_path, ctx_type, scm=None):
         validate given context files
     """
     if ctx_path == '-':
-        return loads(sys.stdin.read(), ac_parser=ctx_type, ac_schema=scm)
+        return anytemplate.compat.json_loads(
+            sys.stdin.read(), ac_parser=ctx_type, ac_schema=scm
+        )
 
-    return load(ctx_path, ac_parser=ctx_type, ac_schema=scm)
+    return anytemplate.compat.json_load(
+        ctx_path, ac_parser=ctx_type, ac_schema=scm
+    )
 
 
-def parse_and_load_contexts(contexts, schema=None, werr=False):
+def parse_and_load_contexts(
+    contexts: list[str], schema: typing.Optional[str] = None,
+    werr: bool = False
+) -> dict:
     """
     :param contexts: list of context file specs
     :param schema: JSON schema file in any formats anyconfig supports, to
@@ -177,7 +186,7 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
     :param werr: Exit immediately if True and any errors occurrs
         while loading context files
     """
-    ctx = dict()
+    ctx: dict = {}
     diff = None
 
     if contexts:
@@ -185,14 +194,14 @@ def parse_and_load_contexts(contexts, schema=None, werr=False):
             try:
                 diff = load_context(ctx_path, ctx_type, scm=schema)
                 if diff is not None:
-                    merge(ctx, diff)
+                    anytemplate.compat.merge(ctx, diff)
             except (IOError, OSError, AttributeError):
                 if werr:
                     raise
     return ctx
 
 
-def _write_to_filepath(content, output):
+def _write_to_filepath(content: str, output: str) -> None:
     """
     :param content: Content string to write to
     :param output: Output file path
@@ -205,25 +214,27 @@ def _write_to_filepath(content, output):
         out.write(content)
 
 
-def write_to_output(content, output=None,
-                    encoding=anytemplate.compat.ENCODING):
+def write_to_output(
+    content: str, output: typing.Optional[str] = None,
+    encoding: str = anytemplate.compat.ENCODING
+) -> None:
     """
     :param content: Content string to write to
     :param output: Output destination
     :param encoding: Character set encoding of outputs
     """
-    if anytemplate.compat.IS_PYTHON_3 and isinstance(content, bytes):
+    if isinstance(content, bytes):
         content = str(content, encoding)
 
     if output and not output == '-':
         _write_to_filepath(content, output)
-    elif anytemplate.compat.IS_PYTHON_3:
-        print(content)
     else:
         print(content.encode(encoding.lower()), file=get_output_stream())
 
 
-def mk_template_paths(filepath, paths=None):
+def mk_template_paths(
+    filepath: str, paths: typing.Optional[list[str]] = None
+) -> list[str]:
     """
     Make template paths from given filepath and paths list.
 
@@ -244,7 +255,9 @@ def mk_template_paths(filepath, paths=None):
     return [tmpldir] if paths is None else paths + [tmpldir]
 
 
-def find_template_from_path(filepath, paths=None):
+def find_template_from_path(
+    filepath: str, paths: typing.Optional[list[str]] = None
+) -> typing.Optional[str]:
     """
     Return resolved path of given template file
 

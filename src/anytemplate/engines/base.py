@@ -15,11 +15,7 @@ import anytemplate.compat
 import anytemplate.utils
 
 from anytemplate.globals import TemplateNotFound
-
-try:
-    from anyconfig.utils import get_file_extension  # flake8: noqa
-except ImportError:
-    from anytemplate.compat import get_file_extension
+from anytemplate.compat import get_file_extension
 
 
 LOGGER = logging.getLogger(__name__)

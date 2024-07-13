@@ -2,31 +2,19 @@
 # Copyright (C) 2012 - 2017 Satoru SATOH <ssato @ redhat.com>
 # License: MIT
 #
-"""anytemplate globals.
-"""
+"""anytemplate globals."""
 import logging
+import typing
 
 
-PACKAGE = "anytemplate"
-VERSION = "0.1.6"
-AUTHOR = "Satoru SATOH <ssato@redhat.com>"
-
-
-class MyNullHandler(logging.Handler):
-    """Handler does nothing."""
-    def emit(self, record):
-        pass
-
-
-try:
-    from logging import NullHandler
-except ImportError:  # python < 2.7 don't have it.
-    NullHandler = MyNullHandler
+PACKAGE: typing.Final[str] = "anytemplate"
+VERSION: typing.Final[str] = "0.1.6"
+AUTHOR: typing.Final[str] = "Satoru SATOH <satoru.satoh gmail.com>"
 
 # See: "Configuring Logging for a Library" in python standard logging howto,
 # e.g. https://docs.python.org/2/howto/logging.html#library-config.
-LOGGER = logging.getLogger(PACKAGE)
-LOGGER.addHandler(NullHandler())
+LOGGER: logging.Logger = logging.getLogger(PACKAGE)
+LOGGER.addHandler(logging.NullHandler())
 
 
 class TemplateNotFound(Exception):
@@ -48,5 +36,3 @@ class CompileError(Exception):
     Excepction indicates any errors during template compilation.
     """
     pass
-
-# vim:sw=4:ts=4:et:

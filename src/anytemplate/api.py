@@ -1,16 +1,16 @@
 #
-# Copyright (C) 2015 - 2018 Satoru SATOH <ssato @ redhat.com>
+# Copyright (C) 2015 - 2018 Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
 # Suppress warning of list_engines
 # pylint: disable=unused-import
-"""anytemplate.api - API of anytemplate module
-"""
-from __future__ import absolute_import
+"""anytemplate.api - API of anytemplate module."""
+from __future__ import annotations
 
 import logging
 import os.path
 import sys
+import typing
 
 import anytemplate.compat
 import anytemplate.engine
@@ -22,11 +22,21 @@ from anytemplate.globals import (
 )
 from anytemplate.engine import find_by_filename as list_engines  # noqa: F401
 
+if typing.TYPE_CHECKING:
+    import collections.abc
 
-LOGGER = logging.getLogger(__name__)
+    from .engines.base import Engine
+    from .datatypes import (
+        PathType, MaybePath, MaybeCtx
+    )
 
 
-def find_engine(filepath=None, name=None):
+LOGGER: logging.Logger = logging.getLogger(__name__)
+
+
+def find_engine(
+    filepath: MaybePath = None, name: MaybePath = None
+) -> typing.Type[Engine]:
     """
     :param filepath: Template file path
     :param name: Specify the name of template engine to use explicitly or
@@ -40,18 +50,25 @@ def find_engine(filepath=None, name=None):
             raise TemplateEngineNotFound(f"filename={filepath!s}")
 
         return engines[0]  # It should have highest priority.
-    else:
-        engine = anytemplate.engine.find_by_name(name)
-        if engine is None:
-            raise TemplateEngineNotFound(f"(template) name={name!s}")
 
-        return engine
+    engine = anytemplate.engine.find_by_name(name)
+    if engine is None:
+        raise TemplateEngineNotFound(f"(template) name={name!s}")
+
+    return engine
 
 
-def _render(template=None, filepath=None, context=None, at_paths=None,
-            at_encoding=anytemplate.compat.ENCODING, at_engine=None,
-            at_ask_missing=False, at_cls_args=None, _at_usr_tmpl=None,
-            **kwargs):
+def _render(
+    template: typing.Optional[str] = None, filepath: MaybePath = None,
+    context: MaybeCtx = None,
+    at_paths: typing.Optional[list[MaybePath]] = None,
+    at_encoding: str = anytemplate.compat.ENCODING,
+    at_engine: typing.Optional[str] = None,
+    at_ask_missing: bool = False,
+    at_cls_args: typing.Optional[dict] = None,
+    _at_usr_tmpl: MaybePath = None,
+    **kwargs
+) -> str:
     """
     Compile and render given template string and return the result string.
 
@@ -71,6 +88,11 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
 
     :return: Rendered string
     """
+    if filepath is None and template is None:
+        raise ValueError(
+            "filepath or template must be something other than None."
+        )
+
     ecls = find_engine(filepath, at_engine)
     LOGGER.debug("Use the template engine: %s", ecls.name())
     engine = ecls() if at_cls_args is None else ecls(**at_cls_args)
@@ -82,16 +104,18 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
         (render_fn, target) = (engine.render, filepath)
 
     try:
-        return render_fn(target, context=context, at_paths=at_paths,
-                         at_encoding=at_encoding, **kwargs)
+        return render_fn(
+            target, context=context, at_paths=at_paths,
+            at_encoding=at_encoding, **kwargs
+        )
     except TemplateNotFound as exc:
         LOGGER.warning("** Missing template[s]: paths=%r", at_paths)
         if not at_ask_missing:
             raise TemplateNotFound(str(exc)) from exc
 
         if _at_usr_tmpl is None:
-            _tpath = ", " + filepath if template is None else ''
-            _at_usr_tmpl = anytemplate.compat.raw_input(
+            _tpath = (filepath or "") if template is None else ""
+            _at_usr_tmpl = input(
                 "\nPlease enter an absolute or relative path starting "
                 f"from '.' of missing template file {_tpath}"
             ).strip()
@@ -105,10 +129,10 @@ def _render(template=None, filepath=None, context=None, at_paths=None,
                          at_paths=(at_paths + [os.path.dirname(usr_tmpl)]),
                          at_encoding=at_encoding, **kwargs)
     except Exception as exc:
-        raise CompileError(f"exc={exc!r}, template={target[:200]}")
+        raise CompileError(f"exc={exc!r}, template={target[:200]}") from exc
 
 
-def renders(template, context=None, **options):
+def renders(template: str, context: MaybeCtx = None, **options) -> str:
     """
     Compile and render given template string and return the result string.
 
@@ -130,7 +154,7 @@ def renders(template, context=None, **options):
     return _render(template, context=context, **options)
 
 
-def render(filepath, context=None, **options):
+def render(filepath: PathType, context: MaybeCtx = None, **options) -> str:
     """
     Compile and render given template file and return the result string.
 
@@ -155,8 +179,10 @@ def render(filepath, context=None, **options):
     return _render(filepath=filepath, context=context, **options)
 
 
-def render_to(filepath, context=None, output=None,
-              at_encoding=anytemplate.compat.ENCODING, **options):
+def render_to(
+    filepath: PathType, context: MaybeCtx = None, output: MaybePath = None,
+    at_encoding: str = anytemplate.compat.ENCODING, **options
+) -> None:
     """
     Render given template file and write the result string to given `output`.
     The result string will be printed to sys.stdout if output is None or '-'.
@@ -178,5 +204,3 @@ def render_to(filepath, context=None, output=None,
     """
     res = render(filepath, context=context, **options)
     anytemplate.utils.write_to_output(res, output, at_encoding)
-
-# vim:sw=4:ts=4:et:
