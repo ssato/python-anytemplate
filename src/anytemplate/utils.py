@@ -233,7 +233,8 @@ def write_to_output(
 
 
 def mk_template_paths(
-    filepath: str, paths: typing.Optional[list[str]] = None
+    filepath: typing.Optional[str],
+    paths: typing.Optional[list[str]] = None
 ) -> list[str]:
     """
     Make template paths from given filepath and paths list.
