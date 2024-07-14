@@ -3,13 +3,12 @@
 # License: MIT
 #
 # pylint: disable=unused-argument
-"""
-Base class for template engine implementations.
-"""
-from __future__ import absolute_import
+"""Base class for template engine implementations."""
+from __future__ import absolute_import, annotations
 
 import functools
 import logging
+import typing
 
 import anytemplate.compat
 import anytemplate.utils
@@ -17,11 +16,14 @@ import anytemplate.utils
 from anytemplate.globals import TemplateNotFound
 from anytemplate.compat import get_file_extension
 
+if typing.TYPE_CHECKING:
+    import collections.abc
 
-LOGGER = logging.getLogger(__name__)
+
+LOGGER: logging.Logger = logging.getLogger(__name__)
 
 
-def to_method(func):
+def to_method(func: typing.Callable) -> typing.Callable:
     """
     Lift :func:`func` to a method; it will be called with the first argument
     `self` ignored.
@@ -37,7 +39,7 @@ def to_method(func):
     return wrapper
 
 
-def fallback_renders(template_content, *args, **kwargs):
+def fallback_renders(template_content: str, *args, **kwargs) -> str:
     """
     Render given template string `template_content`.
 
@@ -59,9 +61,12 @@ def fallback_renders(template_content, *args, **kwargs):
     return template_content
 
 
-def fallback_render(template, context, at_paths=None,
-                    at_encoding=anytemplate.compat.ENCODING,
-                    **kwargs):
+def fallback_render(
+    template: str, context: dict,
+    at_paths: typing.Optional[list[str]] = None,
+    at_encoding: str = anytemplate.compat.ENCODING,
+    **kwargs
+):
     """
     Render from given template and context.
 
@@ -85,10 +90,12 @@ def fallback_render(template, context, at_paths=None,
     try:
         return anytemplate.compat.copen(tmpl, encoding=at_encoding).read()
     except UnicodeDecodeError:
-        return open(tmpl).read()
+        return open(tmpl, encoding=at_encoding).read()
 
 
-def filter_kwargs(keys, kwargs):
+def filter_kwargs(
+    keys: typing.Iterable[str], kwargs: dict
+) -> typing.Iterator[tuple[str, typing.Any]]:
     """
     :param keys: A iterable key names to select items
     :param kwargs: A dict or dict-like object reprensents keyword args
@@ -101,61 +108,64 @@ def filter_kwargs(keys, kwargs):
             yield (k, kwargs[k])
 
 
-class Engine(object):
-    """
-    Abstract class implementation of Template Engines.
-    """
+class Engine:
+    """Abstract class implementation of Template Engines."""
 
-    _name = "base"
-    _file_extensions = []
-    _priority = 99  # Lowest priority
-    _engine_valid_opts = []
-    _render_valid_opts = []
+    _name: str = "base"
+    _file_extensions: list[str] = []
+    _priority: int = 99  # Lowest priority
+    _engine_valid_opts: list[str] = []
+    _render_valid_opts: list[str] = []
 
     @classmethod
-    def name(cls):
+    def name(cls) -> str:
         """
         :return: Template Engine name (! class name)
         """
         return cls._name
 
     @classmethod
-    def file_extensions(cls):
+    def file_extensions(cls) -> list[str]:
         """
         :return: File extensions this engine can process
         """
         return cls._file_extensions
 
     @classmethod
-    def supports(cls, template_file=None):
+    def supports(cls, template_file: typing.Optional[str] = None) -> bool:
         """
         :return: Whether the engine can process given template file or not.
         """
+        if template_file is None:
+            return False
+
         return get_file_extension(template_file) in cls.file_extensions()
 
     @classmethod
-    def priority(cls):
+    def priority(cls) -> int:
         """
         :return: priority from 0 to 99, smaller gets highter priority.
         """
         return cls._priority
 
     @classmethod
-    def engine_valid_options(cls):
+    def engine_valid_options(cls) -> list[str]:
         """
         :return: A list of template engine specific initialization options
         """
         return cls._engine_valid_opts
 
     @classmethod
-    def render_valid_options(cls):
+    def render_valid_options(cls) -> list[str]:
         """
         :return: A list of template engine specific rendering options
         """
         return cls._render_valid_opts
 
     @classmethod
-    def filter_options(cls, kwargs, keys):
+    def filter_options(
+            cls, kwargs: dict, keys: collections.abc.Iterable[str]
+        ) -> dict:
         """
         Make optional kwargs valid and optimized for each template engines.
 
@@ -169,7 +179,7 @@ class Engine(object):
         """
         return dict((k, v) for k, v in filter_kwargs(keys, kwargs))
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """
         Instantiate and initialize a template engine object.
 
@@ -185,8 +195,13 @@ class Engine(object):
     renders_impl = to_method(fallback_renders)
     render_impl = to_method(fallback_render)
 
-    def renders(self, template_content, context=None, at_paths=None,
-                at_encoding=anytemplate.compat.ENCODING, **kwargs):
+    def renders(
+            self, template_content: str,
+            context: typing.Optional[dict] = None,
+            at_paths: typing.Optional[list[str]] = None,
+            at_encoding: str = anytemplate.compat.ENCODING,
+            **kwargs
+        ) -> str:
         """
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
@@ -212,8 +227,12 @@ class Engine(object):
         return self.renders_impl(template_content, context, at_paths=paths,
                                  at_encoding=at_encoding, **kwargs)
 
-    def render(self, template, context=None, at_paths=None,
-               at_encoding=anytemplate.compat.ENCODING, **kwargs):
+    def render(
+            self, template: str, context: typing.Optional[dict] = None,
+            at_paths: typing.Optional[list[str]] = None,
+            at_encoding: str = anytemplate.compat.ENCODING,
+            **kwargs
+        ) -> str:
         """
         :param template: Template file path
         :param context: A dict or dict-like object to instantiate given
