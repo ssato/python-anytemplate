@@ -191,6 +191,8 @@ def parse_and_load_contexts(
 
     if contexts:
         for ctx_path, ctx_type in concat(parse_filespec(c) for c in contexts):
+            if ctx_type is None or not ctx_type:
+                ctx_type = "json"  # default file type.
             try:
                 diff = load_context(ctx_path, ctx_type, scm=schema)
                 if diff is not None:
