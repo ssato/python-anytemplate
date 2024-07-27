@@ -94,11 +94,11 @@ def _subproc_check_out(cmd_str, request):
     src_root = request.path.parent.parent.absolute()
 
     cmd = "python3 src/anytemplate/cli.py"
-    opts = dict(
-        env=dict(PYTHONPATH="src"),
-        shell=True,
-        cwd=str(src_root)
-    )
+    opts = {
+        "env": {"PYTHONPATH": "src"},
+        "shell": True,
+        "cwd": str(src_root)
+    }
 
     return subprocess.check_output(cmd_str.replace("CMD", cmd), **opts)
 
