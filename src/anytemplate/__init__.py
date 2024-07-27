@@ -80,20 +80,22 @@ you don't need to specify the engine by 'at_engine' parameter like this::
 For details such as option parameters list of :function:`anytemplate.render`,
 see its help; see the output of 'help(anytemplate.render)', etc.
 """
+from __future__ import annotations
+
+import typing
+
 from __future__ import absolute_import
-from .globals import AUTHOR, VERSION, LOGGER
+from .globals import AUTHOR, LOGGER
 from .api import (
     list_engines, find_engine, renders, render, render_to,
     TemplateEngineNotFound, TemplateNotFound
 )
 
 __author__ = AUTHOR
-__version__ = VERSION
+__version__ = typing.Final[str] = "0.1.6"
 
 __all__ = [
     "LOGGER",
     "list_engines", "find_engine", "renders", "render", "render_to",
     "TemplateEngineNotFound", "TemplateNotFound",
 ]
-
-# vim:sw=4:ts=4:et:

@@ -8,7 +8,6 @@ import typing
 
 
 PACKAGE: typing.Final[str] = "anytemplate"
-VERSION: typing.Final[str] = "0.1.6"
 AUTHOR: typing.Final[str] = "Satoru SATOH <satoru.satoh gmail.com>"
 
 # See: "Configuring Logging for a Library" in python standard logging howto,
