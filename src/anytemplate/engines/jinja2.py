@@ -175,7 +175,7 @@ class Engine(anytemplate.engines.base.Engine):
             tmpl = (env.get_template if is_file else env.from_string)(template)
             return tmpl.render(**context)
         except jinja2.exceptions.TemplateNotFound as exc:
-            raise TemplateNotFound(str(exc))
+            raise TemplateNotFound(str(exc)) from exc
 
     def renders_impl(
         self, template_content: str, context: dict, **opts
