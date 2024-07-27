@@ -86,10 +86,14 @@ def test_run_main__jinja2(tmp_path):
 
 def _subproc_check_out(cmd_str, request):
     """Call subprocess.check_output with some keyword arguments.
+
+    .. seealso::
+
+       https://docs.pytest.org/en/latest/reference/reference.html#request
     """
     src_root = request.path.parent.parent.absolute()
 
-    cmd = "python src/anytemplate/cli.py"
+    cmd = "python3 src/anytemplate/cli.py"
     opts = dict(
         env=dict(PYTHONPATH="src"),
         shell=True,
