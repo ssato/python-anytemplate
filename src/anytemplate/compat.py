@@ -11,7 +11,9 @@ import codecs
 import os.path
 
 try:
-    from anyconfig.api import loads, load, merge
+    from anyconfig.api import (  # pylint: disable=unused-import
+        loads, load, merge
+    )
 except ImportError:
     from json import load, loads  # type: ignore
 
