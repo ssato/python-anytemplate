@@ -16,7 +16,7 @@
   - Standard library doc, ex.
     https://docs.python.org/2/library/string.html#template-strings
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import string
 
@@ -25,7 +25,7 @@ import anytemplate.engines.base
 import anytemplate.globals
 
 
-def renders(template_content, context, **options):
+def renders(template_content: str, context: dict, **options) -> str:
     """
     :param template_content: Template content
     :param context:
@@ -53,12 +53,14 @@ class Engine(anytemplate.engines.base.Engine):
     """
     Template engine class to support string.Template.
     """
-    _name = "string.Template"
-    _priority = 50
+    _name: str = "string.Template"
+    _priority: int = 50
 
     renders_impl = anytemplate.engines.base.to_method(renders)
 
-    def render_impl(self, template, context, **options):
+    def render_impl(
+        self, template: str, context: dict, **options
+    ) -> str:
         """
         Inherited class must implement this!
 
@@ -78,5 +80,3 @@ class Engine(anytemplate.engines.base.Engine):
         ropts = dict((k, v) for k, v in options.items() if k != "safe")
         tmpl = anytemplate.engines.base.fallback_render(template, {}, **ropts)
         return self.renders_impl(tmpl, context, **options)
-
-# vim:sw=4:ts=4:et:

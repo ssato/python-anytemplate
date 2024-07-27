@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015 - 2018 Satoru SATOH <ssato redhat.com>
+# Copyright (C) 2015 - 2024 Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
 # Suppress warning of list_engines
@@ -23,8 +23,6 @@ from anytemplate.globals import (
 from anytemplate.engine import find_by_filename as list_engines  # noqa: F401
 
 if typing.TYPE_CHECKING:
-    import collections.abc
-
     from .engines.base import Engine
     from .datatypes import (
         PathType, MaybePath, MaybeCtx
@@ -58,10 +56,21 @@ def find_engine(
     return engine
 
 
+def ask_user_tmpl(
+    template: typing.Optional[str] = None,
+    filepath: MaybePath = None
+) -> str:
+    _tpath = (filepath or "") if template is None else ""
+    return input(
+        "\nPlease enter an absolute or relative path starting "
+        f"from '.' of missing template file {_tpath}"
+    ).strip()
+
+
 def _render(
     template: typing.Optional[str] = None, filepath: MaybePath = None,
     context: MaybeCtx = None,
-    at_paths: typing.Optional[list[MaybePath]] = None,
+    at_paths: typing.Optional[list[str]] = None,
     at_encoding: str = anytemplate.compat.ENCODING,
     at_engine: typing.Optional[str] = None,
     at_ask_missing: bool = False,
@@ -96,7 +105,7 @@ def _render(
     ecls = find_engine(filepath, at_engine)
     LOGGER.debug("Use the template engine: %s", ecls.name())
     engine = ecls() if at_cls_args is None else ecls(**at_cls_args)
-    at_paths = anytemplate.utils.mk_template_paths(filepath, at_paths)
+    tpaths: list[str] = anytemplate.utils.mk_template_paths(filepath, at_paths)
 
     if filepath is None:
         (render_fn, target) = (engine.renders, template)
@@ -105,29 +114,27 @@ def _render(
 
     try:
         return render_fn(
-            target, context=context, at_paths=at_paths,
+            target, context=context, at_paths=tpaths,
             at_encoding=at_encoding, **kwargs
         )
     except TemplateNotFound as exc:
-        LOGGER.warning("** Missing template[s]: paths=%r", at_paths)
+        LOGGER.warning("** Missing template[s]: paths=%r", tpaths)
         if not at_ask_missing:
             raise TemplateNotFound(str(exc)) from exc
 
         if _at_usr_tmpl is None:
-            _tpath = (filepath or "") if template is None else ""
-            _at_usr_tmpl = input(
-                "\nPlease enter an absolute or relative path starting "
-                f"from '.' of missing template file {_tpath}"
-            ).strip()
+            _at_usr_tmpl = ask_user_tmpl(template, filepath)
 
         usr_tmpl = anytemplate.utils.normpath(_at_usr_tmpl)
         if template is None:
             LOGGER.debug("Render %s instead of %s", usr_tmpl, filepath)
             target = usr_tmpl
 
-        return render_fn(target, context=context,
-                         at_paths=(at_paths + [os.path.dirname(usr_tmpl)]),
-                         at_encoding=at_encoding, **kwargs)
+        return render_fn(
+            target, context=context,
+            at_paths=(tpaths + [os.path.dirname(usr_tmpl)]),
+            at_encoding=at_encoding, **kwargs
+        )
     except Exception as exc:
         raise CompileError(f"exc={exc!r}, template={target[:200]}") from exc
 

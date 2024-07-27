@@ -215,7 +215,8 @@ def _write_to_filepath(content: str, output: str) -> None:
 
 
 def write_to_output(
-    content: str, output: typing.Optional[str] = None,
+    content: str,
+    output: typing.Optional[str] = None,
     encoding: str = anytemplate.compat.ENCODING
 ) -> None:
     """
@@ -223,13 +224,13 @@ def write_to_output(
     :param output: Output destination
     :param encoding: Character set encoding of outputs
     """
-    if isinstance(content, bytes):
+    if not isinstance(content, str):
         content = str(content, encoding)
 
     if output and not output == '-':
         _write_to_filepath(content, output)
     else:
-        print(content.encode(encoding.lower()), file=get_output_stream())
+        print(content)
 
 
 def mk_template_paths(

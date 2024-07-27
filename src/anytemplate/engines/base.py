@@ -94,7 +94,7 @@ def fallback_render(
 
 
 def filter_kwargs(
-    keys: typing.Iterable[str], kwargs: dict
+    keys: collections.abc.Iterable[str], kwargs: dict
 ) -> typing.Iterator[tuple[str, typing.Any]]:
     """
     :param keys: A iterable key names to select items
@@ -114,8 +114,8 @@ class Engine:
     _name: str = "base"
     _file_extensions: list[str] = []
     _priority: int = 99  # Lowest priority
-    _engine_valid_opts: list[str] = []
-    _render_valid_opts: list[str] = []
+    _engine_valid_opts: tuple[str, ...] = ()
+    _render_valid_opts: tuple[str, ...] = ()
 
     @classmethod
     def name(cls) -> str:
@@ -149,14 +149,14 @@ class Engine:
         return cls._priority
 
     @classmethod
-    def engine_valid_options(cls) -> list[str]:
+    def engine_valid_options(cls) -> tuple[str, ...]:
         """
         :return: A list of template engine specific initialization options
         """
         return cls._engine_valid_opts
 
     @classmethod
-    def render_valid_options(cls) -> list[str]:
+    def render_valid_options(cls) -> tuple[str, ...]:
         """
         :return: A list of template engine specific rendering options
         """
@@ -164,8 +164,8 @@ class Engine:
 
     @classmethod
     def filter_options(
-            cls, kwargs: dict, keys: collections.abc.Iterable[str]
-        ) -> dict:
+        cls, kwargs: dict, keys: collections.abc.Iterable[str]
+    ) -> dict:
         """
         Make optional kwargs valid and optimized for each template engines.
 
@@ -196,12 +196,12 @@ class Engine:
     render_impl = to_method(fallback_render)
 
     def renders(
-            self, template_content: str,
-            context: typing.Optional[dict] = None,
-            at_paths: typing.Optional[list[str]] = None,
-            at_encoding: str = anytemplate.compat.ENCODING,
-            **kwargs
-        ) -> str:
+        self, template_content: str,
+        context: typing.Optional[dict] = None,
+        at_paths: typing.Optional[list[str]] = None,
+        at_encoding: str = anytemplate.compat.ENCODING,
+        **kwargs
+    ) -> str:
         """
         :param template_content: Template content
         :param context: A dict or dict-like object to instantiate given
@@ -228,11 +228,11 @@ class Engine:
                                  at_encoding=at_encoding, **kwargs)
 
     def render(
-            self, template: str, context: typing.Optional[dict] = None,
-            at_paths: typing.Optional[list[str]] = None,
-            at_encoding: str = anytemplate.compat.ENCODING,
-            **kwargs
-        ) -> str:
+        self, template: str, context: typing.Optional[dict] = None,
+        at_paths: typing.Optional[list[str]] = None,
+        at_encoding: str = anytemplate.compat.ENCODING,
+        **kwargs
+    ) -> str:
         """
         :param template: Template file path
         :param context: A dict or dict-like object to instantiate given
