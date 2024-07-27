@@ -17,10 +17,9 @@ The module imports this should have the line like as follows.
 """
 from __future__ import annotations
 
-import collections.abc
 import typing
 
 
 PathType = str  # It will be typing.Union[str, pathlib.Path].
 MaybePath = typing.Optional[PathType]
-MaybeCtx = typing.Optional[collections.abc.Mapping]
+MaybeCtx = typing.Optional[dict]
