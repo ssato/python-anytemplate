@@ -134,8 +134,8 @@ class Engine(anytemplate.engines.base.Engine):
 
         if os.path.sep in template:  # `template` is in abs/rel-path.
             return renderer.render_path(template, *ctxs)
-        else:
-            if template.endswith(renderer.file_extension):
-                template = os.path.splitext(template)[0]
 
-            return renderer.render_name(template, *ctxs)
+        if template.endswith(renderer.file_extension):
+            template = os.path.splitext(template)[0]
+
+        return renderer.render_name(template, *ctxs)

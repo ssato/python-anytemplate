@@ -42,11 +42,11 @@ def renders(template_content: str, context: dict, **options) -> str:
     """
     if options.get("safe", False):
         return string.Template(template_content).safe_substitute(context)
-    else:
-        try:
-            return string.Template(template_content).substitute(context)
-        except KeyError as exc:
-            raise anytemplate.globals.CompileError(str(exc))
+
+    try:
+        return string.Template(template_content).substitute(context)
+    except KeyError as exc:
+        raise anytemplate.globals.CompileError(str(exc))
 
 
 class Engine(anytemplate.engines.base.Engine):
