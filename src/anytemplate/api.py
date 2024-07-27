@@ -137,7 +137,8 @@ def _render(
             at_encoding=at_encoding, **kwargs
         )
     except Exception as exc:
-        raise CompileError(f"exc={exc!r}, template={target[:200]}") from exc
+        msg = f"exc={exc!r}, template={target[:200]}, context={context!r}"
+        raise CompileError(msg) from exc
 
 
 def renders(template: str, context: MaybeCtx = None, **options) -> str:
