@@ -49,8 +49,7 @@ def _render(tmpl, ctx):
     :param tmpl: mako.template.Template object
     :param ctx: A dict or dict-like object to instantiate given
     """
-    is_py3k = anytemplate.compat.IS_PYTHON_3
-    return tmpl.render_unicode(**ctx) if is_py3k else tmpl.render(**ctx)
+    return tmpl.render_unicode(**ctx)
 
 
 class Engine(anytemplate.engines.base.Engine):
