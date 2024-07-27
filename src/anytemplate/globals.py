@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2012 - 2017 Satoru SATOH <ssato @ redhat.com>
+# Copyright (C) 2012 - 2024 Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
 """anytemplate globals."""
@@ -12,7 +12,7 @@ VERSION: typing.Final[str] = "0.1.6"
 AUTHOR: typing.Final[str] = "Satoru SATOH <satoru.satoh gmail.com>"
 
 # See: "Configuring Logging for a Library" in python standard logging howto,
-# e.g. https://docs.python.org/2/howto/logging.html#library-config.
+# https://docs.python.org/3/howto/logging.html#library-config
 LOGGER: logging.Logger = logging.getLogger(PACKAGE)
 LOGGER.addHandler(logging.NullHandler())
 
