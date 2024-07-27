@@ -84,7 +84,6 @@ from __future__ import annotations
 
 import typing
 
-from __future__ import absolute_import
 from .globals import AUTHOR, LOGGER
 from .api import (
     list_engines, find_engine, renders, render, render_to,
