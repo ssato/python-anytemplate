@@ -74,7 +74,7 @@ class FileSystemExLoader(jinja2.loaders.FileSystemLoader):
     ) -> None:
         """.. seealso:: :meth:`jinja2.loaders.FileSystemLoader.__init__`
         """
-        super(FileSystemExLoader, self).__init__(
+        super().__init__(
             searchpath, encoding=encoding, followlinks=False
         )
         self.enable_glob = enable_glob
@@ -137,7 +137,7 @@ class Engine(anytemplate.engines.base.Engine):
         """
         see `help(jinja2.Environment)` for options.
         """
-        super(Engine, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._env_options = self.filter_options(kwargs,
                                                 self.engine_valid_options())
 

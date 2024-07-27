@@ -81,7 +81,7 @@ class Engine(anytemplate.engines.base.Engine):
         """
         see `help(mako.lookup.TemplateLookup)` for options.
         """
-        super(Engine, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.lookup_options = self.filter_options(kwargs,
                                                   self.engine_valid_options())
 

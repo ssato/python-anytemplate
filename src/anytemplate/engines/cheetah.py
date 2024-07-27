@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 by Satoru SATOH <ssato @ redhat.com>
+# Copyright (c) 2015 by Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
 """
@@ -79,7 +79,7 @@ class Engine(anytemplate.engines.base.Engine):
         """
         see `help(Cheetah.Template.Template)` for options.
         """
-        super(Engine, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.engine_options = self.filter_options(
             kwargs, self.engine_valid_options()
         )
