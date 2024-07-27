@@ -24,9 +24,11 @@ def option_parser():
     """
     :return: Option parsing object :: optparse.OptionParser
     """
-    defaults = dict(template_paths=[], contexts=[], schema=None, output='-',
-                    engine=None, list_engines=False, verbose=1)
-
+    defaults = {
+        "template_paths": [], "contexts": [], "schema": None,
+        "output": '-', "engine": None, "list_engines": False,
+        "verbose": 1
+    }
     psr = argparse.ArgumentParser()
     psr.set_defaults(**defaults)
 
