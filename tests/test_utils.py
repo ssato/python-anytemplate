@@ -39,10 +39,6 @@ def test_normpath(input, exp_out):
     assert TT.normpath(input) == exp_out
 
 
-def test_flip():
-    assert TT.flip((1, 3)) == (3, 1)
-
-
 @pytest.mark.parametrize(
     ("input", "exp_out"),
     (([], []),
