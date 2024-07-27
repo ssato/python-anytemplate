@@ -60,6 +60,7 @@ def ask_user_tmpl(
     template: typing.Optional[str] = None,
     filepath: MaybePath = None
 ) -> str:
+    """Ask users a template path to use."""
     _tpath = (filepath or "") if template is None else ""
     return input(
         "\nPlease enter an absolute or relative path starting "

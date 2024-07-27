@@ -42,6 +42,7 @@ def get_file_extension(filepath: str) -> str:
 
 
 def json_loads(content: str, *_args, **_kwargs) -> dict:
+    """Wrapper for `loads`."""
     res = loads(content)
     if not isinstance(res, dict):
         msg = f"Not a dict data from {content}"
@@ -51,6 +52,7 @@ def json_loads(content: str, *_args, **_kwargs) -> dict:
 
 
 def json_load(filepath: str, *_args, **_kwargs) -> dict:
+    """Wrapper for `load`."""
     res = load(filepath)
     if not isinstance(res, dict):
         msg = f"Not a dict data from {filepath}"
