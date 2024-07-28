@@ -46,7 +46,11 @@ def renders(template_content: str, context: dict, **options) -> str:
     try:
         return string.Template(template_content).substitute(context)
     except KeyError as exc:
-        raise anytemplate.globals.CompileError(str(exc))
+        msg = (
+            f"{exc!r}: content={template_content[:20]}..., "
+            f"context: {context!r}"
+        )
+        raise anytemplate.globals.CompileError(msg)
 
 
 class Engine(anytemplate.engines.base.Engine):
