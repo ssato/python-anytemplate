@@ -118,10 +118,16 @@ def test_strtemplate_with_ctx(
     ctx = tmp_path / "ctx.json"
     ctx.write_text(ctx_s)
 
-    out = _subproc_check_out(
-        # TBD: Read ctx from stdin.
-        # f"echo 'a: aaa' | CMD -E string.Template -C yaml:- -o - {tmpl}",
-        f"CMD -E string.Template -C json:{ctx} -o - {tmpl}",
-        request
-    )
+    try:
+        out = _subproc_check_out(
+            # TBD: Read ctx from stdin.
+            # f"echo 'a: aaa' | CMD -E string.Template -C yaml:- -o - {tmpl}",
+            f"CMD -E string.Template -C json:{ctx} -o - {tmpl}",
+            request
+        )
+    except:
+        print(f"tmpl: {tmpl.read_text()}")
+        print(f"ctx: {ctx.read_text()}")
+        raise
+
     assert out.rstrip() == bytes(exp, "utf-8")
