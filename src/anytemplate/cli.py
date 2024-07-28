@@ -5,16 +5,21 @@
 """
 CLI frontend for various template engines.
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 from __future__ import print_function
 
 import argparse
 import logging
+import os
 import sys
+import typing
 
 import anytemplate.api
 import anytemplate.globals
 import anytemplate.utils
+
+if typing.TYPE_CHECKING:
+    import collections.abc
 
 
 LOGGER = anytemplate.globals.LOGGER
@@ -76,6 +81,18 @@ def get_loglevel(level):
         return logging.INFO
 
 
+def read_content_from_contexts_itr(
+    paths: list[str]
+) -> collections.abc.Iterator[str]:
+    """Read content from context files given as paths."""
+    for cpath in paths:
+        if ":" in cpath:
+            cpath = cpath.split(":")[-1]
+
+        with open(cpath, encoding="utf-8") as ctxf:
+            yield ctxf.read()
+
+
 def main(argv=None):
     """
     Entrypoint.
@@ -103,6 +120,15 @@ def main(argv=None):
         LOGGER.info("Loading contexts: %r ...", args.contexts[:3])
         ctx = anytemplate.utils.parse_and_load_contexts(args.contexts,
                                                         args.schema)
+        if not ctx:
+            LOGGER.warning(
+                "Empty contexts?: paths=%s, contents=%s",
+                ",".join(args.contexts),
+                os.linesep.join(
+                    list(read_content_from_contexts_itr(args.contexts))
+                )
+            )
+
     anytemplate.api.render_to(args.template, ctx, args.output,
                               at_paths=args.template_paths,
                               at_engine=args.engine, at_ask_missing=True)
