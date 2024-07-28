@@ -5,6 +5,7 @@
 # pylint: disable=missing-docstring, invalid-name
 from __future__ import absolute_import, with_statement
 
+import io
 import json
 import os
 import pathlib
@@ -62,6 +63,25 @@ def test_concat(input, exp_out):
 )
 def test_parse_filespec__w_type(input, exp_out):
     assert TT.parse_filespec(input) == exp_out
+
+
+@pytest.mark.parametrize(
+    ("cpath", "ctype", "exp"),
+    (("-", "json",  {}),
+     ("c.json", "json",  {}),
+     ("c.json", "json",  {"a": "A"}),
+     )
+)
+def test_load_context(cpath, ctype, exp, monkeypatch, tmp_path):
+    ctx_s = json.dumps(exp)
+
+    if cpath == "-":
+        monkeypatch.setattr("sys.stdin", io.StringIO(ctx_s))
+    else:
+        cpath = tmp_path / cpath
+        cpath.write_text(ctx_s)
+
+    TT.load_context(cpath, ctype) == exp
 
 
 @pytest.mark.parametrize(
