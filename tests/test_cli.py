@@ -13,6 +13,8 @@ import pytest
 
 import anytemplate.cli as TT
 
+from anytemplate.globals import CompileError
+
 try:
     import jinja2
     J2_IS_AVAIL = bool(jinja2)
@@ -125,7 +127,7 @@ def test_strtemplate_with_ctx(
             f"CMD -E string.Template -C json:{ctx} -o - {tmpl}",
             request
         )
-    except:
+    except (IOError, OSError, CompileError):
         print(f"tmpl: {tmpl.read_text()}")
         print(f"ctx: {ctx.read_text()}")
         raise
