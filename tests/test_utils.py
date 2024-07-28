@@ -5,6 +5,7 @@
 # pylint: disable=missing-docstring, invalid-name
 from __future__ import absolute_import, with_statement
 
+import json
 import os
 import pathlib
 
@@ -97,7 +98,25 @@ def test_mk_template_paths():
     assert TT.mk_template_paths(None, None) == [os.curdir]
 
 
-def test_parse_and_load_contexts(tmp_path):
+@pytest.mark.parametrize(
+    ("ctx", ),
+    (({}, ),
+     ({"a": "A"}, ),
+     ({"a": "A", "b": [1, 2]}, ),
+     )
+)
+def test_parse_and_load_contexts(ctx, tmp_path):
+    cpath = tmp_path / "c.json"
+    with cpath.open(mode="w", encoding="utf-8") as cio:
+        json.dump(ctx, cio)
+
+    assert TT.parse_and_load_contexts([str(cpath)]) == ctx
+    assert TT.parse_and_load_contexts(
+        [f"json:{p}" for p in [cpath]]
+    ) == ctx
+
+
+def test_parse_and_load_contexts_multi(tmp_path):
     jsns = [
         tmp_path / "a.json", tmp_path / "b.json", tmp_path / "c.json"
     ]
