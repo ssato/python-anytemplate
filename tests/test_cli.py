@@ -105,7 +105,8 @@ def _subproc_check_out(cmd_str, request):
 
 @pytest.mark.parametrize(
     ("tmpl_s", "ctx_s", "exp"),
-    (("$a\n", '{"a": "aaa"}', "aaa"),
+    (("a\n", '{}', "a"),
+     ("$a\n", '{"a": "aaa"}', "aaa"),
      )
 )
 def test_strtemplate_with_ctx(
