@@ -15,7 +15,18 @@ try:
         loads, load, merge
     )
 except ImportError:
-    from json import load, loads  # type: ignore
+    import json
+
+    def loads(content, **_kwargs):
+        """Wrapper for josn.loads."""
+        return json.loads(content)
+
+    def load(path_or_io, **_kwargs):
+        """Wrapper for josn.load."""
+        if isinstance(path_or_io, (str, )):
+            return json.load(open(path_or_io, encoding="utf-8"))
+
+        return json.load(path_or_io)
 
     def merge(dic: dict, upd: dict, *_args, **_kwargs) -> None:  # type: ignore
         """Update `dic` with `upd`."""
@@ -43,24 +54,14 @@ def get_file_extension(filepath: str) -> str:
     return ''
 
 
-def json_loads(content: str, *_args, **_kwargs) -> dict:
+def json_loads(content: str, *_args, **kwargs) -> dict:
     """Wrapper for `loads`."""
-    res = loads(content)
-    if not isinstance(res, dict):
-        msg = f"Not a dict data from {content}"
-        raise ValueError(msg)
-
-    return res
+    return loads(content, **kwargs) or {}
 
 
-def json_load(filepath: str, *_args, **_kwargs) -> dict:
+def json_load(filepath: str, *_args, **kwargs) -> dict:
     """Wrapper for `load`."""
-    res = load(filepath)
-    if not isinstance(res, dict):
-        msg = f"Not a dict data from {filepath}"
-        raise ValueError(msg)
-
-    return res
+    return load(filepath, **kwargs) or {}
 
 
 def copen(filepath, flag='r', encoding=ENCODING):
