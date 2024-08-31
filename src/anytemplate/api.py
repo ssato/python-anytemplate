@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 import os.path
+import pathlib
 import sys
 import typing
 
@@ -61,19 +62,24 @@ def find_engine(
     return engines[0](**eopts)  # It should have highest priority.
 
 
-def ask_user_tmpl(tpaths: list[str]) -> typing.Optional[str]:
+def ask_user_tmpl(tpaths: list[str]) -> typing.Optional[pathlib.Path]:
     """Ask users a template path to use."""
-    maybe_path: str = input(
-        "\nPlease enter an absolute or relative path starting "
-        "from '.' of missing template file"
-    ).strip()
+    maybe_path: pathlib.Path = pathlib.Path(
+        input(
+            "\nPlease enter an absolute or relative path to "
+            "your template file."
+        ).strip()
+    )
+    maybe_path.resolve()
 
-    if os.path.exists(maybe_path):
+    if maybe_path.exists():
         return maybe_path
 
+    # Try to find the tempalte from searching paths.
     for tpath in tpaths:
-        candidate = os.path.join([tpath, maybe_path])
-        if os.path.exists(candidate):
+        candidate = pathlib.Path(tpath) / maybe_path
+        if candidate.exists():
+            candidate.resolve()
             return candidate
 
     return None
@@ -82,10 +88,10 @@ def ask_user_tmpl(tpaths: list[str]) -> typing.Optional[str]:
 def _render(
     template: str,  # content or file path
     render_fn: collections.abc.Callable,
-    tpaths: list[str],
     context: MaybeCtx = None,
     at_ask_missing: bool = False,
-    **kwargs
+    is_str_template: bool = False,
+    **options
 ) -> str:
     """
     Compile and render given template string and return the result string.
@@ -99,28 +105,36 @@ def _render(
     :param at_engine: Specify the name of template engine to use explicitly or
         None to find it automatically anyhow.
     :param at_cls_args: Arguments passed to instantiate template engine class
-    :param kwargs: Keyword arguments passed to the template engine to
+    :param options: Keyword arguments passed to the template engine to
         render templates with specific features enabled.
 
     :return: Rendered string
     """
+    tpaths: list[str] = anytemplate.utils.mk_template_paths(
+        None if is_str_template else template, options.get("at_paths", None)
+    )
+    if "at_paths" in options:
+        del options["at_paths"]
+
     try:
         return render_fn(
-            template, context=context, at_paths=tpaths, **kwargs
+            template, context=context, at_paths=tpaths, **options
         )
     except TemplateNotFound as exc:
-        LOGGER.warning("** Missing template[s]: paths=%r", tpaths)
-        if not at_ask_missing:
+        LOGGER.warning("Missing template[s]: paths=%r", tpaths)
+        if at_ask_missing:
+            template = ask_user_tmpl(tpaths)  # :: pathlib.Path
+        else:
             raise TemplateNotFound(str(exc)) from exc
 
-        usr_tmpl = anytemplate.utils.normpath(ask_user_tmpl(tpaths))
         if template is None:
-            template = usr_tmpl
+            tpaths_s: str = ", ".join(tpaths)
+            msg = f"Missing Template: {template!s}, paths={tpaths_s}"
+            raise TemplateNotFound(msg) from exc
 
+        tpaths = tpaths + [str(template.parent)]
         return render_fn(
-            template, context=context,
-            at_paths=(tpaths + [os.path.dirname(usr_tmpl)]),
-            **kwargs
+            str(template), context=context, at_paths=tpaths, **options
         )
     except Exception as exc:
         msg = f"exc={exc!r}, template={template[:200]}, context={context!r}"
@@ -150,12 +164,8 @@ def renders(template: str, context: MaybeCtx = None, **options) -> str:
         None, options.get("at_engine", None),
         options.get("at_cls_args", None)
     )
-    tpaths: list[str] = anytemplate.utils.mk_template_paths(
-        None, options.get("at_paths", None)
-    )
-
     return _render(
-        template, engine.renders, tpaths, context=context, **options
+        template, engine.renders, context=context, **options
     )
 
 
@@ -185,12 +195,8 @@ def render(filepath: PathType, context: MaybeCtx = None, **options) -> str:
         filepath, options.get("at_engine", None),
         options.get("at_cls_args", None)
     )
-    tpaths: list[str] = anytemplate.utils.mk_template_paths(
-        filepath, options.get("at_paths", None)
-    )
-
     return _render(
-        filepath, engine.render, tpaths, context=context, **options
+        filepath, engine.render, context=context, **options
     )
 
 
