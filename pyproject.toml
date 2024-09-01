@@ -1,0 +1,94 @@
+# .. seealso:: https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+[project]
+name = "anytemplate"
+requires-python = ">=3.9"
+dynamic = [
+    "version",
+]
+description = "Library to abstract template engines and provide common APIs"
+readme = "README.rst"
+authors = [
+    {"name" = "Satoru SATOH", email = "satoru.satoh@gmail.com"},
+]
+maintainers = [
+    {"name" = "Satoru SATOH", email = "satoru.satoh@gmail.com"},
+]
+license = { text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    "anyconfig",
+    "jinja2",
+]
+
+[tool.setuptools.dynamic.version]
+attr = "anytemplate.__version__"
+
+[project.urls]
+Homepage = "https://github.com/ssato/python-anytemplate"
+Repository = "https://github.com/ssato/python-anytemplate"
+Issues = "https://github.com/ssato/python-anytemplate/issues"
+Changelog = "https://github.com/ssato/python-anytemplate/blob/next/ChangeLog"
+Download = "https://pypi.python.org/pypi/anytemplate"
+"Download RPMs" = "https://copr.fedoraproject.org/coprs/ssato/python-anyconfig/"
+CI = "https://github.com/ssato/python-anytemplate/actions"
+
+[build-system]
+requires = [
+    "setuptools >= 61.0",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.package-data]
+anytemplate = [
+    "py.typed",
+]
+
+[tool.setuptools.packages.find]
+where = [
+    "src"
+]
+
+[project.optional-dependencies]
+engines = [
+    "Cheetah3",
+    "mako",
+    "pystache",
+]
+
+[project.scripts]
+anytemplate_cli = "anytemplate.cli:main"
+
+# .. seealso:: https://docs.pytest.org/en/stable/reference/customize.html#pyproject-toml
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+addopts = "--cov=src -vv -rxXs --cov --cov-report xml"
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "import-error",
+    "invalid-name",
+    "locally-disabled",
+    "too-many-ancestors",
+    "too-many-return-statements",
+]
