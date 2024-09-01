@@ -1,5 +1,5 @@
 # Special case. https://pypi.python.org/pypi/Cheetah3/
 Cheetah3
-jinja2
+Jinja2
 mako
 pystache
