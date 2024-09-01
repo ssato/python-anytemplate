@@ -28,15 +28,14 @@ def test__init__w_kwargs():
 @has_cheeatah
 @pytest.mark.parametrize(
     ("tmpl_s", "ctx", "opts", "exp"),
-    (
-     ("hello world!", {}, {}, "hello world!"),
+    (("hello world!", {}, {}, "hello world!"),
      ("hello, $name!", {"name": "John"}, {}, "hello, John!"),
-     ("hello world!", {}, dict(at_paths=['.']), "hello world!"),
-     ("hello world!", {}, dict(file="x.t"), "hello world!"),
+     ("hello world!", {}, {"at_paths": ['.']}, "hello world!"),
+     ("hello world!", {}, {"file": "x.t"}, "hello world!"),
      ),
 )
 def test_renders(tmpl_s, ctx, opts, exp):
-    assert TT.Engine().renders(tmpl_s,  ctx, **opts) == exp
+    assert TT.Engine().renders(tmpl_s, ctx, **opts) == exp
 
 
 @has_cheeatah
@@ -48,7 +47,7 @@ def test_renders__with_engine_special_option():
 @has_cheeatah
 def test_render_with_template_paths(tmp_path):
     tmpl_s = "$getVar('greeting', 'hello!')"
-    ctx = dict(greeting="hello, Cheetah!")
+    ctx = {"greeting": "hello, Cheetah!"}
     exp = ctx["greeting"]
 
     tmpl = tmp_path / "a.t"
@@ -71,7 +70,7 @@ def test_render_without_context(tmp_path):
 @has_cheeatah
 def test_render_impl__w_source(tmp_path):
     tmpl_s = "$getVar('greeting', 'hello!')"
-    ctx = dict(greeting="hello, Cheetah!")
+    ctx = {"greeting": "hello, Cheetah!"}
     exp = ctx["greeting"]
 
     tmpl = tmp_path / "a.t"

@@ -15,12 +15,11 @@ except ImportError:
 
 @pytest.mark.parametrize(
     ("tmpl_s", "ctx", "opts", "exp"),
-    (
-     ("Hello world!", {}, {}, "Hello world!"),
-     ("Hello world!", {}, dict(at_paths=['.']), "Hello world!"),
+    (("Hello world!", {}, {}, "Hello world!"),
+     ("Hello world!", {}, {"at_paths": ['.']}, "Hello world!"),
      ("Hello, {{name}}!", {"name": "John"}, {}, "Hello, John!"),
-     ("Hello world!", {}, dict(missing_tags="strict"), "Hello world!"),
-     ("{{ a }}", {}, dict(missing_tags="ignore"), ""),
+     ("Hello world!", {}, {"missing_tags": "strict"}, "Hello world!"),
+     ("{{ a }}", {}, {"missing_tags": "ignore"}, ""),
      ),
 )
 def test_renders(tmpl_s, ctx, opts, exp):
@@ -29,8 +28,7 @@ def test_renders(tmpl_s, ctx, opts, exp):
 
 @pytest.mark.parametrize(
     ("tmpl_s", "ctx", "opts", "exp"),
-    (
-     ("Hello!", {}, {}, "Hello!"),
+    (("Hello!", {}, {}, "Hello!"),
      ("a = {{a}}", {'a': "aaa"}, {}, "a = aaa"),
      ),
 )

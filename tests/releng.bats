@@ -5,7 +5,7 @@
 #
 CURDIR=$(pwd)
 
-PKG_NAME=${PKG_NAME:-$(sed -n 's/name = //p' ${BATS_TEST_DIRNAME:?}/../setup.cfg)}
+PKG_NAME=${PKG_NAME:-anytemplate}
 GIT_URL=${GIT_URL:-https://github.com/ssato/python-${PKG_NAME}}
 
 # The latest stable release

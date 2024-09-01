@@ -1,4 +1,1 @@
 PyYAML
-anyconfig
-coveralls
-pytest

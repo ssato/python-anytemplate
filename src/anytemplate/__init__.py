@@ -87,7 +87,7 @@ import typing
 from .globals import AUTHOR, LOGGER
 from .api import (
     list_engines, find_engine, renders, render, render_to,
-    TemplateEngineNotFound, TemplateNotFound
+    TemplateEngineNotFound, TemplateNotFound, CompileError
 )
 
 __author__ = AUTHOR
@@ -96,5 +96,5 @@ __version__: typing.Final[str] = "0.1.7"
 __all__ = [
     "LOGGER",
     "list_engines", "find_engine", "renders", "render", "render_to",
-    "TemplateEngineNotFound", "TemplateNotFound",
+    "TemplateEngineNotFound", "TemplateNotFound", "CompileError",
 ]

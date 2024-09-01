@@ -189,7 +189,7 @@ class Engine:
         LOGGER.debug(
             "Intialize %s with kwargs: %s",
             self.name(),
-            ", ".join("%s=%s" % (k, v) for k, v in kwargs.items())
+            ", ".join(f"{k}={v}" for k, v in kwargs.items())
         )
 
     renders_impl = to_method(fallback_renders)
