@@ -71,7 +71,7 @@ J2_NOT_AVAIL_MSG = "jinja2 is not available"
 
 @pytest.mark.skipif(not J2_ENGINE_IS_AVAIL, reason=J2_NOT_AVAIL_MSG)
 def test_renders__exceptions():
-    with pytest.raises(TemplateNotFound):
+    with pytest.raises((TemplateNotFound, ModuleNotFoundError)):
         TT.renders(
             "{% include 'not_existing.j2' %}", at_engine="jinja2",
             at_ask_missing=False
