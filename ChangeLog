@@ -1,3 +1,21 @@
+* Sun Sep  1 2024 Satoru SATOH <satoru.satoh@gmail.com> - 0.1.7
+- change: add python 3.12 support
+- change: drop tenjin (template engine) support
+- change: drop python 2 and python < 3.8 support
+- enhancement: add type hints
+- enhancement/fix: fix for errors and warnings by mypy, linter (flake8), etc.
+- fix/change: cleanup and migrate test cases from unittest (nose) based to
+  pytest based, and switched to it
+- change: switch to Github Actions and Azure Pipelines instead of Travis-CI
+- change: use f-string as much as possible
+- fix: don't use locale.getdefaultlocale because it was deprecated and not
+  recommended
+- Do not use jinja2.loaders.open_if_exists; may close #9 and #10 reported by @
+  jorgeegomez (thanks a lot!)
+- fix: add type hints
+- fix/change: a lot of cleanup and fixes in setup.* and related stuff
+- enhancement: add releng, min test targets
+
 * Thu May  7 2020 Satoru SATOH <satoru.satoh@gmail.com> - 0.1.6
 - change: drop py2 support by default; keep py27 support for a while but it'll
   be removed in the later versions
