@@ -19,13 +19,12 @@ except ImportError:
 
 @pytest.mark.parametrize(
     ("tmpl_s", "ctx", "opts", "exp"),
-    (
-     ("hello world!", {}, {}, "hello world!"),
+    (("hello world!", {}, {}, "hello world!"),
      ("hello, ${name}!", {"name": "John"}, {}, "hello, John!"),
-     ("hello world!", {}, dict(at_paths=['.']), "hello world!"),
-     ("hello world!", {}, dict(filename="x.t"), "hello world!"),
+     ("hello world!", {}, {"at_paths": ['.']}, "hello world!"),
+     ("hello world!", {}, {"filename": "x.t"}, "hello world!"),
      ("hello world!", {},
-      dict(preprocessor=lambda *args, **kwargs: ""),
+      {"preprocessor": lambda *args, **kwargs: ""},
       ""),
      ),
 )
@@ -35,8 +34,7 @@ def test_renders(tmpl_s, ctx, opts, exp):
 
 @pytest.mark.parametrize(
     ("tmpl_s", "ctx", "exp"),
-    (
-     ("a = ${a}", {'a': "aaa"}, "a = aaa"),
+    (("a = ${a}", {'a': "aaa"}, "a = aaa"),
      ("hello", {}, "hello"),
      ),
 )
