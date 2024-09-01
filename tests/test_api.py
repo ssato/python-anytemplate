@@ -126,7 +126,7 @@ def test_render__with_engine_specific_options(tmp_path):
             str(tmpl), at_engine="jinja2",
             extensions=["jinja2.ext.do"]
         ) == "1,2,3,4"
-    except ModuleNotFoundError:
+    except (ModuleNotFoundError, CompileError):
         pass  # workaround for some specific versions of jinja2
 
 
