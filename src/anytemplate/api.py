@@ -38,7 +38,7 @@ LOGGER: logging.Logger = logging.getLogger(__name__)
 def find_engine(
     filepath: MaybePath = None, name: MaybePath = None,
     at_cls_args: typing.Optional[dict] = None,
-) -> typing.Type[Engine]:
+) -> Engine:
     """
     :param filepath: Template file path
     :param name: Specify the name of template engine to use explicitly or
@@ -123,18 +123,18 @@ def _render(
     except TemplateNotFound as exc:
         LOGGER.warning("Missing template[s]: paths=%r", tpaths)
         if at_ask_missing:
-            template = ask_user_tmpl(tpaths)  # :: pathlib.Path
+            tmpl = ask_user_tmpl(tpaths)  # :: pathlib.Path
         else:
             raise TemplateNotFound(str(exc)) from exc
 
-        if template is None:
+        if tmpl is None:
             tpaths_s: str = ", ".join(tpaths)
             msg = f"Missing Template: {template!s}, paths={tpaths_s}"
             raise TemplateNotFound(msg) from exc
 
-        tpaths = tpaths + [str(template.parent)]
+        tpaths = tpaths + [str(tmpl.parent)]
         return render_fn(
-            str(template), context=context, at_paths=tpaths, **options
+            str(tmpl), context=context, at_paths=tpaths, **options
         )
     except Exception as exc:
         msg = f"exc={exc!r}, template={template[:200]}, context={context!r}"

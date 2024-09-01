@@ -172,7 +172,11 @@ class Engine(anytemplate.engines.base.Engine):
         if kwargs:
             context.update(kwargs)
         try:
-            tmpl = (env.get_template if is_file else env.from_string)(template)
+            if is_file:
+                tmpl = env.get_template(template)
+            else:
+                tmpl = env.from_string(template)
+
             return tmpl.render(**context)
         except jinja2.exceptions.TemplateNotFound as exc:
             raise TemplateNotFound(str(exc)) from exc

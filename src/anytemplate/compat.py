@@ -17,11 +17,11 @@ try:
 except ImportError:
     import json
 
-    def loads(content, **_kwargs):
+    def loads(content, **_kwargs):  # type: ignore[misc]
         """Wrapper for josn.loads."""
         return json.loads(content)
 
-    def load(path_or_io, **_kwargs):
+    def load(path_or_io, **_kwargs):  # type: ignore[misc]
         """Wrapper for josn.load."""
         if isinstance(path_or_io, (str, )):
             return json.load(open(path_or_io, encoding="utf-8"))
