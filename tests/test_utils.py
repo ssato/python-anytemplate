@@ -67,9 +67,9 @@ def test_parse_filespec__w_type(input, exp_out):
 
 @pytest.mark.parametrize(
     ("cpath", "ctype", "exp"),
-    (("-", "json",  {}),
-     ("c.json", "json",  {}),
-     ("c.json", "json",  {"a": "A"}),
+    (("-", "json", {}),
+     ("c.json", "json", {}),
+     ("c.json", "json", {"a": "A"}),
      )
 )
 def test_load_context(cpath, ctype, exp, monkeypatch, tmp_path):
