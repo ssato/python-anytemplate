@@ -9,7 +9,7 @@ PKG_NAME=${PKG_NAME:-$(sed -n 's/name = //p' ${BATS_TEST_DIRNAME:?}/../setup.cfg
 GIT_URL=${GIT_URL:-https://github.com/ssato/python-${PKG_NAME}}
 
 # The latest stable release
-RPM_BUILD_DIST=fedora-31-x86_64
+RPM_BUILD_DIST=${RPM_BUILD_DIST:-fedora-39-x86_64}
 
 SRCDIR=${BATS_TEST_DIRNAME}/../
 WORKDIR=${WORKDIR:-}
