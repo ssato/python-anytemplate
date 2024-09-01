@@ -8,15 +8,6 @@ from __future__ import absolute_import
 import sys
 
 
-def test_nullhandler():
-    cls = "NullHandler"
-    sys.modules["logging"] = None
-    import anytemplate.globals
-
-    assert cls not in globals()
-    assert getattr(anytemplate.globals, cls) is not None
-
-
 def test_20_engines():
     for mod in ("Cheetah", "jinja2", "mako", "tenjin", "pystache"):
         sys.modules[mod] = None

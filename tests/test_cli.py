@@ -7,11 +7,15 @@
 """
 from __future__ import absolute_import
 
+import json
+import os
 import subprocess
 
 import pytest
 
 import anytemplate.cli as TT
+
+from anytemplate.globals import CompileError
 
 try:
     import jinja2
@@ -84,39 +88,55 @@ def test_run_main__jinja2(tmp_path):
     assert out.read_text() == "hello"
 
 
-def _subproc_check_out(cmd_str, request):
+def _subproc_run(args, cwd):
     """Call subprocess.check_output with some keyword arguments.
+       https://docs.pytest.org/en/latest/reference/reference.html#request
     """
-    src_root = request.path.parent.parent.absolute()
+    env = os.environ.copy()
+    env["PYTHONPATH"] = "src"
 
-    cmd = "python src/anytemplate/cli.py"
-    opts = dict(
-        env=dict(PYTHONPATH="src"),
-        shell=True,
-        cwd=str(src_root)
+    return subprocess.run(
+        ["python3", "src/anytemplate/cli.py", *args],
+        env=env,
+        cwd=str(cwd),
+        capture_output=True,
+        text=True,
+        check=True,
     )
-
-    return subprocess.check_output(cmd_str.replace("CMD", cmd), **opts)
 
 
 @pytest.mark.parametrize(
-    ("tmpl_s", "ctx_s", "exp"),
-    (("$a\n", '{"a": "aaa"}', "aaa"),
+    ("tmpl_s", "ctx", "exp"),
+    (("a\n", {}, "a"),
+     ("$a\n", {"a": "aaa"}, "aaa"),
      )
 )
 def test_strtemplate_with_ctx(
-    tmpl_s, ctx_s, exp, tmp_path, request
+    tmpl_s, ctx, exp, tmp_path, request
 ):
     tmpl = tmp_path / "test.tmpl"
     tmpl.write_text(tmpl_s)
 
-    ctx = tmp_path / "ctx.json"
-    ctx.write_text(ctx_s)
+    cpath = tmp_path / "ctx.json"
+    with cpath.open(mode="w", encoding="utf-8") as ctxf:
+        json.dump(ctx, ctxf)
 
-    out = _subproc_check_out(
-        # TBD: Read ctx from stdin.
-        # f"echo 'a: aaa' | CMD -E string.Template -C yaml:- -o - {tmpl}",
-        f"CMD -E string.Template -C json:{ctx} -o - {tmpl}",
-        request
+    args = [
+        "-E", "string.Template", "-C", f"json:{cpath!s}",
+        "-o", "-", str(tmpl)
+    ]
+    cwd = request.path.parent.parent.absolute()
+    info = (
+        f"\nargs: {args!r}"
+        f"\ntmpl_s: {tmpl.read_text()}"
+        f"\nctx: {cpath.read_text()}"
+        f"\ncwd: {cwd!s}"
     )
-    assert out.rstrip() == bytes(exp, "utf-8")
+    try:
+        res = _subproc_run(args, cwd)
+    except (IOError, OSError, CompileError):
+        print(info)
+        raise
+
+    assert not res.stderr
+    assert res.stdout.rstrip() == exp, info

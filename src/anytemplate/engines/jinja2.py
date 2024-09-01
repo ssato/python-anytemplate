@@ -23,11 +23,12 @@
   - http://jinja.pocoo.org/docs/dev/api/
   - http://jinja.pocoo.org/docs/dev/templates/
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import glob
 import os.path
 import os
+import typing
 
 import jinja2.exceptions   # :throw: ImportError if missing
 import jinja2
@@ -39,8 +40,14 @@ import anytemplate.engines.base
 from anytemplate.globals import TemplateNotFound
 from anytemplate.compat import ENCODING
 
+if typing.TYPE_CHECKING:
+    import collections.abc
+    import jinja2.environment
 
-def _load_file_itr(files, encoding=ENCODING):
+
+def _load_file_itr(
+    files: list[str], encoding: str = ENCODING
+) -> collections.abc.Iterator[tuple[str, float]]:
     """
     :param files: A list of file paths :: [str]
     :param encoding: Encoding, e.g. 'utf-8'
@@ -61,15 +68,20 @@ class FileSystemExLoader(jinja2.loaders.FileSystemLoader):
 
     .. seealso:: https://github.com/pallets/jinja/pull/878
     """
-    def __init__(self, searchpath, encoding='utf-8', followlinks=False,
-                 enable_glob=False):
+    def __init__(
+        self, searchpath, encoding: str = 'utf-8', followlinks: bool = False,
+        enable_glob: bool = False
+    ) -> None:
         """.. seealso:: :meth:`jinja2.loaders.FileSystemLoader.__init__`
         """
-        super(FileSystemExLoader, self).__init__(searchpath, encoding=encoding,
-                                                 followlinks=False)
+        super().__init__(
+            searchpath, encoding=encoding, followlinks=False
+        )
         self.enable_glob = enable_glob
 
-    def get_source(self, environment, template):
+    def get_source(
+        self, environment: jinja2.environment.Environment, template: str
+    ) -> tuple[str, str, collections.abc.Callable[[], bool]]:
         """.. seealso:: :meth:`jinja2.loaders.FileSystemLoader.get_source`
         """
         pieces = jinja2.loaders.split_template_path(template)
@@ -90,12 +102,14 @@ class FileSystemExLoader(jinja2.loaders.FileSystemLoader):
                 """function to check of these are up-to-date.
                 """
                 try:
-                    return all(os.path.getmtime(fn) == mt for fn, mt
-                               in zip(files, mtimes))
+                    return all(
+                        os.path.getmtime(fn) == mt for fn, mt
+                        in zip(files, mtimes)
+                    )
                 except OSError:
                     return False
 
-            return contents, filename, uptodate
+            return (contents, filename, uptodate)
 
         raise jinja2.exceptions.TemplateNotFound(template)
 
@@ -104,29 +118,34 @@ class Engine(anytemplate.engines.base.Engine):
     """
     Template engine class to support Jinja2.
     """
-    _name = "jinja2"
-    _file_extensions = ["j2", "jinja2", "jinja"]
-    _priority = 10
-    _engine_valid_opts = ("block_start_string", "block_end_string",
-                          "variable_start_string", "variable_end_string",
-                          "comment_start_string", "comment_end_string",
-                          "line_statement_prefix", "line_comment_prefix",
-                          "trim_blocks", "lstrip_blocks", "newline_sequence",
-                          "keep_trailing_newline", "extensions", "optimized",
-                          "undefined", "finalize", "autoescape", "cache_size",
-                          "auto_reload", "bytecode_cache")
+    _name: str = "jinja2"
+    _file_extensions: list[str] = ["j2", "jinja2", "jinja"]
+    _priority: int = 10
+    _engine_valid_opts: tuple[str, ...] = (
+        "block_start_string", "block_end_string",
+        "variable_start_string", "variable_end_string",
+        "comment_start_string", "comment_end_string",
+        "line_statement_prefix", "line_comment_prefix",
+        "trim_blocks", "lstrip_blocks", "newline_sequence",
+        "keep_trailing_newline", "extensions", "optimized",
+        "undefined", "finalize", "autoescape", "cache_size",
+        "auto_reload", "bytecode_cache"
+    )
     _render_valid_opts = _engine_valid_opts
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """
         see `help(jinja2.Environment)` for options.
         """
-        super(Engine, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._env_options = self.filter_options(kwargs,
                                                 self.engine_valid_options())
 
-    def _render(self, template, context, is_file, at_paths=None,
-                at_encoding=ENCODING, **kwargs):
+    def _render(
+        self, template: str, context: dict, is_file: bool,
+        at_paths: typing.Optional[list[str]] = None,
+        at_encoding: str = ENCODING, **kwargs
+    ) -> str:
         """
         Render given template string and return the result.
 
@@ -153,12 +172,18 @@ class Engine(anytemplate.engines.base.Engine):
         if kwargs:
             context.update(kwargs)
         try:
-            tmpl = (env.get_template if is_file else env.from_string)(template)
+            if is_file:
+                tmpl = env.get_template(template)
+            else:
+                tmpl = env.from_string(template)
+
             return tmpl.render(**context)
         except jinja2.exceptions.TemplateNotFound as exc:
-            raise TemplateNotFound(str(exc))
+            raise TemplateNotFound(str(exc)) from exc
 
-    def renders_impl(self, template_content, context, **opts):
+    def renders_impl(
+        self, template_content: str, context: dict, **opts
+    ) -> str:
         """
         Render given template string and return the result.
 
@@ -182,7 +207,9 @@ class Engine(anytemplate.engines.base.Engine):
         """
         return self._render(template_content, context, False, **opts)
 
-    def render_impl(self, template, context, **opts):
+    def render_impl(
+        self, template: str, context: dict, **opts
+    ) -> str:
         """
         Render given template file and return the result.
 
@@ -199,5 +226,3 @@ class Engine(anytemplate.engines.base.Engine):
         :return: Rendered string
         """
         return self._render(os.path.basename(template), context, True, **opts)
-
-# vim:sw=4:ts=4:et:

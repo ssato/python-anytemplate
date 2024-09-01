@@ -5,6 +5,8 @@
 # pylint: disable=missing-docstring, invalid-name
 from __future__ import absolute_import, with_statement
 
+import io
+import json
 import os
 import pathlib
 
@@ -39,10 +41,6 @@ def test_normpath(input, exp_out):
     assert TT.normpath(input) == exp_out
 
 
-def test_flip():
-    assert TT.flip((1, 3)) == (3, 1)
-
-
 @pytest.mark.parametrize(
     ("input", "exp_out"),
     (([], []),
@@ -65,6 +63,25 @@ def test_concat(input, exp_out):
 )
 def test_parse_filespec__w_type(input, exp_out):
     assert TT.parse_filespec(input) == exp_out
+
+
+@pytest.mark.parametrize(
+    ("cpath", "ctype", "exp"),
+    (("-", "json",  {}),
+     ("c.json", "json",  {}),
+     ("c.json", "json",  {"a": "A"}),
+     )
+)
+def test_load_context(cpath, ctype, exp, monkeypatch, tmp_path):
+    ctx_s = json.dumps(exp)
+
+    if cpath == "-":
+        monkeypatch.setattr("sys.stdin", io.StringIO(ctx_s))
+    else:
+        cpath = tmp_path / cpath
+        cpath.write_text(ctx_s)
+
+    TT.load_context(cpath, ctype) == exp
 
 
 @pytest.mark.parametrize(
@@ -101,7 +118,25 @@ def test_mk_template_paths():
     assert TT.mk_template_paths(None, None) == [os.curdir]
 
 
-def test_parse_and_load_contexts(tmp_path):
+@pytest.mark.parametrize(
+    ("ctx", ),
+    (({}, ),
+     ({"a": "A"}, ),
+     ({"a": "A", "b": [1, 2]}, ),
+     )
+)
+def test_parse_and_load_contexts(ctx, tmp_path):
+    cpath = tmp_path / "c.json"
+    with cpath.open(mode="w", encoding="utf-8") as cio:
+        json.dump(ctx, cio)
+
+    assert TT.parse_and_load_contexts([str(cpath)]) == ctx
+    assert TT.parse_and_load_contexts(
+        [f"json:{p}" for p in [cpath]]
+    ) == ctx
+
+
+def test_parse_and_load_contexts_multi(tmp_path):
     jsns = [
         tmp_path / "a.json", tmp_path / "b.json", tmp_path / "c.json"
     ]

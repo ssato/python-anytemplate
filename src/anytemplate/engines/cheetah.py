@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 by Satoru SATOH <ssato @ redhat.com>
+# Copyright (c) 2015 by Satoru SATOH <ssato redhat.com>
 # License: MIT
 #
 """
@@ -20,7 +20,9 @@ Template engine to add support of `Cheetah <http://www.cheetahtemplate.org>`_ .
   - help(Cheetah.Template.Template)
   - help(Cheetah.Template.Template.compile)
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
+
+import typing
 
 try:
     from Cheetah.Template import Template  # :throw: ImportError
@@ -51,39 +53,38 @@ class Engine(anytemplate.engines.base.Engine):
     """
     Template Engine class to support Cheetah.
     """
-    _name = "cheetah"
-    _priority = 30
+    _name: str = "cheetah"
+    _priority: int = 30
 
     # _engine_valid_opts: parameters for Cheetah.Template.Template
     # _render_valid_opts: same as the above currently
     #
     # TODO: Process parameters for Cheetah.Template.Template.{compile,respond}
-    _engine_valid_opts = ("source", "namespaces", "searchList",
-                          "file", "filter", "filtersLib", "errorCatcher",
-                          "compilerSettings", "_globalSetVars",
-                          "_preBuiltSearchList")
+    _engine_valid_opts: tuple[str, ...] = (
+        "source", "namespaces", "searchList",
+        "file", "filter", "filtersLib", "errorCatcher",
+        "compilerSettings", "_globalSetVars",
+        "_preBuiltSearchList"
+    )
     _render_valid_opts = _engine_valid_opts
 
     @classmethod
-    def supports(cls, template_file=None):
+    def supports(cls, template_file: typing.Optional[str] = None) -> bool:
         """
         :return: Whether the engine can process given template file or not.
         """
-        if anytemplate.compat.IS_PYTHON_3:
-            cls._priority = 99
-            return False  # Always as it's not ported to python 3.
+        return False  # Always as it's not ported to python 3.
 
-        return super(Engine, cls).supports(template_file=template_file)
-
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """
         see `help(Cheetah.Template.Template)` for options.
         """
-        super(Engine, self).__init__(**kwargs)
-        self.engine_options = self.filter_options(kwargs,
-                                                  self.engine_valid_options())
+        super().__init__(**kwargs)
+        self.engine_options = self.filter_options(
+            kwargs, self.engine_valid_options()
+        )
 
-    def __render(self, context, **kwargs):
+    def __render(self, context: dict, **kwargs) -> str:
         """
         Render template.
 
@@ -108,7 +109,9 @@ class Engine(anytemplate.engines.base.Engine):
 
         return render_impl(**self.engine_options)
 
-    def renders_impl(self, template_content, context, **kwargs):
+    def renders_impl(
+        self, template_content: str, context: dict, **kwargs
+    ) -> str:
         """
         Render given template string and return the result.
 
@@ -132,7 +135,7 @@ class Engine(anytemplate.engines.base.Engine):
 
         return self.__render(context, **kwargs)
 
-    def render_impl(self, template, context, **kwargs):
+    def render_impl(self, template: str, context: dict, **kwargs) -> str:
         """
         Render given template file and return the result.
 
@@ -155,5 +158,3 @@ class Engine(anytemplate.engines.base.Engine):
         kwargs["file"] = template
 
         return self.__render(context, **kwargs)
-
-# vim:sw=4:ts=4:et:

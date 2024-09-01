@@ -8,52 +8,35 @@
 from __future__ import absolute_import
 
 import codecs
-import itertools
 import os.path
-import sys
 
 try:
-    import json
+    from anyconfig.api import (  # pylint: disable=unused-import
+        loads, load, merge
+    )
 except ImportError:
-    import simplejson as json  # :throw: ImportError
+    import json
+
+    def loads(content, **_kwargs):  # type: ignore[misc]
+        """Wrapper for josn.loads."""
+        return json.loads(content)
+
+    def load(path_or_io, **_kwargs):  # type: ignore[misc]
+        """Wrapper for josn.load."""
+        if isinstance(path_or_io, (str, )):
+            return json.load(open(path_or_io, encoding="utf-8"))
+
+        return json.load(path_or_io)
+
+    def merge(dic: dict, upd: dict, *_args, **_kwargs) -> None:  # type: ignore
+        """Update `dic` with `upd`."""
+        dic.update(upd)
 
 
-IS_PYTHON_3 = sys.version_info[0] == 3
 ENCODING = "UTF-8"
 
 
-# Borrowed from library doc, 9.7.1 Itertools functions:
-def _from_iterable(iterables):
-    """
-    itertools.chain.from_iterable alternative.
-
-    >>> list(_from_iterable([[1, 2], [3, 4]]))
-    [1, 2, 3, 4]
-    """
-    for itr in iterables:
-        for element in itr:
-            yield element
-
-
-def json_loads(content, *args, **kwargs):
-    """
-    Alternative if anyconfig is not available.
-
-    :param content: JSON string
-    """
-    return json.loads(content)
-
-
-def json_load(filepath, *args, **kwargs):
-    """
-    Alternative if anyconfig is not available.
-
-    :param filepath: JSON file path
-    """
-    return json.load(open(filepath))
-
-
-def get_file_extension(filepath):
+def get_file_extension(filepath: str) -> str:
     """
     Copy if anyconfig.utils.get_file_extension is not available.
 
@@ -71,46 +54,20 @@ def get_file_extension(filepath):
     return ''
 
 
-def merge(dic, diff):
+def json_loads(content: str, *_args, **kwargs) -> dict:
+    """Wrapper for `loads`."""
+    return loads(content, **kwargs) or {}
+
+
+def json_load(filepath: str, *_args, **kwargs) -> dict:
+    """Wrapper for `load`."""
+    return load(filepath, **kwargs) or {}
+
+
+def copen(filepath, flag='r', encoding=ENCODING):
     """
-    Merge mapping objects.
-
-    :param dic: Original mapping object to update with `diff`
-    :param diff: Diff mapping object
-    :return: None but `dic` will be updated
-
-    >>> dic = {}
-    >>> merge(dic, {'a': 1})
-    >>> assert 'a' in dic and dic['a'] == 1
+    >>> c = copen(__file__)
+    >>> c is not None
+    True
     """
-    dic.update(diff)
-
-
-if IS_PYTHON_3:
-    from_iterable = itertools.chain.from_iterable
-    raw_input = input
-
-    def copen(filepath, flag='r', encoding=ENCODING):
-        """
-        >>> c = copen(__file__)
-        >>> c is not None
-        True
-        """
-        return codecs.open(filepath, flag + 'b', encoding)
-else:
-    try:
-        from_iterable = itertools.chain.from_iterable
-    except AttributeError:
-        from_iterable = _from_iterable
-
-    raw_input = raw_input
-
-    def copen(filepath, flag='r', encoding=ENCODING):
-        """
-        >>> c = copen(__file__)
-        >>> c is not None
-        True
-        """
-        return codecs.open(filepath, flag, encoding)
-
-# vim:sw=4:ts=4:et:
+    return codecs.open(filepath, flag + 'b', encoding)

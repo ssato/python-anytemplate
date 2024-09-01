@@ -1,7 +1,3 @@
 anyconfig
-# Special case. https://pypi.python.org/pypi/Cheetah3/
-Cheetah3
 PyYAML
-jinja2
-mako
-pystache
+-r tests/requirements.d/engines.txt

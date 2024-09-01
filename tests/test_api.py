@@ -5,6 +5,8 @@
 # pylint: disable=missing-docstring, invalid-name, protected-access
 from __future__ import absolute_import
 
+import io
+
 import pytest
 
 import anytemplate.api as TT
@@ -38,7 +40,7 @@ def test_find_engine__exceptions(filepath, name):
 
 
 ENGINES_TEST_CASES = [
-    ("foo.t", "string.Template", anytemplate.engines.strtemplate.Engine),
+    ("foo.t", "string.Template", anytemplate.engines.strtemplate.Engine()),
 ]
 
 RENDERS_TEST_CASES = [
@@ -56,12 +58,12 @@ if "jinja2" in ENGINES:
 
 
 @pytest.mark.parametrize(
-    ("filepath", "name", "exp_engine"),
+    ("filepath", "name", "exp"),
     ENGINES_TEST_CASES,
 )
-def test_find_engine__ok(filepath, name, exp_engine):
+def test_find_engine__ok(filepath, name, exp):
     engine = TT.find_engine(filepath=filepath, name=name)
-    assert engine == exp_engine
+    assert engine.name() == exp.name()
 
 
 J2_NOT_AVAIL_MSG = "jinja2 is not available"
@@ -84,25 +86,15 @@ def test_renders(tmpl_str, ctx, engine, expected):
     assert TT.renders(tmpl_str, ctx, at_engine=engine) == expected
 
 
-def test_render__usr_tmpl_given_by_kwargs_or_altname(tmp_path):
+def test__render__ask_template_path(tmp_path, monkeypatch):
     tmpl = tmp_path / "a.t"
     tmpl.write_text("$a")
 
-    opts = dict(
-        at_engine="string.Template", at_ask_missing=True,
-        _at_usr_tmpl=str(tmpl)
-    )
-
-    for tname in (tmpl.name, "b.t"):
-        assert TT._render(None, tname, dict(a="aaa", ), **opts) == "aaa"
-
-
-def test__render__usr_tmpl_given_but_missing():
-    """
-    TODO: Test cases if given template file is missing but its path will be
-    given by users on demand.
-    """
-    pass
+    monkeypatch.setattr("sys.stdin", io.StringIO(str(tmpl)))
+    assert TT.render(
+        "tmpl_not_exists.t", {"a": "aaa"}, at_engine="string.Template",
+        at_ask_missing=True
+    ) == "aaa"
 
 
 def test_render__no_at_paths(tmp_path):
@@ -110,7 +102,7 @@ def test_render__no_at_paths(tmp_path):
     tmpl.write_text("$a")
 
     assert TT.render(
-        str(tmpl), dict(a="aaa", ), at_engine="string.Template"
+        str(tmpl), {"a": "aaa"}, at_engine="string.Template"
     ) == "aaa"
 
 
@@ -139,7 +131,7 @@ def test_render_to(tmp_path):
     output = tmp_path / "a.txt"
 
     TT.render_to(
-        str(tmpl), dict(a="aaa", ), str(output), at_engine="string.Template"
+        str(tmpl), {"a": "aaa"}, str(output), at_engine="string.Template"
     )
     assert output.exists()
     assert output.read_text() == "aaa"

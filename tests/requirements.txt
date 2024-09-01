@@ -1,7 +1,4 @@
 PyYAML
 anyconfig
 coveralls
-flake8
-pycodestyle
-pylint
 pytest

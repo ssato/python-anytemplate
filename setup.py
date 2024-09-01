@@ -1,29 +1,32 @@
-"""setup.py to build package.
-"""
-from __future__ import absolute_import
-
-import glob
-import os.path
+"""setup.py to build package."""
 import os
+import pathlib
 import re
 import setuptools
 import setuptools.command.bdist_rpm
 
 
 # It might throw IndexError and so on.
-VERSION = [re.search(r'^VERSION = "([^"]+)"', l).groups()[0] for l
-           in open(glob.glob("src/*/globals.py")[0])
-           if "VERSION" in l][0]
+VERSION = '0.1.0'
+VER_REG = re.compile(r"^__version__ = '([^']+)'")
+
+for fpath in pathlib.Path('src').glob('**/__init__.py'):
+    for line in fpath.open():
+        match = VER_REG.match(line)
+        if match:
+            VERSION = match.groups()[0]
+            break
 
 # For daily snapshot versioning mode:
 RELEASE = "1%{?dist}"
 if os.environ.get("_SNAPSHOT_BUILD", None) is not None:
     import datetime
-    RELEASE = datetime.datetime.now().strftime(".%Y%m%d%H%M%S")
+    RELEASE = RELEASE.replace('1',
+                              datetime.datetime.now().strftime("%Y%m%d"))
 
 
 def _replace(line):
-    """Replace some strings in the RPM SPEC template"""
+    """Replace some strings in the RPM SPEC template."""
     if "@VERSION@" in line:
         return line.replace("@VERSION@", VERSION)
 
@@ -37,18 +40,15 @@ def _replace(line):
 
 
 class bdist_rpm(setuptools.command.bdist_rpm.bdist_rpm):
-    """Override the default content of the RPM SPEC.
-    """
-    spec_tmpl = os.path.join(os.path.abspath(os.curdir),
-                             "pkg/package.spec.in")
+    """Override the default content of the RPM SPEC."""
+
+    spec_tmpl = pathlib.Path('pkg/package.spec.in').resolve()
 
     def _make_spec_file(self):
-        return [_replace(l.rstrip()) for l in open(self.spec_tmpl)]
+        """Generate the RPM SPEC file."""
+        return [_replace(line.rstrip()) for line in self.spec_tmpl.open()]
 
 
-setuptools.setup(name="anytemplate",   # Avoid 'Unknown' package in older ones.
-                 version=VERSION,
-                 cmdclass=dict(bdist_rpm=bdist_rpm),
-                 package_dir={'': 'src'})
-
-# vim:sw=4:ts=4:et:
+setuptools.setup(
+    version=VERSION, cmdclass=dict(bdist_rpm=bdist_rpm)
+)

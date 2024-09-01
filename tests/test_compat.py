@@ -5,20 +5,16 @@
 # pylint: disable=missing-docstring
 from __future__ import absolute_import
 
+import json
+
 import anytemplate.compat as TT
 
 
 _OBJ = {"a": "aaa", "b": [1, 2, 3]}
 
 
-def test_json_loads():
-    content = TT.json.dumps(_OBJ)
-    assert TT.json_loads(content, "arg0", arg1="aaa") == _OBJ
-
-
 def test_json_load(tmp_path):
     fpath = tmp_path / "a.json"
+    fpath.write_text(json.dumps(_OBJ))
 
-    TT.json.dump(_OBJ, open(str(fpath), 'w'))
-
-    assert TT.json_load(fpath, "dummy_arg0") == _OBJ
+    assert TT.load(fpath) == _OBJ
