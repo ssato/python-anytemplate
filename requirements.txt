@@ -1,2 +1,2 @@
 anyconfig
-jinja2
+Jinja2
