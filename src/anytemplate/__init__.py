@@ -91,7 +91,7 @@ from .api import (
 )
 
 __author__ = AUTHOR
-__version__: typing.Final[str] = "0.1.7"
+__version__: typing.Final[str] = "0.1.8"
 
 __all__ = [
     "LOGGER",

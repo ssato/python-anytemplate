@@ -1,3 +1,14 @@
+* Sun Sep  1 2024 Satoru SATOH <satoru.satoh@gmail.com> - 0.1.8
+- change: migrate and swtich to use pyproject.toml instead of setup.*
+- fix/change: use 'build' to build dists instead of calling setup.py directly
+- fix: add build time dependency to 'build'; seealso:
+  https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html
+- fix: corrections for pylint/flake8 errors
+- fix: add configuration for mypy to suppress some ignorable errors
+- fix: corrections of dependencies for min tox target
+- fix: re-organize and cleanup dependencies
+- fix: set PKG_NAME explicitely
+
 * Sun Sep  1 2024 Satoru SATOH <satoru.satoh@gmail.com> - 0.1.7
 - change: add python 3.12 support
 - change: drop tenjin (template engine) support
