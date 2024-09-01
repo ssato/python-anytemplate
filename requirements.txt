@@ -1,3 +1,2 @@
 anyconfig
-PyYAML
--r tests/requirements.d/engines.txt
+jinja2
