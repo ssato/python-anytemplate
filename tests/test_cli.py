@@ -8,6 +8,7 @@
 from __future__ import absolute_import
 
 import json
+import os
 import subprocess
 
 import pytest
@@ -87,20 +88,17 @@ def test_run_main__jinja2(tmp_path):
     assert out.read_text() == "hello"
 
 
-def _subproc_run(args, request):
+def _subproc_run(args, cwd):
     """Call subprocess.check_output with some keyword arguments.
-
-    .. seealso::
-
        https://docs.pytest.org/en/latest/reference/reference.html#request
     """
-    src_root = request.path.parent.parent.absolute()
+    env = os.environ.copy()
+    env["PYTHONPATH"] = "src"
 
     return subprocess.run(
         ["python3", "src/anytemplate/cli.py", *args],
-        env={"PYTHONPATH": "src"},
-        shell=True,
-        cwd=str(src_root),
+        env=env,
+        cwd=str(cwd),
         capture_output=True,
         text=True,
         check=True,
@@ -123,16 +121,22 @@ def test_strtemplate_with_ctx(
     with cpath.open(mode="w", encoding="utf-8") as ctxf:
         json.dump(ctx, ctxf)
 
+    args = [
+        "-E", "string.Template", "-C", f"json:{cpath!s}",
+        "-o", "-", str(tmpl)
+    ]
+    cwd = request.path.parent.parent.absolute()
+    info = (
+        f"\nargs: {args!r}"
+        f"\ntmpl_s: {tmpl.read_text()}"
+        f"\nctx: {cpath.read_text()}"
+        f"\ncwd: {cwd!s}"
+    )
     try:
-        res = _subproc_run(
-            ["-E", "string.Template", "-C", f"json:{cpath!s}",
-             "-o", "-", str(tmpl)],
-            request
-        )
+        res = _subproc_run(args, cwd)
     except (IOError, OSError, CompileError):
-        print(f"tmpl: {tmpl.read_text()}")
-        print(f"ctx: {cpath.read_text()}")
+        print(info)
         raise
 
     assert not res.stderr
-    assert res.stdout.rstrip() == exp
+    assert res.stdout.rstrip() == exp, info
